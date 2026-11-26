@@ -6,8 +6,10 @@
   "account_id": "d06c70a0b6279642a6243926161f574b",
   "compatibility_date": "2026-11-01",
   "main": "src/index.js",
+  // Temporary test address until the product domain is chosen; then add a custom_domain route.
+  "workers_dev": true,
   "d1_databases": [
-    { "binding": "DB", "database_name": "vibecms-hub", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }
+    { "binding": "DB", "database_name": "vibecms-hub", "database_id": "46aa2ad5-cb55-4173-9784-7fd9b4bd9b43", "migrations_dir": "migrations" }
   ],
   "triggers": { "crons": ["17 3 * * *"] },
   "observability": { "enabled": true },

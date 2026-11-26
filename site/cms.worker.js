@@ -51,4 +51,6 @@ export default createCms({
   // The early-access and support forms send to the Vibe CMS inbox. Messages are deleted after 12 months,
   // as the privacy policy (/privacy/) promises.
   forms: { keepDays: 365 },
+  // The hosted ChatGPT/Claude connector on its temporary test address, until the product domain is chosen.
+  connect: { hubs: ['https://vibecms-hub.brennen-d06.workers.dev'] },
 });
