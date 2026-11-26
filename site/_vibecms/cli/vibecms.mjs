@@ -34,7 +34,7 @@ const posix = (p) => p.split(sep).join('/');
 function readConfig() {
   const file = join(siteDir, 'wrangler.jsonc');
   if (!existsSync(file)) die(`No wrangler.jsonc in ${siteDir}. Run this from the site folder or pass --site.`);
-  const text = readFileSync(file, 'utf8');
+  const text = readFileSync(file, 'utf8').replace(/^﻿/, '');   // Notepad and PowerShell 5 add a BOM
   // Strip // and /* */ comments outside strings, then trailing commas.
   const noComments = text.replace(/("(?:\\.|[^"\\])*")|\/\/[^\n]*|\/\*[\s\S]*?\*\//g, (m, str) => str || '');
   return { file, config: JSON.parse(noComments.replace(/,(\s*[}\]])/g, '$1')) };

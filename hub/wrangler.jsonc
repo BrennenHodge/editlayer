@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  // Vibe CMS connector: one MCP server + OAuth sign-in for ChatGPT, Claude and other assistants, in front of
+  // every Vibe CMS site. See hub/README.md. Deploy: npx wrangler deploy (after the domain route is added).
+  "name": "vibecms-hub",
+  "account_id": "d06c70a0b6279642a6243926161f574b",
+  "compatibility_date": "2026-11-01",
+  "main": "src/index.js",
+  "d1_databases": [
+    { "binding": "DB", "database_name": "vibecms-hub", "database_id": "00000000-0000-0000-0000-000000000000", "migrations_dir": "migrations" }
+  ],
+  "triggers": { "crons": ["17 3 * * *"] },
+  "observability": { "enabled": true },
+  // Secrets: HUB_KEY (32 random bytes, base64; encrypts site keys). Optional: OPENAI_APPS_CHALLENGE.
+  // Vars for local testing only: ALLOW_HTTP_SITES = "1" lets http://localhost sites connect.
+  "vars": {}
+}
