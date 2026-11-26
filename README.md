@@ -29,7 +29,7 @@ Local test admin for the site: `site/.dev-test-user.json` (gitignored, local onl
 ## Installing the plugin (once the repo is on GitHub)
 
 ```
-/plugin marketplace add dbvantage/vibe-cms
+/plugin marketplace add BrennenHodge/vibe-cms
 /plugin install vibe-cms@vibe-cms
 ```
 
