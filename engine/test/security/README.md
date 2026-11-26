@@ -7,7 +7,7 @@ Run these before releasing an engine change. Never point them at a live site: th
 Roles, CSRF, size limits, the strict sanitizer for authors and AI connections, MCP keys, rate limits, upload
 checks and security headers, against a real Worker.
 
-1. Make a throwaway copy of a site that uses Vibe CMS, with this engine in `_vibecms/` and a `cms.worker.js` like:
+1. Make a throwaway copy of a site that uses Editlayer, with this engine in `_editlayer/` and a `cms.worker.js` like:
    `createCms({ siteName: 'Security test', login: 'password', forms: {}, embeds: ['calendly.com'] })`.
    Its home page needs regions `main` and `@footer`. Give it its own D1 database name in `wrangler.jsonc`.
 2. `npx wrangler d1 migrations apply <db> --local`

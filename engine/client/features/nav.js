@@ -614,7 +614,7 @@
     const shown = new Set();
     let styleEl = null;
     function syncShown() {
-      if (!styleEl) { styleEl = d.createElement('style'); styleEl.id = 'vibecms-nav-shown'; }
+      if (!styleEl) { styleEl = d.createElement('style'); styleEl.id = 'editlayer-nav-shown'; }
       if (!styleEl.isConnected) d.head.append(styleEl);
       styleEl.textContent = [...shown].map((id) => `#${CSS.escape(id)}{display:block!important}`).join('\n');
     }

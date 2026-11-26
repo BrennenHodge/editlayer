@@ -9,7 +9,7 @@ import { SEARCHABLE } from './find.js';
 const SKIP = /(^|\/)(node_modules|dist|build|out|\.next|\.git|coverage|vendor|attached_assets|audit|docs|tmp)(\/|$)|(^|\/)(package(-lock)?\.json|pnpm-lock\.yaml|yarn\.lock|tsconfig[^/]*\.json|[^/]*\.config\.[cm]?[jt]s|[^/]*\.min\.[^/]+|[^/]*\.d\.ts)$|^[^/]+\.md$/i;
 
 export function githubRepo({ owner, repo, branch, token, fetchImpl = fetch }) {
-  if (/^(main|master)$/i.test(branch)) throw new Error('Vibe CMS Phase 0 never commits to main or master');
+  if (/^(main|master)$/i.test(branch)) throw new Error('Editlayer Phase 0 never commits to main or master');
   const base = `https://api.github.com/repos/${owner}/${repo}`;
   const blobCache = new Map(); // sha -> content
 
@@ -20,7 +20,7 @@ export function githubRepo({ owner, repo, branch, token, fetchImpl = fetch }) {
         Authorization: `Bearer ${token}`,
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'vibecms-source-mode',
+        'User-Agent': 'editlayer-source-mode',
         ...(body ? { 'Content-Type': 'application/json' } : {}),
       },
       body: body ? JSON.stringify(body) : undefined,

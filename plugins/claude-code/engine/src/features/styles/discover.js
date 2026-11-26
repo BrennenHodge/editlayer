@@ -1,6 +1,6 @@
 // Reads the custom properties a site defines on :root, from its own stylesheets (static assets).
 
-const ORIGIN = 'https://vibecms.local';
+const ORIGIN = 'https://editlayer.local';
 const TTL = 5 * 60 * 1000;
 const MAX_SHEETS = 6;
 const MAX_CSS = 600_000;
@@ -23,7 +23,7 @@ export async function siteVars(env, path = '/') {
     }
     if (css.length) vars = rootVars(css.join('\n'));
   } catch (err) {
-    console.error('vibecms styles: could not read the site stylesheets', err && err.stack || err);
+    console.error('editlayer styles: could not read the site stylesheets', err && err.stack || err);
   }
   cache = { at: Date.now(), vars };
   return vars;

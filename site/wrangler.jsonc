@@ -1,7 +1,9 @@
 {
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
-  // Vibe CMS marketing site at https://cms.dbvantage.com. It runs on Vibe CMS itself (cms.worker.js,
-  // engine in ./_vibecms). Redeploy: python build.py, then npx wrangler deploy.
+  // Editlayer marketing site at https://editlayer.co. It runs on Editlayer itself (cms.worker.js, engine in
+  // ./_editlayer). Redeploy: python build.py, then npx wrangler deploy.
+  // The Worker, D1 and R2 names keep the product's first name (vibecms): renaming them would create new, empty
+  // resources. cms.dbvantage.com and www.editlayer.co redirect to https://editlayer.co (cms.worker.js).
   "name": "vibecms",
   "account_id": "d06c70a0b6279642a6243926161f574b",
   "compatibility_date": "2026-11-01",
@@ -13,13 +15,18 @@
     "run_worker_first": ["/*", "!/assets/*", "!/icons/*", "!/styles.css", "!/script.js", "!/favicon.ico", "!/favicon.svg", "!/apple-touch-icon.png", "!/robots.txt", "!/sw.js", "!/manifest.webmanifest"]
   },
   "routes": [
+    // Each custom domain has a zone route beside it, so a wildcard Worker on the zone can't catch POSTs.
+    { "pattern": "editlayer.co", "custom_domain": true },
+    { "pattern": "editlayer.co/*", "zone_name": "editlayer.co" },
+    { "pattern": "www.editlayer.co", "custom_domain": true },
+    { "pattern": "www.editlayer.co/*", "zone_name": "editlayer.co" },
     { "pattern": "cms.dbvantage.com", "custom_domain": true },
     { "pattern": "cms.dbvantage.com/*", "zone_name": "dbvantage.com" }
   ],
   "triggers": { "crons": ["*/5 * * * *"] },
   "ai": { "binding": "CMS_AI" },
   "d1_databases": [
-    { "binding": "CMS_DB", "database_name": "vibecms-cms", "database_id": "473027e9-66db-4448-8936-3daab4411bd6", "migrations_dir": "_vibecms/migrations" }
+    { "binding": "CMS_DB", "database_name": "vibecms-cms", "database_id": "473027e9-66db-4448-8936-3daab4411bd6", "migrations_dir": "_editlayer/migrations" }
   ],
   "r2_buckets": [{ "binding": "CMS_MEDIA", "bucket_name": "vibecms-cms-media" }],
   "observability": { "enabled": true }

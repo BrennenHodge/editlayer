@@ -124,7 +124,7 @@ export async function renderPage(request, env, res, url, opts, mode = {}) {
       bodyEnd(html) { bodyEnds.push(html); },
       share(data) { if (state) state.features[f.name] = data; },
     };
-    try { await f.render(ctx); } catch (err) { console.error(`vibecms: ${f.name} render failed`, err && err.stack || err); }
+    try { await f.render(ctx); } catch (err) { console.error(`editlayer: ${f.name} render failed`, err && err.stack || err); }
   }
 
   if (editing) {
@@ -136,7 +136,7 @@ export async function renderPage(request, env, res, url, opts, mode = {}) {
       },
     });
     heads.push(`<meta name="robots" content="noindex"><link rel="stylesheet" href="/_cms/editor.css?v=${CLIENT_VERSION}">`);
-    bodyEnds.push(() => `<script id="vibecms-state" type="application/json">${scriptJson(state)}</script><script src="/_cms/editor.js?v=${CLIENT_VERSION}" defer></script>`);
+    bodyEnds.push(() => `<script id="editlayer-state" type="application/json">${scriptJson(state)}</script><script src="/_cms/editor.js?v=${CLIENT_VERSION}" defer></script>`);
   } else if (preview) {
     heads.push('<meta name="robots" content="noindex">');
   } else if (user) {

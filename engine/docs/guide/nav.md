@@ -12,12 +12,12 @@
 - Dropdowns open when you hover over them while editing, and stay open while you type in one of their links. On a phone-sized screen, tap the menu button on the page to show the mobile menu and edit it directly; tap again to hide it. Visitors aren't affected.
 
 **How "current page" works (aria-current)**
-- `vibecms annotate` now makes a header (or footer) site-wide even when pages differ only by `aria-current="page"` on a menu link. The region's hash ignores that mark, and each page records its current link on the region: `<header data-cms="@header" data-cms-v="…" data-cms-current="/services/">`. Pages with no current link get `data-cms-current=""`. Static files keep their own aria-current, so pages nobody edited are served exactly as built.
+- `editlayer annotate` now makes a header (or footer) site-wide even when pages differ only by `aria-current="page"` on a menu link. The region's hash ignores that mark, and each page records its current link on the region: `<header data-cms="@header" data-cms-v="…" data-cms-current="/services/">`. Pages with no current link get `data-cms-current=""`. Static files keep their own aria-current, so pages nobody edited are served exactly as built.
 - When a page is rendered (visitors, previews, edit mode), the Worker sets `aria-current="page"` on the recorded link and removes it from every other link in that region. An edited header therefore always marks the right link, even though it was saved from another page. Each recorded address marks the first link with that address (listed twice, the first two), matching what the build produced (a dropdown's own copy of the parent link is not marked).
 - Only `aria-current="page"` on `<a href>` is handled. Sites that never use it get no `data-cms-current` and behave as before. Headers that differ in any other way between pages stay developer-only, as before.
 
 **Site setup**
-- Nothing new for most sites: re-run `vibecms annotate` after the build (add it to the end of the site's build). The header must be the first `<header>` before `<main>`, with its menus in `<nav>` elements. Name them with aria-label: "Primary"/"Main" becomes "Main menu"; anything mentioning mobile/phone becomes "Mobile menu".
+- Nothing new for most sites: re-run `editlayer annotate` after the build (add it to the end of the site's build). The header must be the first `<header>` before `<main>`, with its menus in `<nav>` elements. Name them with aria-label: "Primary"/"Main" becomes "Main menu"; anything mentioning mobile/phone becomes "Mobile menu".
 - A mobile-menu toggle that is a `<button aria-controls="id">` pointing at a hidden element inside the header is recognised automatically in edit mode.
 - Pages the CMS creates itself (page creator) should carry `data-cms-current="<their own path>"` (or "") on the header, so they get the same treatment.
 

@@ -2,7 +2,7 @@
 // in the editor and stored as the site-wide draft key "@theme" (draft → publish → history).
 //
 // Stored value: {"props": {"--gold": "#d4a72c", "--radius": "8px"}, "fonts": {"--font-body": "Inter"}}
-// Served as <style id="vibecms-theme">:root{…}</style> at the end of <head>, plus a Google Fonts
+// Served as <style id="editlayer-theme">:root{…}</style> at the end of <head>, plus a Google Fonts
 // <link> for chosen fonts the page doesn't already load.
 
 import { hasRole, escapeHtml } from '../util.js';
@@ -78,9 +78,9 @@ export default {
           let html = '';
           if (need.length) {
             if (!preconnected) html += '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
-            html += need.map((f) => `<link rel="stylesheet" href="${escapeHtml(f.href)}" data-vibecms-font>`).join('');
+            html += need.map((f) => `<link rel="stylesheet" href="${escapeHtml(f.href)}" data-editlayer-font>`).join('');
           }
-          html += `<style id="vibecms-theme">${css.replace(/</g, '\\3c ')}</style>`;
+          html += `<style id="editlayer-theme">${css.replace(/</g, '\\3c ')}</style>`;
           end.before(html, { html: true });
         });
       },

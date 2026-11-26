@@ -23,9 +23,9 @@
     const fontByName = (n) => fonts.find((f) => f.name === n) || null;
     const raw = F.raw || {};
 
-    // The Worker serves the saved theme as <style id="vibecms-theme">. While editing, the editor takes
+    // The Worker serves the saved theme as <style id="editlayer-theme">. While editing, the editor takes
     // over: read the site's own values without it, then apply the theme as inline custom properties.
-    doc.getElementById('vibecms-theme')?.remove();
+    doc.getElementById('editlayer-theme')?.remove();
     const cs0 = getComputedStyle(html);
     const orig = {};
     for (const s of settings) orig[s.prop] = cs0.getPropertyValue(s.prop).trim();
@@ -52,7 +52,7 @@
       const l = doc.createElement('link');
       l.rel = 'stylesheet';
       l.href = f.href;
-      l.setAttribute('data-vibecms-font', '');
+      l.setAttribute('data-editlayer-font', '');
       doc.head.append(l);
     }
     // A font the page loads with only some weights (e.g. 400;500;600) is loaded again with its full
@@ -88,7 +88,7 @@
           const l = doc.createElement('link');
           l.rel = 'stylesheet';
           l.href = f.href;
-          l.setAttribute('data-vibecms-font', '');
+          l.setAttribute('data-editlayer-font', '');
           doc.head.append(l);
         }
       }

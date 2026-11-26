@@ -1,7 +1,7 @@
 ## Page checks and Edit as form (feature: quality)
 
 ### Checks before publishing
-When an editor presses **Publish**, Vibe CMS first looks over the page. If everything is fine, the page publishes straight away. If something needs attention, a **Before you publish** list appears, grouped as Page settings, Pictures, Links and buttons, Headings, Hard-to-read text and Unfinished text. Each item says what's wrong in plain words and has two buttons:
+When an editor presses **Publish**, Editlayer first looks over the page. If everything is fine, the page publishes straight away. If something needs attention, a **Before you publish** list appears, grouped as Page settings, Pictures, Links and buttons, Headings, Hard-to-read text and Unfinished text. Each item says what's wrong in plain words and has two buttons:
 
 - **Show me** scrolls to the spot and selects it, so the normal toolbar can fix it (for example the link or picture-description button). A bar at the top steps through every issue ("2 of 5", Previous / Next) and can bring the list back. Title and description issues open Page settings with that field ready.
 - **Ignore** stops the warning for this page. Ignored warnings are saved with the page's draft and published with it, and they appear under "N ignored" in the list, with **Warn again** to undo.

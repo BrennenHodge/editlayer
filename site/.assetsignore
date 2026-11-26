@@ -1,7 +1,7 @@
 src
 build.py
 cms.worker.js
-/_vibecms
+/_editlayer
 node_modules
 package.json
 package-lock.json

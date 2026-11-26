@@ -1,13 +1,13 @@
-// Vibe CMS editor: click any text on the page to type, click an image to replace it, and use the
+// Editlayer editor: click any text on the page to type, click an image to replace it, and use the
 // toolbars to duplicate, move, hide or delete things. Loaded only for signed-in editors on ?edit pages.
 (() => {
   'use strict';
   // The real state is the last JSON script with this id (page content can't plant one: the sanitizer strips it).
   // Called through the prototype and checked as an own property, so an element in the page named
-  // "querySelectorAll" or with id "__vibecms" can't stop the editor from loading (DOM clobbering).
-  const stateEl = [...Document.prototype.querySelectorAll.call(document, 'script#vibecms-state[type="application/json"]')].pop();
-  if (!stateEl || Object.hasOwn(window, '__vibecms')) return;
-  window.__vibecms = true;
+  // "querySelectorAll" or with id "__editlayer" can't stop the editor from loading (DOM clobbering).
+  const stateEl = [...Document.prototype.querySelectorAll.call(document, 'script#editlayer-state[type="application/json"]')].pop();
+  if (!stateEl || Object.hasOwn(window, '__editlayer')) return;
+  window.__editlayer = true;
 
   const S = JSON.parse(stateEl.textContent);
   const UI_CSS = __UI_CSS__;
@@ -41,7 +41,7 @@
     return node;
   }
   const SVG_NS = 'http://www.w3.org/2000/svg';
-  d.documentElement.classList.add('vibecms-on');
+  d.documentElement.classList.add('editlayer-on');
 
   /* ---------------------------------------------------------------- features and hooks
      Features live in client/features/<name>.js and are built into this file. Each one calls
@@ -52,7 +52,7 @@
   function on(event, fn) { (hooks[event] ||= []).push(fn); return () => { hooks[event] = hooks[event].filter((f) => f !== fn); }; }
   function emit(event, ...args) {
     return (hooks[event] || []).map((fn) => {
-      try { return fn(...args); } catch (err) { console.error(`vibecms: ${event} handler failed`, err); return undefined; }
+      try { return fn(...args); } catch (err) { console.error(`editlayer: ${event} handler failed`, err); return undefined; }
     });
   }
 
@@ -96,7 +96,7 @@
   const locked = (el) => Boolean(el.closest('[data-cms-lock]'));
 
   async function api(method, route, body) {
-    const opts = { method, credentials: 'same-origin', headers: { 'x-vibecms': '1' } };
+    const opts = { method, credentials: 'same-origin', headers: { 'x-editlayer': '1' } };
     if (body instanceof FormData) opts.body = body;
     else if (body !== undefined) { opts.headers['content-type'] = 'application/json'; opts.body = JSON.stringify(body); }
     const res = await fetch(`/_cms/api/${route}`, opts);
@@ -184,7 +184,7 @@
   function classify(node) {
     if (!node || node.nodeType !== 1 || !regionOf(node) || locked(node) || readOnly(regionOf(node))) return null;
     for (const c of classifiers) {
-      try { const t = c(node); if (t) return t; } catch (err) { console.error('vibecms: classifier failed', err); }
+      try { const t = c(node); if (t) return t; } catch (err) { console.error('editlayer: classifier failed', err); }
     }
     const img = node.closest('img, picture');
     if (img && regionOf(img)) return { type: 'image', el: img.tagName === 'PICTURE' ? img.querySelector('img') : img };
@@ -215,7 +215,7 @@
   const isRich = (el) => !RICH_NO.test(el.tagName) && !el.closest('a,button');
 
   /* ---------------------------------------------------------------- UI shell */
-  const host = d.createElement('vibecms-ui');
+  const host = d.createElement('editlayer-ui');
   host.style.cssText = 'all:initial;position:fixed;inset:0 auto auto 0;width:0;height:0;z-index:2147483647';
   const root = host.attachShadow({ mode: 'open' });
   root.innerHTML = `<style>${UI_CSS}</style><div class="root" style="--a:${esc(S.site.accent)};--on-a:${onAccent(S.site.accent)}">
@@ -274,12 +274,12 @@
   function regionHtml(region) {
     const c = stripJunk(region.cloneNode(true));
     c.querySelectorAll('[contenteditable],[spellcheck]').forEach((n) => { n.removeAttribute('contenteditable'); n.removeAttribute('spellcheck'); });
-    c.querySelectorAll('[data-vibecms-open]').forEach((n) => { n.removeAttribute('open'); n.removeAttribute('data-vibecms-open'); });
+    c.querySelectorAll('[data-editlayer-open]').forEach((n) => { n.removeAttribute('open'); n.removeAttribute('data-editlayer-open'); });
     return c.innerHTML;
   }
   /** Collapsed <details> (bios, FAQs) are opened while editing so their text can be reached. Saved closed. */
   function openDetails() {
-    d.querySelectorAll('[data-cms] details:not([open])').forEach((x) => { x.open = true; x.setAttribute('data-vibecms-open', ''); });
+    d.querySelectorAll('[data-cms] details:not([open])').forEach((x) => { x.open = true; x.setAttribute('data-editlayer-open', ''); });
   }
   openDetails();
   function pushUndo(region, html) {
@@ -970,7 +970,7 @@
       // Features can stop a publish (pre-publish checks) by resolving false.
       for (const fn of hooks['publish:before'] || []) {
         let ok = true;
-        try { ok = await fn({ all }); } catch (err) { console.error('vibecms: publish check failed', err); }
+        try { ok = await fn({ all }); } catch (err) { console.error('editlayer: publish check failed', err); }
         if (ok === false) return;
       }
     }
@@ -994,7 +994,7 @@
       for (const key of dirty) { const r = regionByKey(key); if (r) regions[key] = { html: regionHtml(r), base: r.getAttribute('data-cms-v') || null }; }
       if (metaDirty) regions['#meta'] = { meta: S.meta };
       for (const [k, v] of extras) regions[k] = v;
-      fetch('/_cms/api/draft', { method: 'PUT', keepalive: true, credentials: 'same-origin', headers: { 'x-vibecms': '1', 'content-type': 'application/json' }, body: JSON.stringify({ path: S.path, regions }) }).catch(() => {});
+      fetch('/_cms/api/draft', { method: 'PUT', keepalive: true, credentials: 'same-origin', headers: { 'x-editlayer': '1', 'content-type': 'application/json' }, body: JSON.stringify({ path: S.path, regions }) }).catch(() => {});
       e.preventDefault();
     }
   });
@@ -1235,15 +1235,15 @@
   /*__FEATURES__*/
 
   for (const [name, setup] of features) {
-    try { setup(core); } catch (err) { console.error(`vibecms: feature "${name}" failed to start`, err); }
+    try { setup(core); } catch (err) { console.error(`editlayer: feature "${name}" failed to start`, err); }
   }
   emit('ready');
 
   drawBar();
   queueDraw();
-  if (!sessionStorage.getItem('vibecms-hint')) {
+  if (!sessionStorage.getItem('editlayer-hint')) {
     toast('Click any text to change it. Click a picture to replace it.');
     hintShowing = true;
-    try { sessionStorage.setItem('vibecms-hint', '1'); } catch { /* private mode */ }
+    try { sessionStorage.setItem('editlayer-hint', '1'); } catch { /* private mode */ }
   }
 })();

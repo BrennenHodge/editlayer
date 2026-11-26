@@ -44,7 +44,7 @@ const p = [
  `<a href="data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==">x</a>`,
  `<img src="data:image/svg+xml,<svg onload='${X}'>">`,
  `<div style="background:url(javascript:${X})">x</div>`,
- `<p data-cms="@footer">x</p><div id="vibecms-state">y</div>`,
+ `<p data-cms="@footer">x</p><div id="editlayer-state">y</div>`,
  `<svg><foreignObject><img src=x onerror='${X}'></foreignObject></svg>`,
  `<!--<img src=x onerror='${X}'>-->`,
  `<!-- --!><img src=x onerror='${X}'> -->`,

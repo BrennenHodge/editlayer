@@ -134,9 +134,9 @@ export function createService({ repo, dataDir }) {
       if (!changes.size) return { sha: null, files: [], published: [], skipped };
       const first = published[0];
       const more = published.length > 1 ? ` and ${published.length - 1} more` : '';
-      const subject = `Content: "${first.new.slice(0, 50)}${first.new.length > 50 ? '…' : ''}"${more} (Vibe CMS, ${user.name})`;
+      const subject = `Content: "${first.new.slice(0, 50)}${first.new.length > 50 ? '…' : ''}"${more} (Editlayer, ${user.name})`;
       const body = published.map((d) => `- ${d.path}: "${d.old}" → "${d.new}"`).join('\n');
-      const sha = await repo.commit(changes, `${subject}\n\n${body}\n`, { name: 'Vibe CMS', email: 'cms@vibecms.local' });
+      const sha = await repo.commit(changes, `${subject}\n\n${body}\n`, { name: 'Editlayer', email: 'cms@editlayer.local' });
       const done = new Set(published.map((p) => p.id));
       drafts = drafts.filter((d) => !done.has(d.id));
       save();

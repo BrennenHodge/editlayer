@@ -1,16 +1,16 @@
-/* Vibe CMS, source mode (Phase 0). One script tag on any site:
+/* Editlayer, source mode (Phase 0). One script tag on any site:
  *   <script src="https://<service>/vibe.js" async></script>
  * Visitors: checks for a sign-in hand-off and stops. Editors: freezes the rendered page (so React/Vue stop
  * redrawing it), lets them click any text and type, and sends each change to the service, which finds the text in
  * the site's source code. Publish commits the changes; the site's own deploy puts them live.
  */
 (() => {
-  if (window.__vibecms) return;
-  window.__vibecms = true;
+  if (window.__editlayer) return;
+  window.__editlayer = true;
   const me = document.currentScript || [...document.scripts].find((s) => /\/vibe\.js(\?|$)/.test(s.src));
   if (!me) return;
   const API = new URL(me.src).origin;
-  const KEY = 'vibecms:' + API;
+  const KEY = 'editlayer:' + API;
 
   const store = {
     get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } },
@@ -40,7 +40,7 @@
       try {
         const { token, user } = await api('POST', 'handoff', { code: m[1] });
         store.set({ token, user, edit: true });
-      } catch (e) { alert('Vibe CMS: ' + e.message); return; }
+      } catch (e) { alert('Editlayer: ' + e.message); return; }
     }
     const st = store.get();
     if (!st.token) return;
@@ -59,7 +59,7 @@
   // ---------- UI shell (shadow root, so the site's CSS and ours never mix)
   let host, root;
   function shell() {
-    host = document.createElement('vibe-cms');
+    host = document.createElement('editlayer');
     host.style.cssText = 'all:initial;position:fixed;inset:0;pointer-events:none;z-index:2147483646';
     root = host.attachShadow({ mode: 'open' });
     root.innerHTML = `<style>${CSS}</style><div class="hover"></div><div class="focus"></div><div class="bar" part="bar"></div><div class="toasts"></div><div class="modal-wrap"></div>`;
@@ -160,7 +160,7 @@
     const w = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, {
       acceptNode: (n) => {
         const p = n.parentElement;
-        if (!p || /^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|SVG)$/i.test(p.tagName) || p.closest('svg, vibe-cms, [data-cms-lock]')) return NodeFilter.FILTER_REJECT;
+        if (!p || /^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|SVG)$/i.test(p.tagName) || p.closest('svg, editlayer, [data-cms-lock]')) return NodeFilter.FILTER_REJECT;
         return norm(n.data) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
       },
     });
@@ -172,7 +172,7 @@
   function editableFor(target) {
     let el = target instanceof Element ? target : target?.parentElement;
     while (el && el !== document.body) {
-      if (el.closest('vibe-cms, [data-cms-lock], svg')) return null;
+      if (el.closest('editlayer, [data-cms-lock], svg')) return null;
       if ([...el.childNodes].some((n) => n.nodeType === 3 && norm(n.data))) {
         // prefer the block that contains inline pieces (a <p> with a <strong> inside)
         const block = el.closest('p, h1, h2, h3, h4, h5, h6, li, blockquote, figcaption, td, th, dt, dd, label, button, a, summary, span, div');
@@ -330,7 +330,7 @@
       n ? `${n} unpublished change${n > 1 ? 's' : ''}` : dep.state === 'live' && dep.finishedAt ? `Live · ${sha}` : 'No changes';
     const opts = (pages || []).map((p) => `<option value="${esc(p)}"${p === location.pathname || p === location.pathname + '/' ? ' selected' : ''}>${esc(p)}</option>`).join('');
     bar.innerHTML = `
-      <span class="brand">Vibe CMS</span>
+      <span class="brand">Editlayer</span>
       ${pages && pages.length ? `<select data-a="page" aria-label="Page">${opts}</select>` : ''}
       <button data-a="changes" ${n ? '' : 'disabled'}>Changes</button>
       <span class="status ${esc(dep.state || '')}">${esc(status)}</span>

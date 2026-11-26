@@ -1,7 +1,7 @@
 {
-  "name": "vibecms-source-mode",
+  "name": "editlayer-source-mode",
   "version": "0.0.1",
-  "description": "Phase 0 of Vibe CMS on any site: click-to-edit changes are written back into the site's source code and committed, and the site's own deploy publishes them.",
+  "description": "Phase 0 of Editlayer on any site: click-to-edit changes are written back into the site's source code and committed, and the site's own deploy publishes them.",
   "type": "module",
   "private": true,
   "scripts": {

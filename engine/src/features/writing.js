@@ -138,7 +138,7 @@ async function rewrite(ctx) {
       temperature: mode === 'fix' ? 0.2 : body.again ? 0.8 : 0.5,
     });
   } catch (err) {
-    console.error('vibecms writing: AI call failed', err && err.stack || err);
+    console.error('editlayer writing: AI call failed', err && err.stack || err);
     throw fail('Writing help isn’t available right now. Try again in a minute.', 502);
   }
   const out = tidy(replyText(result), text);

@@ -1,6 +1,6 @@
 // Menu editor, Worker side: keeps aria-current="page" right in site-wide menus.
 //
-// `vibecms annotate` records, on a site-wide region whose pages differ only by which menu link is
+// `editlayer annotate` records, on a site-wide region whose pages differ only by which menu link is
 // marked current, the current link(s) of each page: <header data-cms="@header" data-cms-current="/services/">.
 // The header an editor saved was edited on one page and may carry that page's aria-current, so
 // whenever a page is rendered (visitors, previews and edit mode) this sets aria-current="page" on the

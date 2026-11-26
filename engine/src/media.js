@@ -45,7 +45,7 @@ export async function list(env, origin) {
   const { results } = await env.CMS_DB.prepare('SELECT file, name, width, height, alt FROM cms_media ORDER BY created_at DESC LIMIT 500').all();
   let site = [];
   try {
-    const res = await env.ASSETS.fetch(new Request(`${origin}/vibecms-images.json`));
+    const res = await env.ASSETS.fetch(new Request(`${origin}/editlayer-images.json`));
     if (res.ok) site = await res.json();
   } catch { /* no manifest: only uploads are listed */ }
   return json({

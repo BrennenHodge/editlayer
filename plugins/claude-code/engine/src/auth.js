@@ -1,6 +1,6 @@
 import { b64url, fromB64url, randomToken, sha256Hex } from './util.js';
 
-export const COOKIE = 'vibecms_session';
+export const COOKIE = 'editlayer_session';
 const SESSION_MS = 30 * 24 * 3600 * 1000;
 const ITERATIONS = 100000; // Workers' PBKDF2 maximum
 const MAX_FAILED = 8;

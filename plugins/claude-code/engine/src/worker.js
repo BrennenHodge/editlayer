@@ -1,6 +1,6 @@
-// Vibe CMS: click-to-edit CMS for static sites on Cloudflare Workers.
+// Editlayer: click-to-edit layer for static sites on Cloudflare Workers.
 //
-//   import { createCms } from '<path>/vibecms/src/worker.js';
+//   import { createCms } from '<path>/editlayer/src/worker.js';
 //   export default createCms({ siteName: 'Example Co', accent: '#eac44f' });
 //
 // Bindings expected in wrangler.jsonc: ASSETS (static assets), CMS_DB (D1), CMS_MEDIA (R2).
@@ -32,7 +32,7 @@ export function createCms(options = {}) {
         if (!type.includes('text/html') || !['GET', 'HEAD'].includes(request.method)) return res;
         return await renderPage(request, env, res, url, opts);
       } catch (err) {
-        console.error('vibecms error', err && err.stack || err);
+        console.error('editlayer error', err && err.stack || err);
         if (url.pathname.startsWith('/_cms/api/')) return json({ error: 'Something went wrong. Try again.' }, 500);
         // Never take the public site down because of the CMS: fall back to the static page.
         if (!url.pathname.startsWith('/_cms')) return env.ASSETS.fetch(request);
@@ -42,7 +42,7 @@ export function createCms(options = {}) {
     async scheduled(event, env, ctx) {
       for (const f of FEATURES) {
         if (!f.scheduled) continue;
-        try { await f.scheduled({ event, env, opts, waitUntil: (p) => ctx.waitUntil(p) }); } catch (err) { console.error(`vibecms: ${f.name} scheduled job failed`, err && err.stack || err); }
+        try { await f.scheduled({ event, env, opts, waitUntil: (p) => ctx.waitUntil(p) }); } catch (err) { console.error(`editlayer: ${f.name} scheduled job failed`, err && err.stack || err); }
       }
     },
   };
@@ -135,7 +135,7 @@ async function cmsRoute(request, env, url, opts, ectx) {
         subject: `Sign in to edit ${opts.siteName}`,
         lines: [`Here’s your link to sign in and edit ${opts.siteName}. It works once, for the next 15 minutes.`, 'If you didn’t ask for it, you can ignore this email: nobody can sign in without the link.'],
         action: { text: 'Sign in', href },
-      }).catch((err) => console.error('vibecms: sign-in email failed', err && err.message));
+      }).catch((err) => console.error('editlayer: sign-in email failed', err && err.message));
       if (ectx && ectx.waitUntil) ectx.waitUntil(send); else await send;
     }
     // Same answer whether or not the address has an account.
@@ -259,7 +259,7 @@ async function api(request, env, url, route, opts) {
   const method = request.method;
   if (method !== 'GET') {
     // Cross-site requests can't send this header without a CORS preflight, which we never allow.
-    if (request.headers.get('x-vibecms') !== '1' || !sameOrigin(request, url)) return json({ error: 'Forbidden' }, 403);
+    if (request.headers.get('x-editlayer') !== '1' || !sameOrigin(request, url)) return json({ error: 'Forbidden' }, 403);
   }
 
   // Feature API routes first, so a feature can extend the CMS without touching this file.
@@ -392,7 +392,7 @@ async function listPages(env, url, opts, user) {
   // Features can add pages that aren't in the sitemap yet (unpublished CMS-made pages).
   for (const f of FEATURES) {
     if (!f.pages) continue;
-    try { paths.push(...(await f.pages({ env, url, opts, user }))); } catch (err) { console.error(`vibecms: ${f.name} pages failed`, err); }
+    try { paths.push(...(await f.pages({ env, url, opts, user }))); } catch (err) { console.error(`editlayer: ${f.name} pages failed`, err); }
   }
   if (!paths.includes('/')) paths.unshift('/');
   const drafts = new Set(await draftPaths(env));

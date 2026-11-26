@@ -1,8 +1,8 @@
-// End-to-end test of the Vibe CMS connector against a local Vibe CMS site. Never point it at live services.
+// End-to-end test of the Editlayer connector against a local Editlayer site. Never point it at live services.
 //
-//   1. A throwaway Vibe CMS site on http://127.0.0.1:8797 (login: 'password'), with migrations applied.
+//   1. A throwaway Editlayer site on http://127.0.0.1:8797 (login: 'password'), with migrations applied.
 //   2. The hub on http://127.0.0.1:8798 with .dev.vars: HUB_KEY=<32 bytes base64>, ALLOW_HTTP_SITES=1.
-//   3. An admin on the site:  node <site>/_vibecms/cli/vibecms.mjs user add hubtest@example.test --admin --local
+//   3. An admin on the site:  node <site>/_editlayer/cli/editlayer.mjs user add hubtest@example.test --admin --local
 //      then:  HUB=http://127.0.0.1:8798 SITE=http://127.0.0.1:8797 INVITE=<invite url> node hub/test/e2e.mjs
 //
 // Walks the whole flow an assistant uses (register, authorize, approve on the site, token, MCP calls, refresh,
@@ -43,7 +43,7 @@ const siteJar = new Jar();
 if (!INVITE) throw new Error('Set INVITE to a fresh admin invite URL from the site.');
 const inv = new URL(INVITE);
 const r0 = await go(siteJar, `${SITE}${inv.pathname}`, { method: 'POST', headers: { ...FORM, origin: SITE }, body: form({ password: 'hub-e2e-password-123', password2: 'hub-e2e-password-123' }) });
-ok(r0.status === 303 && siteJar.header().includes('vibecms'), 'site admin session', `status ${r0.status}`);
+ok(r0.status === 303 && siteJar.header().includes('editlayer'), 'site admin session', `status ${r0.status}`);
 
 // Discovery.
 const unauth = await mcp(null, 'initialize', { protocolVersion: '2025-11-25' });
@@ -72,7 +72,7 @@ const plain = await fetch(`${HUB}/authorize?${form({ response_type: 'code', clie
 ok(plain.status === 303 && /error=invalid_request/.test(plain.headers.get('location')) && /iss=/.test(plain.headers.get('location')), 'authorize without PKCE is refused, with iss');
 
 const notVibe = await go(hubJar, `${HUB}/authorize/site`, { method: 'POST', headers: { ...FORM, origin: HUB }, body: form({ rid, site: 'http://127.0.0.1:9' }) });
-ok(notVibe.status === 200 && /couldn’t find Vibe CMS/.test(await notVibe.text()), 'a non-Vibe CMS address is explained');
+ok(notVibe.status === 200 && /couldn’t find Editlayer/.test(await notVibe.text()), 'a non-Editlayer address is explained');
 const stranger = await fetch(`${HUB}/authorize/site`, { method: 'POST', redirect: 'manual', headers: { ...FORM, origin: HUB }, body: form({ rid, site: SITE }) });
 ok(/expired/.test(await stranger.text()), 'another browser (no cookie) cannot continue the sign-in');
 

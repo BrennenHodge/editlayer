@@ -1,6 +1,6 @@
 // Runs the finder on every text of a built site, the way the editor would call it (text plus its section's
 // other texts as neighbours), and reports how often it finds one place, has to ask, or finds nothing.
-//   node test/eval-site.mjs <built html dir> <repo dir> [--branch vibecms-test]
+//   node test/eval-site.mjs <built html dir> <repo dir> [--branch editlayer-test]
 import fs from 'node:fs';
 import path from 'node:path';
 import { parseHTML } from 'linkedom';
@@ -8,7 +8,7 @@ import { localRepo } from '../src/repo-local.js';
 import { locate } from '../src/find.js';
 
 const [, , htmlDir, repoDir] = process.argv;
-const branch = process.argv.includes('--branch') ? process.argv[process.argv.indexOf('--branch') + 1] : 'vibecms-test';
+const branch = process.argv.includes('--branch') ? process.argv[process.argv.indexOf('--branch') + 1] : 'editlayer-test';
 const files = localRepo(path.resolve(repoDir), { branch }).readAll();
 const norm = (s) => String(s || '').replace(/[\s ​]+/g, ' ').trim();
 

@@ -1,13 +1,13 @@
-// Vibe CMS marketing site, edited with Vibe CMS. Engine: ./_vibecms (refresh: node ../engine/cli/vibecms.mjs update)
-import { createCms } from './_vibecms/src/worker.js';
+// Editlayer marketing site, edited with Editlayer. Engine: ./_editlayer (refresh: node ../engine/cli/editlayer.mjs update)
+import { createCms } from './_editlayer/src/worker.js';
 
-export default createCms({
-  siteName: 'Vibe CMS',
+const cms = createCms({
+  siteName: 'Editlayer',
   accent: '#6a4cff',
   // Editors sign in with an emailed link (no passwords). Sent through Resend from the verified
   // mail.dbvantage.com domain; needs the RESEND_API_KEY secret.
   login: 'link',
-  email: { from: 'Vibe CMS <signin@mail.dbvantage.com>', siteUrl: 'https://cms.dbvantage.com' },
+  email: { from: 'Editlayer <signin@mail.dbvantage.com>', siteUrl: 'https://editlayer.co' },
   // Section backgrounds editors can pick: the site's own classes.
   sections: {
     backgrounds: [
@@ -48,9 +48,25 @@ export default createCms({
       { name: 'JetBrains Mono', category: 'mono', min: 100, max: 800 },
     ],
   },
-  // The early-access and support forms send to the Vibe CMS inbox. Messages are deleted after 12 months,
+  // The early-access and support forms send to the Editlayer inbox. Messages are deleted after 12 months,
   // as the privacy policy (/privacy/) promises.
   forms: { keepDays: 365 },
-  // The hosted ChatGPT/Claude connector on its temporary test address, until the product domain is chosen.
-  connect: { hubs: ['https://vibecms-hub.brennen-d06.workers.dev'] },
 });
+
+// One address for the site: the old cms.dbvantage.com address and www both move to https://editlayer.co.
+const CANONICAL = 'editlayer.co';
+const OLD_HOSTS = new Set(['www.editlayer.co', 'cms.dbvantage.com']);
+
+export default {
+  ...cms,
+  fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    if (OLD_HOSTS.has(url.hostname)) {
+      url.hostname = CANONICAL;
+      url.protocol = 'https:';
+      url.port = '';
+      return Response.redirect(url.toString(), 301);
+    }
+    return cms.fetch(request, env, ctx);
+  },
+};

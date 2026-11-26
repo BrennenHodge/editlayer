@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "vibecms-site",
+      "name": "editlayer-site",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--yes", "wrangler", "dev", "--port", "8793", "--cwd", "site"],
       "port": 8793

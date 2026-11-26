@@ -46,10 +46,10 @@ export async function sendEmail({ env, notify, to, form, pairs, page, origin, si
       headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (!res.ok) console.error('vibecms forms: email failed', res.status);
+    if (!res.ok) console.error('editlayer forms: email failed', res.status);
     return { sent: res.ok };
   } catch (err) {
-    console.error('vibecms forms: email failed', err && err.message);
+    console.error('editlayer forms: email failed', err && err.message);
     return { error: true };
   }
 }
@@ -83,10 +83,10 @@ export async function sendToSalesforce({ sf, form, pairs, fetchImpl = fetch }) {
       body: body.toString(),
       redirect: 'manual',
     });
-    if (res.status >= 400) console.error('vibecms forms: Salesforce failed', res.status);
+    if (res.status >= 400) console.error('editlayer forms: Salesforce failed', res.status);
     return { sent: res.status < 400 };
   } catch (err) {
-    console.error('vibecms forms: Salesforce failed', err && err.message);
+    console.error('editlayer forms: Salesforce failed', err && err.message);
     return { error: true };
   }
 }

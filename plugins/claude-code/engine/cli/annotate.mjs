@@ -119,8 +119,8 @@ function walk(dir, exclude, files = []) {
   return files;
 }
 
-/** Annotates every HTML file under dir and writes vibecms-images.json (the site's images, for the picker). */
-export function annotateDir(dir, { exclude = ['src', '_vibecms', 'engine'] } = {}) {
+/** Annotates every HTML file under dir and writes editlayer-images.json (the site's images, for the picker). */
+export function annotateDir(dir, { exclude = ['src', '_editlayer', 'engine'] } = {}) {
   const files = walk(dir, exclude);
   const htmlFiles = files.filter((x) => x.endsWith('.html'));
   // Site-wide regions are stored once for every page, so they must be identical on every page
@@ -148,6 +148,6 @@ export function annotateDir(dir, { exclude = ['src', '_vibecms', 'engine'] } = {
     .filter((u) => IMAGE_EXT.test(u) && !SKIP_IMAGE.test(u))
     .sort()
     .map((url) => ({ url, name: url.split('/').pop() }));
-  writeFileSync(join(dir, 'vibecms-images.json'), JSON.stringify(images, null, 0));
+  writeFileSync(join(dir, 'editlayer-images.json'), JSON.stringify(images, null, 0));
   return { pages, images: images.length, skipped: [...skip] };
 }

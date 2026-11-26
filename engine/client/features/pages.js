@@ -255,7 +255,7 @@ feature('pages', (core) => {
         }
         core.finishEdit();
         await core.save();
-        try { sessionStorage.setItem('vibecms-new-page', r.path); } catch { /* private mode */ }
+        try { sessionStorage.setItem('editlayer-new-page', r.path); } catch { /* private mode */ }
         location.href = `${r.path}?edit`;
       } catch (err) {
         submit.disabled = false;
@@ -292,7 +292,7 @@ feature('pages', (core) => {
         core.finishEdit();
         await core.save();
         m.close();
-        try { sessionStorage.setItem('vibecms-deleted-page', me.title); if (removed) sessionStorage.setItem('vibecms-deleted-menu', '1'); } catch { /* private mode */ }
+        try { sessionStorage.setItem('editlayer-deleted-page', me.title); if (removed) sessionStorage.setItem('editlayer-deleted-menu', '1'); } catch { /* private mode */ }
         location.href = '/?edit';
       } catch (err) { e.target.disabled = false; toast(`Couldn’t delete the page: ${err.message}`, true); }
     });
@@ -300,17 +300,17 @@ feature('pages', (core) => {
 
   core.on('ready', () => {
     try {
-      const made = sessionStorage.getItem('vibecms-new-page');
-      const gone = sessionStorage.getItem('vibecms-deleted-page');
-      if (made === S.path) { sessionStorage.removeItem('vibecms-new-page'); sessionStorage.setItem('vibecms-hint', '1'); setTimeout(() => toast('Page created as a draft. Click any text to change it, then publish when it’s ready.'), 300); }
+      const made = sessionStorage.getItem('editlayer-new-page');
+      const gone = sessionStorage.getItem('editlayer-deleted-page');
+      if (made === S.path) { sessionStorage.removeItem('editlayer-new-page'); sessionStorage.setItem('editlayer-hint', '1'); setTimeout(() => toast('Page created as a draft. Click any text to change it, then publish when it’s ready.'), 300); }
       else if (gone) {
-        const menu = sessionStorage.getItem('vibecms-deleted-menu');
-        sessionStorage.removeItem('vibecms-deleted-page');
-        sessionStorage.removeItem('vibecms-deleted-menu');
+        const menu = sessionStorage.getItem('editlayer-deleted-menu');
+        sessionStorage.removeItem('editlayer-deleted-page');
+        sessionStorage.removeItem('editlayer-deleted-menu');
         setTimeout(() => toast(`“${gone}” was deleted.${menu ? ' Its menu links were taken out too: publish to update the menu for visitors.' : ''}`), 300);
       }
-      else if (me && !me.live && !sessionStorage.getItem(`vibecms-unpub:${S.path}`)) {
-        sessionStorage.setItem(`vibecms-unpub:${S.path}`, '1');
+      else if (me && !me.live && !sessionStorage.getItem(`editlayer-unpub:${S.path}`)) {
+        sessionStorage.setItem(`editlayer-unpub:${S.path}`, '1');
         setTimeout(() => toast('This page isn’t published yet. Visitors can’t find it until you publish it.'), 300);
       }
     } catch { /* private mode */ }
@@ -324,7 +324,7 @@ feature('pages', (core) => {
   };
   let pv = null;
   let size = 'phone';
-  try { size = SIZES[sessionStorage.getItem('vibecms-preview-size')] ? sessionStorage.getItem('vibecms-preview-size') : 'phone'; } catch { /* private mode */ }
+  try { size = SIZES[sessionStorage.getItem('editlayer-preview-size')] ? sessionStorage.getItem('editlayer-preview-size') : 'phone'; } catch { /* private mode */ }
 
   core.addBarButton({ id: 'preview', icon: 'devices', title: 'Preview on phone, tablet and computer', order: 40, run: openPreview });
 
@@ -371,7 +371,7 @@ feature('pages', (core) => {
     };
     const setSize = (k, focus) => {
       size = k;
-      try { sessionStorage.setItem('vibecms-preview-size', k); } catch { /* private mode */ }
+      try { sessionStorage.setItem('editlayer-preview-size', k); } catch { /* private mode */ }
       el.querySelectorAll('[data-size]').forEach((b) => { const on = b.dataset.size === k; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
       layout();
     };

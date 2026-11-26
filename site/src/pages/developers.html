@@ -1,5 +1,5 @@
-<!-- title: For developers: add Vibe CMS to a site with Claude Code -->
-<!-- desc: Install the Vibe CMS plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates. -->
+<!-- title: For developers: add Editlayer to a site with Claude Code -->
+<!-- desc: Install the Editlayer plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates. -->
 <!-- path: /developers/ -->
 <!-- nav: developers -->
 <main id="main">
@@ -7,7 +7,7 @@
   <div class="wrap">
     <p class="eyebrow">For developers</p>
     <h1 class="h1">Make any static site editable in one&nbsp;step.</h1>
-    <p class="lede">Vibe CMS is a Claude Code plugin and a small Cloudflare Worker. You keep building the way you do; your client gets a visual editor on the live site.</p>
+    <p class="lede">Editlayer is a Claude Code plugin and a small Cloudflare Worker. You keep building the way you do; your client gets a visual editor on the live site.</p>
     <ul class="chips"><li>Claude Code plugin</li><li>Cloudflare Workers, D1, R2</li><li>No framework, no build lock-in</li></ul>
   </div>
 </section>
@@ -17,20 +17,20 @@
     <div>
       <p class="eyebrow">Install</p>
       <h2 class="h2">From Claude&nbsp;Code</h2>
-      <p class="lede">Add the marketplace, install the plugin, then ask in&nbsp;plain words. The <code class="inline">vibe-cms</code> skill checks the site, sets everything up and hands you the owner’s invite link.</p>
+      <p class="lede">Add the marketplace, install the plugin, then ask in&nbsp;plain words. The <code class="inline">editlayer</code> skill checks the site, sets everything up and hands you the owner’s invite link.</p>
       <ul class="ticks">
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Needs Node 20+, a Cloudflare account and <code class="inline">npx wrangler login</code></li>
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Skills: <code class="inline">vibe-cms</code>, <code class="inline">invite-editor</code>, <code class="inline">connect-ai</code>, <code class="inline">cms-status</code></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Skills: <code class="inline">editlayer</code>, <code class="inline">invite-editor</code>, <code class="inline">connect-ai</code>, <code class="inline">cms-status</code></li>
       </ul>
     </div>
     <div>
       <p class="code-label">Claude Code</p>
-<pre class="code"><span class="p">&gt; </span>/plugin marketplace add BrennenHodge/vibe-cms
-<span class="p">&gt; </span>/plugin install vibe-cms@vibe-cms
-<span class="p">&gt; </span>/vibe-cms:vibe-cms</pre>
+<pre class="code"><span class="p">&gt; </span>/plugin marketplace add BrennenHodge/editlayer
+<span class="p">&gt; </span>/plugin install editlayer@editlayer
+<span class="p">&gt; </span>/editlayer:editlayer</pre>
       <p class="code-label">Or from a terminal</p>
-<pre class="code"><span class="p">$ </span>claude plugin marketplace add BrennenHodge/vibe-cms
-<span class="p">$ </span>claude plugin install vibe-cms@vibe-cms</pre>
+<pre class="code"><span class="p">$ </span>claude plugin marketplace add BrennenHodge/editlayer
+<span class="p">$ </span>claude plugin install editlayer@editlayer</pre>
     </div>
   </div>
 </section>
@@ -39,11 +39,11 @@
   <div class="wrap">
     <div class="head"><p class="eyebrow">How it works</p><h2 class="h2">A Worker in front of your static&nbsp;files</h2></div>
     <div class="grid grid--2">
-      <article class="card"><h3 class="h3">Regions</h3><p>After each build, <code class="inline">vibecms annotate</code> marks every page’s <code class="inline">&lt;main&gt;</code> as editable, plus the header and footer when they’re the same on every page. Each region carries a hash of your version.</p></article>
+      <article class="card"><h3 class="h3">Regions</h3><p>After each build, <code class="inline">editlayer annotate</code> marks every page’s <code class="inline">&lt;main&gt;</code> as editable, plus the header and footer when they’re the same on every page. Each region carries a hash of your version.</p></article>
       <article class="card"><h3 class="h3">Storage</h3><p>Edited regions are stored whole, as sanitized HTML, in D1, with draft and live copies and a full publish history. Images go to R2 and are served from <code class="inline">/_cms/media/</code>.</p></article>
-      <article class="card"><h3 class="h3">Serving</h3><p>The Worker fetches the static page and swaps in edited regions with HTMLRewriter as it streams. Untouched pages pass through. If the CMS errors, the static page is served.</p></article>
+      <article class="card"><h3 class="h3">Serving</h3><p>The Worker fetches the static page and swaps in edited regions with HTMLRewriter as it streams. Untouched pages pass through. If Editlayer errors, the static page is served.</p></article>
       <article class="card"><h3 class="h3">Edit mode</h3><p>Signed-in editors add <code class="inline">?edit</code>. Drafts are applied, your scripts are paused so menus don’t fight the editor, and the editor loads in a shadow root so your CSS and its CSS never mix.</p></article>
-      <article class="card"><h3 class="h3">Your rebuilds</h3><p>If you rebuild a region an editor also changed, their version keeps showing and they get a banner: keep theirs, or use yours. <code class="inline">vibecms status</code> lists every edited region.</p></article>
+      <article class="card"><h3 class="h3">Your rebuilds</h3><p>If you rebuild a region an editor also changed, their version keeps showing and they get a banner: keep theirs, or use yours. <code class="inline">editlayer status</code> lists every edited region.</p></article>
       <article class="card"><h3 class="h3">Security</h3><p>PBKDF2 passwords, HttpOnly 30-day sessions, lockout after 8 failed sign-ins, a custom header plus same-origin check on every write, and sanitized HTML.</p></article>
     </div>
   </div>
@@ -63,12 +63,12 @@
     <table class="cmds">
       <thead><tr><th>Command</th><th>Does</th></tr></thead>
       <tbody>
-        <tr><td><code>vibecms init</code></td><td>Creates the D1 database and R2 bucket, copies the engine into <code>_vibecms/</code>, writes <code>cms.worker.js</code>, updates <code>wrangler.jsonc</code>, applies migrations and marks the pages.</td></tr>
-        <tr><td><code>vibecms annotate [dir]</code></td><td>Marks editable regions in built HTML. Add it to the end of your build.</td></tr>
-        <tr><td><code>vibecms user add &lt;email&gt;</code></td><td>Creates an editor (<code>--admin</code> for admins) and prints a one-time invite link, valid 7 days.</td></tr>
-        <tr><td><code>vibecms connect &lt;name&gt;</code></td><td>Creates an AI connection and prints its MCP address. <code>--publish</code> lets it publish.</td></tr>
-        <tr><td><code>vibecms status</code></td><td>Every edited region, draft or live, and which ones you have since rebuilt.</td></tr>
-        <tr><td><code>vibecms update</code></td><td>Copies the plugin’s newer engine into the site and applies new migrations.</td></tr>
+        <tr><td><code>editlayer init</code></td><td>Creates the D1 database and R2 bucket, copies the engine into <code>_editlayer/</code>, writes <code>cms.worker.js</code>, updates <code>wrangler.jsonc</code>, applies migrations and marks the pages.</td></tr>
+        <tr><td><code>editlayer annotate [dir]</code></td><td>Marks editable regions in built HTML. Add it to the end of your build.</td></tr>
+        <tr><td><code>editlayer user add &lt;email&gt;</code></td><td>Creates an editor (<code>--admin</code> for admins) and prints a one-time invite link, valid 7 days.</td></tr>
+        <tr><td><code>editlayer connect &lt;name&gt;</code></td><td>Creates an AI connection and prints its MCP address. <code>--publish</code> lets it publish.</td></tr>
+        <tr><td><code>editlayer status</code></td><td>Every edited region, draft or live, and which ones you have since rebuilt.</td></tr>
+        <tr><td><code>editlayer update</code></td><td>Copies the plugin’s newer engine into the site and applies new migrations.</td></tr>
       </tbody>
     </table>
     </div>

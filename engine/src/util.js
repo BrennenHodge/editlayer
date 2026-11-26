@@ -54,8 +54,8 @@ export function safeNext(next, fallback = '/?edit') {
   // No control characters or backslashes anywhere (browsers drop tabs/newlines, turning "/<tab>/x" into "//x").
   for (const ch of next) { const c = ch.charCodeAt(0); if (c < 32 || c === 127 || c === 92) return fallback; }
   try {
-    const u = new URL(next, 'https://vibecms.invalid');
-    if (u.origin !== 'https://vibecms.invalid') return fallback;
+    const u = new URL(next, 'https://editlayer.invalid');
+    if (u.origin !== 'https://editlayer.invalid') return fallback;
     return u.pathname + u.search + u.hash;
   } catch { return fallback; }
 }

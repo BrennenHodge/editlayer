@@ -1,6 +1,6 @@
-# Vibe CMS connector (hub)
+# Editlayer connector (hub)
 
-One public MCP server with OAuth sign-in, so ChatGPT, Claude and other assistants can list a single "Vibe CMS"
+One public MCP server with OAuth sign-in, so ChatGPT, Claude and other assistants can list a single "Editlayer"
 app while every website keeps its own data. A Cloudflare Worker with a D1 database.
 
 How a person connects:
@@ -25,21 +25,22 @@ The tools are the site's own (`engine/src/features/mcp/tools.js`), each with an 
 cd hub
 # .dev.vars (gitignored):  HUB_KEY=<32 random bytes, base64>  ALLOW_HTTP_SITES=1
 npx wrangler d1 migrations apply vibecms-hub --local
-npx wrangler dev --port 8798 --ip 127.0.0.1
+npx wrangler dev --port 8798 --ip 127.0.0.1 --local-upstream 127.0.0.1:8798   # else it answers as mcp.editlayer.co
 ```
 
-A local Vibe CMS site on `http://127.0.0.1:<port>` accepts a connector on localhost automatically. End-to-end
+A local Editlayer site on `http://127.0.0.1:<port>` accepts a connector on localhost automatically. End-to-end
 test (35 checks, including the attacks the design blocks): see the header of `test/e2e.mjs`.
 
-## Deploy (once the domain is chosen)
+## Production
 
-1. `npx wrangler d1 create vibecms-hub`, put the id in `wrangler.jsonc`, add the route
-   `{ "pattern": "mcp.<domain>", "custom_domain": true }`.
-2. `npx wrangler secret put HUB_KEY` (32 random bytes, base64). Never reuse the local one.
-3. `npx wrangler d1 migrations apply vibecms-hub --remote`, then `npx wrangler deploy`.
-4. Add `https://mcp.<domain>` to `OFFICIAL_HUBS` in `engine/src/features/connect.js`, sync the plugin and
-   update sites, so they accept the connector.
-5. For ChatGPT's domain check: `npx wrangler secret put OPENAI_APPS_CHALLENGE` with the token OpenAI shows.
+Live at `https://mcp.editlayer.co` (Worker `vibecms-hub`, D1 `vibecms-hub`, custom domain on the editlayer.co zone;
+the workers.dev address is off so there is one public origin). `https://mcp.editlayer.co` is in `OFFICIAL_HUBS` in
+`engine/src/features/connect.js`, so every Editlayer site accepts it.
+
+- Deploy: `npx wrangler d1 migrations apply vibecms-hub --remote`, then `npx wrangler deploy`.
+- `HUB_KEY` is set as a secret (32 random bytes, base64). Never reuse the local one, and never rotate it without a
+  plan: it decrypts every stored site key, so a new one disconnects every site.
+- For ChatGPT's domain check: `npx wrangler secret put OPENAI_APPS_CHALLENGE` with the token OpenAI shows.
 
 ## Endpoints
 

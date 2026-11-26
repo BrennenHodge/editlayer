@@ -5,7 +5,7 @@
 //   POST /_cms/mcp                  key in "Authorization: Bearer <key>"
 //
 // Stateless Streamable HTTP: every POST carries one JSON-RPC message (or a batch) and gets JSON back.
-// Keys are made by admins in the Editors panel ("AI assistants") or with `vibecms connect <name>`.
+// Keys are made by admins in the Editors panel ("AI assistants") or with `editlayer connect <name>`.
 // What an assistant changes is saved as a draft, exactly like an editor's change: people see it in the
 // editor, and nothing goes live until someone publishes (or the key has the editor role and the
 // assistant is asked to publish).
@@ -43,7 +43,7 @@ const CORS = {
 async function tokenUser(env, key) {
   if (!key || key.length < 20 || key.length > 200) return null;
   // A key made in the editor works only while the admin who made it is still an admin: removing a person
-  // (or taking away their admin role) also turns off every key they made. Keys from `vibecms connect`
+  // (or taking away their admin role) also turns off every key they made. Keys from `editlayer connect`
   // (created_by 'cli') come from someone with access to the database itself.
   const row = await env.CMS_DB.prepare(
     `SELECT t.id, t.name, t.role, t.created_by FROM cms_ai_tokens t
@@ -149,7 +149,7 @@ async function saveRegion(ctx, path, region, html) {
   // `region.html` is what the region holds now: embeds and form targets already in it may stay.
   await saveDrafts(ctx.env, path, { [region.key]: { html, base: region.base } }, ctx.user, {},
     { previous: async () => region.html, embedHosts: ctx.opts.embeds, removed });
-  if (removed.length) console.log(`vibecms mcp: ${ctx.user.name} on ${path} ${region.key}: removed ${removed.join('; ')}`);
+  if (removed.length) console.log(`editlayer mcp: ${ctx.user.name} on ${path} ${region.key}: removed ${removed.join('; ')}`);
   return removed;
 }
 
@@ -283,8 +283,8 @@ async function handleMessage(ctx, msg) {
         result: {
           protocolVersion: PROTOCOLS.includes(asked) ? asked : PROTOCOLS[0],
           capabilities: { tools: { listChanged: false } },
-          serverInfo: { name: 'vibecms', title: `Vibe CMS: ${ctx.opts.siteName}`, version: '0.2.0' },
-          instructions: `You are connected to the website "${ctx.opts.siteName}" (${ctx.url.origin}) through Vibe CMS. `
+          serverInfo: { name: 'editlayer', title: `Editlayer: ${ctx.opts.siteName}`, version: '0.2.0' },
+          instructions: `You are connected to the website "${ctx.opts.siteName}" (${ctx.url.origin}) through Editlayer. `
             + 'Call list_pages, then get_page before editing. Prefer replace_text for small changes; keep the site\'s existing HTML structure and classes. '
             + 'Every change is a draft until published; tell the person, link the review address, and ask before calling publish. '
             + UNTRUSTED,
@@ -302,7 +302,7 @@ async function handleMessage(ctx, msg) {
         const data = await run(ctx, args);
         return { jsonrpc: '2.0', id, result: { content: [{ type: 'text', text: JSON.stringify(data, null, 2) }], structuredContent: data } };
       } catch (e) {
-        if (!e || !e.status) console.error('vibecms mcp tool failed', e && e.stack || e);
+        if (!e || !e.status) console.error('editlayer mcp tool failed', e && e.stack || e);
         return { jsonrpc: '2.0', id, result: { content: [{ type: 'text', text: e && e.status ? e.message : 'Something went wrong on the website. Try again.' }], isError: true } };
       }
     }
@@ -320,11 +320,11 @@ async function mcpRoute(rctx) {
   const user = await tokenUser(env, key);
   if (!user) {
     return json({ jsonrpc: '2.0', id: null, error: { code: -32001, message: 'This AI connection key is missing or was turned off. An admin can make a new one in the editor: Editors > AI assistants.' } }, 401,
-      { ...CORS, 'www-authenticate': 'Bearer realm="vibecms"' });
+      { ...CORS, 'www-authenticate': 'Bearer realm="editlayer"' });
   }
   if (request.method === 'GET') {
     // No server-to-client stream: this server only answers requests.
-    return new Response('This is a Vibe CMS MCP endpoint. Add its URL to ChatGPT, Claude or another MCP client.', { status: 405, headers: { ...CORS, allow: 'POST, OPTIONS', 'content-type': 'text/plain; charset=utf-8' } });
+    return new Response('This is an Editlayer MCP endpoint. Add its URL to ChatGPT, Claude or another MCP client.', { status: 405, headers: { ...CORS, allow: 'POST, OPTIONS', 'content-type': 'text/plain; charset=utf-8' } });
   }
   if (request.method !== 'POST') return new Response(null, { status: 405, headers: CORS });
   let body;

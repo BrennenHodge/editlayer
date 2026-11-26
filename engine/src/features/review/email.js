@@ -53,5 +53,5 @@ ${action ? `<p style="margin:22px 0 6px"><a href="${escapeHtml(action.href)}" st
 /** Sends to several people, one email each; failures are logged, never thrown. */
 export async function sendEach(env, opts, recipients, build) {
   const results = await Promise.allSettled(recipients.slice(0, 20).map((r) => sendEmail(env, opts, build(r))));
-  for (const r of results) if (r.status === 'rejected') console.error('vibecms review: email failed', r.reason && r.reason.message);
+  for (const r of results) if (r.status === 'rejected') console.error('editlayer review: email failed', r.reason && r.reason.message);
 }

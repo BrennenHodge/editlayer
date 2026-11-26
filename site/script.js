@@ -10,7 +10,7 @@
     try { localStorage.setItem('theme', next); } catch (e) { /* private mode */ }
   }));
 
-  /* Menu: the header's links (so a menu edited in Vibe CMS shows here too), in a full-screen sheet. */
+  /* Menu: the header's links (so a menu edited in Editlayer shows here too), in a full-screen sheet. */
   const menu = d.getElementById('menu');
   const toggle = d.querySelector('.menu-toggle');
   const headNav = d.querySelector('.site-head .nav');
@@ -90,7 +90,7 @@
   /* Wide tables: hide the swipe hint after the first swipe. */
   d.querySelectorAll('.scroller').forEach((s) => s.addEventListener('scroll', () => { const h = s.previousElementSibling; if (h && h.classList.contains('swipe-hint')) h.hidden = true; }, { once: true, passive: true }));
 
-  /* Forms that post to the Vibe CMS inbox: send without leaving the page. */
+  /* Forms that post to the Editlayer inbox: send without leaving the page. */
   d.querySelectorAll('form[data-cms-form]').forEach((form) => form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const out = form.querySelector('[role="status"]');

@@ -53,7 +53,7 @@ async function upload(ctx) {
     await env.CMS_DB.prepare('INSERT INTO cms_files (id, name, title, ext, type, size, created_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)')
       .bind(id, name, title, ext, spec.type, bytes.length, now, user.email).run();
   } catch (err) {
-    console.error('vibecms media: saving the file record failed (is migration 0015 applied?)', err);
+    console.error('editlayer media: saving the file record failed (is migration 0015 applied?)', err);
     await env.CMS_MEDIA.delete(`files/${id}/${name}`).catch(() => {});
     throw fail('Files can’t be uploaded yet. Ask your developer to update the site.', 503);
   }
@@ -65,7 +65,7 @@ async function list({ env }) {
   try {
     ({ results } = await env.CMS_DB.prepare('SELECT id, name, title, ext, size, created_at, created_by FROM cms_files ORDER BY created_at DESC LIMIT 500').all());
   } catch (err) {
-    console.error('vibecms media: file list failed (is migration 0015 applied?)', err);
+    console.error('editlayer media: file list failed (is migration 0015 applied?)', err);
     throw fail('The file list isn’t available yet. Ask your developer to update the site.', 503);
   }
   return json({

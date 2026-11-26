@@ -1,4 +1,4 @@
--- Vibe CMS schema. Applied with: wrangler d1 migrations apply <db> --remote
+-- Editlayer schema. Applied with: wrangler d1 migrations apply <db> --remote
 
 -- Edited content. One row per page path + region key + state.
 -- path "*" holds site-wide regions (keys starting with "@", e.g. "@footer").

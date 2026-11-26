@@ -1,6 +1,6 @@
 ---
 name: cms-status
-description: Show what editors have changed on a Vibe CMS site (drafts, published edits, and edits whose page the developer has since rebuilt). Run before rebuilding or redesigning pages of a site that uses Vibe CMS, so editors' work isn't lost or shadowed.
+description: Show what editors have changed on an Editlayer site (drafts, published edits, and edits whose page the developer has since rebuilt). Run before rebuilding or redesigning pages of a site that uses Editlayer, so editors' work isn't lost or shadowed.
 ---
 
 # What editors changed
@@ -8,7 +8,7 @@ description: Show what editors have changed on a Vibe CMS site (drafts, publishe
 From the site folder:
 
 ```
-node "${CLAUDE_PLUGIN_ROOT}/engine/cli/vibecms.mjs" status
+node "${CLAUDE_PLUGIN_ROOT}/engine/cli/editlayer.mjs" status
 ```
 
 Each line: state (draft/live), page, region, when, who, and "source changed since this was edited" when the built

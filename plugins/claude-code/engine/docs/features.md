@@ -1,4 +1,4 @@
-# Writing an Vibe CMS feature
+# Writing an Editlayer feature
 
 Everything beyond core editing (text, images, items, sections, drafts, publish, history, editors) is a
 feature: a pair of files that plug into the editor and the Worker without editing core files.
@@ -62,7 +62,7 @@ export default {
 
 - **api**: matched against the path after `/_cms/api/`. `route` is a string or a RegExp (groups in
   `ctx.params`). `role` is the minimum role: `author` < `editor` < `admin` (default `editor`). The
-  session, the `x-vibecms: 1` header and the same-origin check are already enforced. `raw: true` skips
+  session, the `x-editlayer: 1` header and the same-origin check are already enforced. `raw: true` skips
   JSON body parsing (file uploads). ctx: `{request, env, url, opts, user, body, params, pagePath(v), renderPath(path, mode)}`.
   Throw an error with a `status` property to return `{error}` with that status.
 - **routes**: any other `/_cms/...` URL (public form posts, share-preview links). No session check:

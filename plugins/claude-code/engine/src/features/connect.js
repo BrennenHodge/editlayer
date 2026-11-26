@@ -1,29 +1,29 @@
-// Connecting a hosted AI connector (the Vibe CMS connector that ChatGPT and Claude list in their directories).
+// Connecting a hosted AI connector (the Editlayer connector that ChatGPT and Claude list in their directories).
 //
 // The connector never sees a password. It sends the site's admin here; the admin signs in to their own site as
 // usual, chooses what the assistant may do, and the site redirects back to the connector with a one-time code.
 // The connector then swaps that code, plus the PKCE verifier only it knows, for a connection key over a direct
 // server-to-server call, so the key never passes through the browser.
 //
-//   GET  /_cms/connect/info      public: is this a Vibe CMS site, and its name
+//   GET  /_cms/connect/info      public: is this an Editlayer site, and its name
 //   GET  /_cms/connect           the approval screen (admins only)
 //   POST /_cms/connect           approve or cancel; redirects to <hub>/callback
 //   POST /_cms/connect/token     connector: { code, code_verifier, hub } -> { key, role, ... }
 //   POST /_cms/connect/revoke    connector: "Authorization: Bearer <key>" turns that key off
 //
-// Only listed connectors can ask (OFFICIAL_HUBS, opts.connect.hubs, or env.VIBECMS_HUBS), so a look-alike site
+// Only listed connectors can ask (OFFICIAL_HUBS, opts.connect.hubs, or env.EDITLAYER_HUBS), so a look-alike site
 // can't use this screen to collect keys. A site running on localhost also accepts a connector on localhost.
 import { json, randomToken, sha256Hex, escapeHtml, hasRole, b64url } from '../util.js';
 import { screen } from '../pages.js';
 import { createToken } from './mcp.js';
 
-export const OFFICIAL_HUBS = [];   // the hosted connector's origin, set once its domain is chosen
+export const OFFICIAL_HUBS = ['https://mcp.editlayer.co'];   // the hosted connector for ChatGPT, Claude and others
 const CODE_MS = 5 * 60 * 1000;
 
 const isLocal = (host) => host === 'localhost' || host === '127.0.0.1' || host === '[::1]';
 
 function allowedHubs(env, opts, url) {
-  const extra = String(env.VIBECMS_HUBS || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const extra = String(env.EDITLAYER_HUBS || '').split(',').map((s) => s.trim()).filter(Boolean);
   return new Set([...OFFICIAL_HUBS, ...((opts.connect && opts.connect.hubs) || []), ...extra]);
 }
 
@@ -56,7 +56,7 @@ function approvalScreen(opts, { hub, name, state, challenge, user }) {
   const hubHost = new URL(hub).host;
   const hidden = (k, v) => `<input type="hidden" name="${k}" value="${escapeHtml(v)}">`;
   return screen(opts, `Let ${name} edit this site?`, `
-<p style="margin-top:0">${escapeHtml(name)} is asking, through the Vibe CMS connector at <strong>${escapeHtml(hubHost)}</strong>, to read and edit <strong>${escapeHtml(opts.siteName)}</strong> when you ask it to in a conversation.</p>
+<p style="margin-top:0">${escapeHtml(name)} is asking, through the Editlayer connector at <strong>${escapeHtml(hubHost)}</strong>, to read and edit <strong>${escapeHtml(opts.siteName)}</strong> when you ask it to in a conversation.</p>
 <form method="post" action="/_cms/connect">
   ${hidden('hub', hub)}${hidden('name', name)}${hidden('state', state)}${hidden('code_challenge', challenge)}
   <fieldset style="border:1px solid var(--line);border-radius:9px;padding:6px 14px 12px;margin:18px 0 0">
@@ -145,7 +145,7 @@ async function revokeRoute(rctx) {
 }
 
 function infoRoute(rctx) {
-  return json({ vibecms: true, name: rctx.opts.siteName, connect: 1 }, 200, { 'access-control-allow-origin': '*', 'cache-control': 'no-store' });
+  return json({ editlayer: true, name: rctx.opts.siteName, connect: 1 }, 200, { 'access-control-allow-origin': '*', 'cache-control': 'no-store' });
 }
 
 export default {

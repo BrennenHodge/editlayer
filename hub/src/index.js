@@ -1,5 +1,5 @@
-// Vibe CMS connector ("the hub"): one public MCP server with OAuth sign-in, so ChatGPT, Claude and other
-// assistants can list a single Vibe CMS app in their directories while every website keeps its own data.
+// Editlayer connector ("the hub"): one public MCP server with OAuth sign-in, so ChatGPT, Claude and other
+// assistants can list a single Editlayer app in their directories while every website keeps its own data.
 //
 //   Assistant ──OAuth 2.1 + PKCE──▶ hub ──(admin approves on their own site)──▶ site /_cms/connect
 //   Assistant ──MCP (Bearer)──────▶ hub /mcp ──(site key, server to server)──▶ site /_cms/mcp
@@ -78,10 +78,10 @@ async function unseal(env, sealed) {
 /* ------------------------------------------------------------------------------------------ pages */
 
 function page(env, title, body, status = 200, headers = {}) {
-  const info = env.SITE_URL || 'https://cms.dbvantage.com';
+  const info = env.SITE_URL || 'https://editlayer.co';
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
-<title>${escapeHtml(title)} · Vibe CMS</title>
+<title>${escapeHtml(title)} · Editlayer</title>
 <style>
 :root{--ink:#121316;--mute:#5d6470;--line:#dcdfe4;--bg:#f5f4f0;--card:#fff;--accent:#5b3df5;--on:#fff;--err-bg:#fdecec;--err:#8a1c1c;color-scheme:light}
 @media (prefers-color-scheme:dark){:root{--ink:#eef0f3;--mute:#a5adb8;--line:#2d333b;--bg:#101215;--card:#181b20;--accent:#9d8bff;--on:#121316;--err-bg:#3a1717;--err:#ffc9c9;color-scheme:dark}}
@@ -102,7 +102,7 @@ button.quiet{background:transparent;color:inherit;border:1px solid var(--line)}
 .hint{font-size:14px;color:var(--mute)}a{color:inherit}
 footer{max-width:440px;width:100%;font-size:13px;color:var(--mute);text-align:center;padding:16px 0}
 </style></head><body><main>
-<p class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M8.2 9.6 13.7 22.4h1.5L20.6 9.6" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>Vibe CMS</p>
+<p class="brand"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M7.6 10.4h11M7.6 16h7.6M7.6 21.6h11" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>Editlayer</p>
 ${body}</main>
 <footer><a href="${escapeHtml(info)}/privacy/">Privacy</a> · <a href="${escapeHtml(info)}/terms/">Terms</a> · <a href="${escapeHtml(info)}/support/">Support</a></footer>
 </body></html>`;
@@ -136,7 +136,7 @@ ${sites.length
     ? `<h1>${name} is connected</h1>
 <p>Go back to ${name} and ask it to change something on your website. You can also add another website now.</p>`
     : `<h1>Let ${name} edit your website</h1>
-<p>Enter the address of a website that uses Vibe CMS. You’ll sign in to that site and choose what ${name} may do there.</p>`}
+<p>Enter the address of a website that uses Editlayer. You’ll sign in to that site and choose what ${name} may do there.</p>`}
 ${list}
 ${error ? `<p class="err" role="alert">${escapeHtml(error)}</p>` : ''}
 <form method="post" action="/authorize/site">
@@ -254,7 +254,7 @@ const sitesOf = async (env, grantId) => (await env.DB.prepare('SELECT origin, na
 async function authorize(request, env, url) {
   const q = url.searchParams;
   const client = await getClient(env, q.get('client_id'));
-  if (!client) return errorPage(env, 'Unknown app', 'The app that sent you here isn’t registered with the Vibe CMS connector. Try connecting again from the app.');
+  if (!client) return errorPage(env, 'Unknown app', 'The app that sent you here isn’t registered with the Editlayer connector. Try connecting again from the app.');
   const redirectUri = q.get('redirect_uri') || (client.redirect_uris.length === 1 ? client.redirect_uris[0] : '');
   if (!redirectUri || !redirectMatches(client.redirect_uris, redirectUri)) return errorPage(env, 'Unknown return address', 'The app asked to return to an address it didn’t register, so this sign-in was stopped.');
   const state = q.get('state') || '';
@@ -311,8 +311,8 @@ async function addSite(request, env, url) {
     const res = await fetch(`${origin}/_cms/connect/info`, { headers: { accept: 'application/json' }, redirect: 'manual', signal: AbortSignal.timeout(8000) });
     info = res.ok ? await res.json() : null;
   } catch { info = null; }
-  if (!info || info.vibecms !== true || !info.connect) {
-    return again(`We couldn’t find Vibe CMS at ${new URL(origin).host}. Check the address, or ask the site’s developer to update Vibe CMS.`);
+  if (!info || info.editlayer !== true || !info.connect) {
+    return again(`We couldn’t find Editlayer at ${new URL(origin).host}. Check the address, or ask the site’s developer to update Editlayer.`);
   }
   const verifier = randomToken(32);
   const siteState = randomToken(24);
@@ -477,7 +477,7 @@ const HUB_TOOLS = [
 const SITE_TOOL_NAMES = new Set(SITE_TOOLS.map((t) => t.name));
 
 const unauthorized = (url, error) => json(
-  { jsonrpc: '2.0', id: null, error: { code: -32001, message: error ? 'The sign-in has expired or was revoked. Reconnect Vibe CMS in your assistant.' : 'Sign in to Vibe CMS first.' } },
+  { jsonrpc: '2.0', id: null, error: { code: -32001, message: error ? 'The sign-in has expired or was revoked. Reconnect Editlayer in your assistant.' : 'Sign in to Editlayer first.' } },
   401,
   { 'www-authenticate': `Bearer resource_metadata="${url.origin}/.well-known/oauth-protected-resource"${error ? `, error="${error}"` : ''}` },
 );
@@ -514,7 +514,7 @@ async function callTool(env, grant, name, args) {
     await env.DB.prepare('DELETE FROM sites WHERE grant_id = ? AND origin = ?').bind(grant.grant_id, s.origin).run();
     const left = sites.length - 1;
     if (!left) await env.DB.prepare('DELETE FROM tokens WHERE grant_id = ?').bind(grant.grant_id).run();
-    return toolResult({ disconnected: new URL(s.origin).host, stillConnected: left, note: left ? undefined : 'No websites are connected now. Remove or reconnect Vibe CMS in the assistant’s settings.' });
+    return toolResult({ disconnected: new URL(s.origin).host, stillConnected: left, note: left ? undefined : 'No websites are connected now. Remove or reconnect Editlayer in the assistant’s settings.' });
   }
   if (!SITE_TOOL_NAMES.has(name)) throw toolError(`Unknown tool: ${String(name).slice(0, 60)}`);
   const site = pickSite(sites, args.site);
@@ -554,8 +554,8 @@ async function rpc(env, grant, msg) {
         result: {
           protocolVersion: PROTOCOLS.includes(params.protocolVersion) ? params.protocolVersion : PROTOCOLS[0],
           capabilities: { tools: { listChanged: false } },
-          serverInfo: { name: 'vibecms', title: 'Vibe CMS', version: VERSION },
-          instructions: `You can read and edit the person's websites that use Vibe CMS. Connected: ${names || 'none'}. `
+          serverInfo: { name: 'editlayer', title: 'Editlayer', version: VERSION },
+          instructions: `You can read and edit the person's websites that use Editlayer. Connected: ${names || 'none'}. `
             + 'Call list_pages, then get_page before editing; prefer replace_text for small changes and keep the site\'s HTML structure and classes. '
             + 'Every change is saved as a draft until it is published: tell the person, share the review link, and ask before calling publish. '
             + (sites.length > 1 ? 'Pass "site" to say which website. ' : '')
@@ -578,8 +578,8 @@ async function rpc(env, grant, msg) {
         return { jsonrpc: '2.0', id, result };
       } catch (e) {
         console.log(JSON.stringify({ t: 'tool', tool: name, ms: now() - started, ok: false, handled: Boolean(e && e.tool) }));
-        if (!(e && e.tool)) console.error('vibecms hub tool failed', e && e.stack || e);
-        return { jsonrpc: '2.0', id, result: { content: [{ type: 'text', text: e && e.tool ? e.message : 'The Vibe CMS connector hit an unexpected problem. Try again; if it keeps happening, reconnect Vibe CMS.' }], isError: true } };
+        if (!(e && e.tool)) console.error('editlayer hub tool failed', e && e.stack || e);
+        return { jsonrpc: '2.0', id, result: { content: [{ type: 'text', text: e && e.tool ? e.message : 'The Editlayer connector hit an unexpected problem. Try again; if it keeps happening, reconnect Editlayer.' }], isError: true } };
       }
     }
     default: return { jsonrpc: '2.0', id, error: { code: -32601, message: `Method not found: ${method}` } };
@@ -616,8 +616,8 @@ const protectedResource = (url) => json({
   authorization_servers: [url.origin],
   scopes_supported: SCOPES,
   bearer_methods_supported: ['header'],
-  resource_name: 'Vibe CMS',
-  resource_documentation: 'https://cms.dbvantage.com/ai/',
+  resource_name: 'Editlayer',
+  resource_documentation: 'https://editlayer.co/ai/',
 });
 
 const authServer = (url) => json({
@@ -634,17 +634,17 @@ const authServer = (url) => json({
   scopes_supported: SCOPES,
   client_id_metadata_document_supported: true,
   authorization_response_iss_parameter_supported: true,
-  service_documentation: 'https://cms.dbvantage.com/ai/',
+  service_documentation: 'https://editlayer.co/ai/',
 });
 
 function home(env, url) {
-  return page(env, 'Vibe CMS connector', `
+  return page(env, 'Editlayer connector', `
 <p class="eyebrow">MCP server</p>
-<h1>Vibe CMS connector</h1>
-<p>Lets ChatGPT, Claude and other AI assistants edit websites that use Vibe CMS, after a site admin approves it.</p>
+<h1>Editlayer connector</h1>
+<p>Lets ChatGPT, Claude and other AI assistants edit websites that use Editlayer, after a site admin approves it.</p>
 <p>Add this address as a connector in your assistant:</p>
 <p><code style="display:block;padding:10px 12px;border:1px solid var(--line);border-radius:10px;overflow-wrap:anywhere">${escapeHtml(resourceOf(url.origin))}</code></p>
-<p class="hint">Learn more at <a href="${escapeHtml(env.SITE_URL || 'https://cms.dbvantage.com')}/ai/">cms.dbvantage.com</a>.</p>`);
+<p class="hint">Learn more at <a href="${escapeHtml(env.SITE_URL || 'https://editlayer.co')}/ai/">editlayer.co</a>.</p>`);
 }
 
 /* ------------------------------------------------------------------------------------------ router */
@@ -682,7 +682,7 @@ export default {
     try {
       return await route(request, env, url);
     } catch (err) {
-      console.error('vibecms hub error', err && err.stack || err);
+      console.error('editlayer hub error', err && err.stack || err);
       const html = !url.pathname.startsWith('/mcp') && !url.pathname.startsWith('/token') && !url.pathname.startsWith('/register');
       return html ? errorPage(env, 'Something went wrong', 'The connector hit an unexpected problem. Try again in a moment.', 500)
         : json({ error: 'server_error', error_description: 'The connector hit an unexpected problem. Try again in a moment.' }, 500);

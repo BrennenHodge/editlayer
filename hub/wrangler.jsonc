@@ -1,13 +1,16 @@
 {
   "$schema": "https://unpkg.com/wrangler/config-schema.json",
-  // Vibe CMS connector: one MCP server + OAuth sign-in for ChatGPT, Claude and other assistants, in front of
-  // every Vibe CMS site. See hub/README.md. Deploy: npx wrangler deploy (after the domain route is added).
+  // Editlayer connector: one MCP server + OAuth sign-in for ChatGPT, Claude and other assistants, in front of
+  // every Editlayer site, at https://mcp.editlayer.co. See hub/README.md. Deploy: npx wrangler deploy.
+  // The Worker and D1 names keep the product's first name (vibecms-hub): renaming them would create new ones.
   "name": "vibecms-hub",
   "account_id": "d06c70a0b6279642a6243926161f574b",
   "compatibility_date": "2026-11-01",
   "main": "src/index.js",
-  // Temporary test address until the product domain is chosen; then add a custom_domain route.
-  "workers_dev": true,
+  // One public origin only: ChatGPT and Claude tie a listing to it.
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [{ "pattern": "mcp.editlayer.co", "custom_domain": true }],
   "d1_databases": [
     { "binding": "DB", "database_name": "vibecms-hub", "database_id": "46aa2ad5-cb55-4173-9784-7fd9b4bd9b43", "migrations_dir": "migrations" }
   ],

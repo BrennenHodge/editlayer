@@ -224,18 +224,18 @@ async function servePreview(ctx) {
       link = await env.CMS_DB.prepare('SELECT path, expires_at, time_zone FROM cms_preview_links WHERE token_hash = ? AND revoked_at IS NULL AND expires_at > ?')
         .bind(await sha256Hex(token), Date.now()).first();
     }
-  } catch (err) { console.error('vibecms review: preview lookup failed', err); }
+  } catch (err) { console.error('editlayer review: preview lookup failed', err); }
   if (!link) return previewGone(opts);
   let res;
   try {
     // user: null, so a signed-in viewer sees exactly what the link's recipient sees (no editor button).
     res = await ctx.renderPath(link.path, { drafts: true, user: null });
   } catch (err) {
-    console.error('vibecms review: preview render failed', err);
+    console.error('editlayer review: preview render failed', err);
     return previewGone(opts, 'This preview isn’t available');
   }
   if (res.status !== 200 || !(res.headers.get('content-type') || '').includes('text/html')) return previewGone(opts, 'This page no longer exists');
-  const banner = `<div style="height:72px" aria-hidden="true"></div><div id="vibecms-preview-note" role="note" style="all:initial;position:fixed;z-index:2147483647;left:50%;bottom:14px;transform:translateX(-50%);box-sizing:border-box;width:max-content;max-width:calc(100% - 24px);padding:9px 16px;border-radius:12px;background:#16181c;color:#f3f4f6;font:500 13px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-align:center;box-shadow:0 8px 28px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.12) inset">Preview of unpublished changes · <span style="white-space:nowrap">link expires ${escapeHtml(formatDate(link.expires_at, link.time_zone))}</span></div>`;
+  const banner = `<div style="height:72px" aria-hidden="true"></div><div id="editlayer-preview-note" role="note" style="all:initial;position:fixed;z-index:2147483647;left:50%;bottom:14px;transform:translateX(-50%);box-sizing:border-box;width:max-content;max-width:calc(100% - 24px);padding:9px 16px;border-radius:12px;background:#16181c;color:#f3f4f6;font:500 13px/1.4 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;text-align:center;box-shadow:0 8px 28px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.12) inset">Preview of unpublished changes · <span style="white-space:nowrap">link expires ${escapeHtml(formatDate(link.expires_at, link.time_zone))}</span></div>`;
   const headers = new Headers(res.headers);
   headers.set('cache-control', 'private, no-store');
   headers.set('x-robots-tag', 'noindex, nofollow');
@@ -294,7 +294,7 @@ export async function runSchedules(env, now = Date.now()) {
       await db.prepare("UPDATE cms_schedules SET status = 'done', published = ?, result = ?, ran_at = ? WHERE id = ?").bind(n, n ? 'published' : 'nothing', Date.now(), s.id).run();
       done.push({ id: s.id, path: s.path, published: n });
     } catch (err) {
-      console.error('vibecms review: scheduled publish failed', s.path, err && err.stack || err);
+      console.error('editlayer review: scheduled publish failed', s.path, err && err.stack || err);
       await db.prepare("UPDATE cms_schedules SET status = 'failed', result = 'error', ran_at = ? WHERE id = ?").bind(Date.now(), s.id).run();
     }
   }
@@ -323,7 +323,7 @@ async function emailInvite(ctx) {
     });
     return json({ sent: true, email });
   } catch (err) {
-    console.error('vibecms review: invite email failed', err && err.message);
+    console.error('editlayer review: invite email failed', err && err.message);
     return json({ sent: false, email, link });
   }
 }
@@ -365,7 +365,7 @@ export default {
         data.mine = mine.results.map((r) => reviewOut(r, user));
       }
     } catch (err) {
-      console.error('vibecms review: state failed (migration 0016 applied?)', err && err.message);
+      console.error('editlayer review: state failed (migration 0016 applied?)', err && err.message);
       data.unavailable = true;
     }
     ctx.share(data);

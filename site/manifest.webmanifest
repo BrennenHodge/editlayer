@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Vibe CMS",
-  "short_name": "Vibe CMS",
-  "description": "The click-to-edit CMS for websites built with AI.",
+  "name": "Editlayer",
+  "short_name": "Editlayer",
+  "description": "The click-to-edit layer for websites built with AI.",
   "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",

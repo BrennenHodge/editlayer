@@ -1,13 +1,13 @@
-<!-- title: Vibe CMS: the click-to-edit CMS for sites built with AI -->
-<!-- desc: You built the site with Claude Code. Vibe CMS lets your client edit it on the live page: click text, type, swap photos, publish. Or ask ChatGPT to do it. -->
+<!-- title: Editlayer: the click-to-edit layer for sites built with AI -->
+<!-- desc: You built the site with Claude Code. Editlayer lets your client edit it on the live page: click text, type, swap photos, publish. Or ask ChatGPT to do it. -->
 <!-- path: / -->
 <!-- nav: home -->
 <main id="main">
 <section class="hero">
   <div class="wrap">
-    <p class="eyebrow">The CMS for websites built with AI</p>
+    <p class="eyebrow">The edit layer for websites built with AI</p>
     <h1 class="h-display">Click the page. Type. <span class="mark">Publish</span><span class="caret" aria-hidden="true"></span></h1>
-    <p class="lede">You built a beautiful site with Claude Code. Now the owner wants to change a price, a photo, the opening hours. With&nbsp;Vibe CMS they open their own site, click the words and type over them. No admin screens, no theme, no calling you.</p>
+    <p class="lede">You built a beautiful site with Claude Code. Now the owner wants to change a price, a photo, the opening hours. With&nbsp;Editlayer they open their own site, click the words and type over them. No admin screens, no theme, no calling you.</p>
     <div class="btns">
       <a class="btn btn--primary" href="/early-access/">Get early access <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
       <a class="btn" href="#demo">Try the editor</a>
@@ -66,7 +66,7 @@
     <div class="head">
       <p class="eyebrow">How it works</p>
       <h2 class="h2">Build it with AI. Hand it&nbsp;over.</h2>
-      <p class="lede">Vibe CMS adds editing to the site you already have. Nothing is rebuilt, and the design can’t be broken by an edit.</p>
+      <p class="lede">Editlayer adds editing to the site you already have. Nothing is rebuilt, and the design can’t be broken by an edit.</p>
     </div>
     <ol class="steps">
       <li class="step">
@@ -76,9 +76,9 @@
       </li>
       <li class="step">
         <p class="step__n">02</p>
-        <h3 class="h3">Add Vibe CMS in one&nbsp;step</h3>
+        <h3 class="h3">Add Editlayer in one&nbsp;step</h3>
         <p>Install the plugin and ask Claude Code to make the site editable. It sets up the database, storage and the editor on Cloudflare.</p>
-        <code>/vibe-cms:vibe-cms</code>
+        <code>/editlayer:editlayer</code>
       </li>
       <li class="step">
         <p class="step__n">03</p>
@@ -113,7 +113,7 @@
     <div>
       <p class="eyebrow">AI assistants</p>
       <h2 class="h2">Or just ask&nbsp;ChatGPT.</h2>
-      <p class="lede">Every Vibe CMS site is also an MCP server. Connect ChatGPT or Claude once, and the&nbsp;owner can change their site from a conversation.</p>
+      <p class="lede">Every Editlayer site is also an MCP server. Connect ChatGPT or Claude once, and the&nbsp;owner can change their site from a conversation.</p>
       <ul class="ticks">
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>The assistant reads the real pages before it edits them</li>
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Its changes stay drafts unless you let it publish</li>
@@ -138,18 +138,18 @@
     <div>
       <p class="eyebrow">For developers</p>
       <h2 class="h2">Your code stays the source of&nbsp;truth.</h2>
-      <p class="lede">No framework to adopt, no content model to&nbsp;design, no rewrite. Vibe CMS runs in front of your&nbsp;static site as a Cloudflare Worker and&nbsp;swaps edited regions into the HTML as it streams.</p>
+      <p class="lede">No framework to adopt, no content model to&nbsp;design, no rewrite. Editlayer runs in front of your&nbsp;static site as a Cloudflare Worker and&nbsp;swaps edited regions into the HTML as it streams.</p>
       <ul class="ticks">
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Edits are stored in D1, images in R2, on your own Cloudflare account</li>
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Untouched pages are served byte for byte; if the CMS errors, the static page is served</li>
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rebuild any time: <code class="inline">vibecms status</code> shows what editors changed</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Untouched pages are served byte for byte; if Editlayer errors, the static page is served</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rebuild any time: <code class="inline">editlayer status</code> shows what editors changed</li>
       </ul>
       <a class="btn" href="/developers/">Read the developer guide <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
     <div>
       <p class="code-label">In Claude Code</p>
-<pre class="code"><span class="p">&gt; </span>/plugin marketplace add BrennenHodge/vibe-cms
-<span class="p">&gt; </span>/plugin install vibe-cms@vibe-cms
+<pre class="code"><span class="p">&gt; </span>/plugin marketplace add BrennenHodge/editlayer
+<span class="p">&gt; </span>/plugin install editlayer@editlayer
 <span class="p">&gt; </span>Make this site editable for my client
 <span class="c">  ✓ D1 database and R2 bucket created
   ✓ 14 pages marked editable
@@ -167,7 +167,7 @@
     <p class="swipe-hint">Swipe for more columns →</p>
     <div class="scroller">
       <table class="compare">
-        <thead><tr><th scope="col"></th><th scope="col">Vibe CMS</th><th scope="col">Move it to a CMS platform</th><th scope="col">Headless CMS</th></tr></thead>
+        <thead><tr><th scope="col"></th><th scope="col">Editlayer</th><th scope="col">Move it to a CMS platform</th><th scope="col">Headless CMS</th></tr></thead>
         <tbody>
           <tr><th scope="row">Keep the site you built</th><td class="yes">Yes, as it is</td><td>Rebuilt as a theme</td><td>Rewired to fetch content</td></tr>
           <tr><th scope="row">Editors work on</th><td class="yes">The live page</td><td>An admin dashboard</td><td>Forms and fields</td></tr>
@@ -189,7 +189,7 @@
       <details><summary>What happens when I rebuild the site?</summary><div><p>Rebuild and deploy as usual. Pages nobody edited update straight away. If you change a region an editor also changed, their version keeps showing and the editor offers “keep mine” or “use the developer’s version”.</p></div></details>
       <details><summary>Can ChatGPT really change my website?</summary><div><p>Only if an admin connects it, and only as drafts unless you allow publishing. It works through the site’s MCP endpoint with its own key, which you can turn off any time. Every change shows up in the editor and in History.</p></div></details>
       <details><summary>Is it secure?</summary><div><p>Passwords are hashed with PBKDF2, sessions are HttpOnly cookies, accounts lock after repeated failed sign-ins, every change needs a same-origin request, and saved HTML is stripped of scripts and event handlers.</p></div></details>
-      <details><summary>Is this site built with it?</summary><div><p>Yes. Everything you’re reading is edited in Vibe CMS. Even the early-access form sends to the Vibe CMS inbox.</p></div></details>
+      <details><summary>Is this site built with it?</summary><div><p>Yes. Everything you’re reading is edited in Editlayer. Even the early-access form sends to the Editlayer inbox.</p></div></details>
     </div>
   </div>
 </section>

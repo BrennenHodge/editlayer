@@ -27,8 +27,8 @@ const SVG_ANIMATION = /^(animate|animatemotion|animatetransform|animatecolor|set
 const DROP = /^(script|base|meta|object|embed|applet|frame|frameset|portal|math|param)$/;
 // Elements the browser exposes on `document` by name (and id), which could shadow document.querySelector & co.
 const NAMED_ON_DOCUMENT = /^(img|form|iframe|embed|object)$/;
-// Ids and names the editor itself relies on ("vibecms-state", window.__vibecms …).
-const RESERVED_ID = /^(vibecms-|__vibecms)/i;
+// Ids and names the editor itself relies on ("editlayer-state", window.__editlayer …).
+const RESERVED_ID = /^(editlayer-|__editlayer)/i;
 
 /** iframes an author or AI may add: video and map players. Sites add more with createCms({ embeds: ['calendly.com'] }). */
 export const EMBED_HOSTS = ['www.youtube.com', 'youtube.com', 'www.youtube-nocookie.com', 'youtube-nocookie.com', 'player.vimeo.com',
@@ -161,7 +161,7 @@ export async function sanitize(html, options = {}) {
             continue;
           }
           if (n.startsWith('on')) drop(`an ${n} script`);
-          else if (n === 'contenteditable' || n === 'spellcheck' || n.startsWith('data-vibecms') || junkAttr.test(n)) drop();
+          else if (n === 'contenteditable' || n === 'spellcheck' || n.startsWith('data-editlayer') || junkAttr.test(n)) drop();
           else if (n === 'srcdoc' || n === 'ping') drop(`a ${n} attribute`);
           else if (n === 'style') {
             if (badStyle(value)) { drop('a style with script in it'); continue; }

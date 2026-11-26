@@ -1,11 +1,11 @@
 /* Page-level styles while editing. The editor's own UI lives in a shadow root (see ui.css). */
-html.vibecms-on [data-cms] { cursor: default; }
-html.vibecms-on [data-cms] [contenteditable] { outline: none; cursor: text; caret-color: currentColor; }
-html.vibecms-on [data-cms] img { cursor: pointer; }
-html.vibecms-on [data-cms] a, html.vibecms-on [data-cms] button, html.vibecms-on [data-cms] summary { cursor: text; }
-html.vibecms-on [data-cms] [data-cms-lock], html.vibecms-on [data-cms] [data-cms-lock] * { cursor: not-allowed; }
-html.vibecms-on [data-cms-hidden] { opacity: .32; filter: grayscale(1); }
-html.vibecms-on body { padding-bottom: 88px; }
-html.vibecms-on [data-cms] [contenteditable]::selection, html.vibecms-on [data-cms] [contenteditable] *::selection { background: rgba(59, 130, 246, .35); }
+html.editlayer-on [data-cms] { cursor: default; }
+html.editlayer-on [data-cms] [contenteditable] { outline: none; cursor: text; caret-color: currentColor; }
+html.editlayer-on [data-cms] img { cursor: pointer; }
+html.editlayer-on [data-cms] a, html.editlayer-on [data-cms] button, html.editlayer-on [data-cms] summary { cursor: text; }
+html.editlayer-on [data-cms] [data-cms-lock], html.editlayer-on [data-cms] [data-cms-lock] * { cursor: not-allowed; }
+html.editlayer-on [data-cms-hidden] { opacity: .32; filter: grayscale(1); }
+html.editlayer-on body { padding-bottom: 88px; }
+html.editlayer-on [data-cms] [contenteditable]::selection, html.editlayer-on [data-cms] [contenteditable] *::selection { background: rgba(59, 130, 246, .35); }
 /* Things the site normally reveals with JavaScript stay visible while editing. */
-html.vibecms-on [data-cms] .reveal, html.vibecms-on [data-cms] [data-animate] { opacity: 1 !important; transform: none !important; }
+html.editlayer-on [data-cms] .reveal, html.editlayer-on [data-cms] [data-animate] { opacity: 1 !important; transform: none !important; }

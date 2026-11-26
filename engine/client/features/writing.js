@@ -317,7 +317,7 @@ feature('writing', (core) => {
     if (!(res.headers.get('content-type') || '').includes('text/html')) return null;
     const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
     let meta = {};
-    try { meta = JSON.parse(doc.getElementById('vibecms-state').textContent).meta || {}; } catch { /* not an editable page */ }
+    try { meta = JSON.parse(doc.getElementById('editlayer-state').textContent).meta || {}; } catch { /* not an editable page */ }
     return { doc, meta };
   }
   async function pool(items, n, fn) {

@@ -10,7 +10,7 @@ async function signIn(token) {
   return c;
 }
 const api = (cookie, method, route, body, headers = {}) => fetch(`${BASE}/_cms/api/${route}`, {
-  method, headers: { cookie, 'x-vibecms': '1', origin: BASE, 'content-type': 'application/json', ...headers }, body: body === undefined ? undefined : (typeof body === 'string' ? body : JSON.stringify(body)),
+  method, headers: { cookie, 'x-editlayer': '1', origin: BASE, 'content-type': 'application/json', ...headers }, body: body === undefined ? undefined : (typeof body === 'string' ? body : JSON.stringify(body)),
 });
 const mcp = (key, msg, extra = {}) => fetch(`${BASE}/_cms/mcp/${key}`, { method: 'POST', headers: { 'content-type': 'application/json', ...extra }, body: typeof msg === 'string' ? msg : JSON.stringify(msg) });
 const call = async (key, name, args) => { const r = await mcp(key, { jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name, arguments: args } }); return { status: r.status, body: await r.json().catch(() => null) }; };
@@ -27,7 +27,7 @@ const EVIL = `<section><h2>Offer</h2><script>alert(1)</script><img src=x onerror
 const admin = await signIn('inviteadmin00000000000000000001');
 const editor = await signIn('inviteeditor0000000000000000001');
 const author = await signIn('inviteauthor0000000000000000001');
-ok(/^vibecms_session=/.test(author), 'local http uses the unprefixed cookie');
+ok(/^editlayer_session=/.test(author), 'local http uses the unprefixed cookie');
 
 // --- author save: strict sanitizer
 let r = await api(author, 'PUT', 'draft', { path: '/', regions: { main: { html: EVIL } } });
@@ -68,7 +68,7 @@ await api(editor, 'POST', 'discard', { path: '/', includeSiteWide: true });
 
 // --- CSRF and size limits
 r = await fetch(`${BASE}/_cms/api/draft`, { method: 'PUT', headers: { cookie: editor, origin: BASE, 'content-type': 'application/json' }, body: '{}' });
-ok(r.status === 403, 'API write without the x-vibecms header is refused');
+ok(r.status === 403, 'API write without the x-editlayer header is refused');
 r = await api(editor, 'PUT', 'draft', {}, { origin: 'https://evil.example' });
 ok(r.status === 403, 'API write from another origin is refused');
 r = await api(editor, 'PUT', 'draft', JSON.stringify({ path: '/', regions: { main: { html: 'x'.repeat(9 * 1024 * 1024) } } }));
@@ -86,11 +86,11 @@ ok(r.headers.get('referrer-policy') === 'same-origin' && r.headers.get('x-conten
 
 // --- media: fake image refused, real one served sandboxed
 const fake = new FormData(); fake.append('file', new Blob(['<html><script>alert(1)</script>'], { type: 'image/png' }), 'x.png');
-r = await fetch(`${BASE}/_cms/api/media`, { method: 'POST', headers: { cookie: editor, 'x-vibecms': '1', origin: BASE }, body: fake });
+r = await fetch(`${BASE}/_cms/api/media`, { method: 'POST', headers: { cookie: editor, 'x-editlayer': '1', origin: BASE }, body: fake });
 ok(r.status === 415, 'HTML disguised as PNG is refused', r.status);
 const png = Uint8Array.from(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64'));
 const real = new FormData(); real.append('file', new Blob([png], { type: 'image/png' }), 'dot.png');
-r = await fetch(`${BASE}/_cms/api/media`, { method: 'POST', headers: { cookie: editor, 'x-vibecms': '1', origin: BASE }, body: real });
+r = await fetch(`${BASE}/_cms/api/media`, { method: 'POST', headers: { cookie: editor, 'x-editlayer': '1', origin: BASE }, body: real });
 j = await r.json();
 ok(r.status === 200 && j.url, 'real PNG uploads', JSON.stringify(j));
 if (j.url) { r = await fetch(BASE + j.url); ok(/sandbox/.test(r.headers.get('content-security-policy') || '') && r.headers.get('content-type') === 'image/png', 'uploads served as image/png with a sandbox CSP'); }
@@ -135,7 +135,7 @@ await api(editor, 'POST', 'discard', { path: '/', includeSiteWide: true });
 const keyRes = await (await api(admin, 'POST', 'ai-tokens', { name: 'Temp', role: 'author' })).json();
 c = await call(keyRes.key, 'list_pages', {});
 ok(c.status === 200 && !c.body.result.isError, 'fresh admin-made key works');
-await fetch(`${BASE}/_cms/api/users`, { method: 'DELETE', headers: { cookie: editor, 'x-vibecms': '1', origin: BASE } }); // editor can't
+await fetch(`${BASE}/_cms/api/users`, { method: 'DELETE', headers: { cookie: editor, 'x-editlayer': '1', origin: BASE } }); // editor can't
 const users = (await (await api(admin, 'GET', 'users')).json()).users;
 const self = users.find((u) => u.email === 'admin@test.local');
 await api(admin, 'POST', 'users', { email: 'admin2@test.local', role: 'admin' });

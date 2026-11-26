@@ -1,6 +1,6 @@
-# Vibe CMS source mode (Phase 0)
+# Editlayer source mode (Phase 0)
 
-Click-to-edit for sites on any host. The editor clicks text on their live site and types; Vibe CMS finds that text
+Click-to-edit for sites on any host. The editor clicks text on their live site and types; Editlayer finds that text
 in the site's source code, writes the change there, and commits it. The site's normal deploy (Railway, Vercel,
 Netlify, Cloudflare, anything that deploys on push) puts it live. Plan and results: [../PLAN-any-site.md](../PLAN-any-site.md).
 
@@ -27,13 +27,13 @@ Phase 0 runs locally against a test repository with no remotes. It never pushes 
 Use PowerShell, not Git Bash (Git Bash turns `BASE_PATH=/` into a Windows path).
 
 1. Clone the site somewhere temporary, remove its remote, make a test branch:
-   `git clone <site> <dir>`, `git -C <dir> remote remove origin`, `git -C <dir> checkout -b vibecms-test`.
+   `git clone <site> <dir>`, `git -C <dir> remote remove origin`, `git -C <dir> checkout -b editlayer-test`.
 2. Add `<script src="http://localhost:8790/vibe.js" async></script>` before `</head>` in the site's HTML template,
    commit it on the test branch, build the site and serve it (Lexar: `node scripts/sandbox-site.mjs <dir> 3310`).
 3. Start the service:
 
    ```powershell
-   node server.mjs --repo <dir> --branch vibecms-test --site http://localhost:3310 --build "<the site's build command>" --build-env "PORT=3000,BASE_PATH=/"
+   node server.mjs --repo <dir> --branch editlayer-test --site http://localhost:3310 --build "<the site's build command>" --build-env "PORT=3000,BASE_PATH=/"
    ```
 
 4. Open the sign-in link it prints (more at http://localhost:8790/link), click text, type, Enter, Publish.

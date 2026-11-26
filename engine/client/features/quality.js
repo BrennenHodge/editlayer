@@ -500,7 +500,7 @@ feature('quality', (core) => {
     if (bypass) { bypass = false; return true; }
     let issues;
     core.toast('Checking the page before publishing…');
-    try { issues = await runChecks(); } catch (err) { console.error('vibecms: page checks failed', err); return true; }
+    try { issues = await runChecks(); } catch (err) { console.error('editlayer: page checks failed', err); return true; }
     R.toast.className = 'toast';  // the "Checking…" note has done its job
     if (!issues.some((i) => !i.ignored)) { ignoresChanged = false; return true; }
     ignoresChanged = false;
@@ -709,7 +709,7 @@ feature('quality', (core) => {
     tpl.content.querySelectorAll('*').forEach((n) => {
       for (const a of [...n.attributes]) {
         const k = a.name.toLowerCase();
-        if (k.startsWith('on') || k === 'contenteditable' || k === 'spellcheck' || k === 'srcdoc' || k.startsWith('data-vibecms') || ((k === 'href' || k === 'src' || k === 'xlink:href') && badHref(a.value))) n.removeAttribute(a.name);
+        if (k.startsWith('on') || k === 'contenteditable' || k === 'spellcheck' || k === 'srcdoc' || k.startsWith('data-editlayer') || ((k === 'href' || k === 'src' || k === 'xlink:href') && badHref(a.value))) n.removeAttribute(a.name);
       }
     });
     return tpl;

@@ -1,15 +1,15 @@
 ---
 name: invite-editor
-description: Create a Vibe CMS editor account for someone and get their one-time invite link, or a new link for an existing editor (also how a forgotten password is reset). Use when the user says invite, add an editor, give my client access, reset a CMS password.
+description: Create an Editlayer editor account for someone and get their one-time invite link, or a new link for an existing editor (also how a forgotten password is reset). Use when the user says invite, add an editor, give my client access, reset a CMS password.
 argument-hint: "<email> [--name \"Name\"] [--admin]"
 ---
 
-# Invite someone to edit a Vibe CMS site
+# Invite someone to edit an Editlayer site
 
 From the site folder:
 
 ```
-node "${CLAUDE_PLUGIN_ROOT}/engine/cli/vibecms.mjs" user add $ARGUMENTS
+node "${CLAUDE_PLUGIN_ROOT}/engine/cli/editlayer.mjs" user add $ARGUMENTS
 ```
 
 - `--admin` lets them invite others; without it they are an editor (edits and publishes).

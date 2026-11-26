@@ -1,6 +1,6 @@
-# Vibe CMS
+# Editlayer
 
-Click-to-edit CMS for static websites on Cloudflare Workers. Editors browse the real site, press **Edit page**,
+Click-to-edit layer for static websites on Cloudflare Workers. Editors browse the real site, press **Edit page**,
 click any word to type over it, click a picture to replace it, and publish. Fonts, spacing and layout never change
 because they edit the page itself, not a form.
 
@@ -44,7 +44,7 @@ add `"triggers": { "crons": ["*/5 * * * *"] }` (scheduled publishing, form clean
 
 ## How it works
 
-- **Regions.** `vibecms annotate` marks each built page's `<main>` as `data-cms="main"` and the shared
+- **Regions.** `editlayer annotate` marks each built page's `<main>` as `data-cms="main"` and the shared
   `<footer>` (and `<header>`, when it's identical on every page) as `data-cms="@footer"`. Each gets `data-cms-v`,
   a hash of the developer's version. A shared region that differs per page (a header that marks the current menu
   item) is left alone, so editing it can't break other pages.
@@ -57,7 +57,7 @@ add `"triggers": { "crons": ["*/5 * * * *"] }` (scheduled publishing, form clean
   root so site CSS and editor CSS never mix.
 - **Developer changes.** If a page is rebuilt with different content in a region editors have also edited, the
   editor's version keeps showing and the editor shows a banner: keep the edited version, or use the
-  developer's. `vibecms status` lists these.
+  developer's. `editlayer status` lists these.
 - **Security.** PBKDF2 passwords, HttpOnly session cookie (30 days), lockout after 8 failed sign-ins, every
   write needs a custom header plus a same-origin check, saved HTML is stripped of scripts, event handlers and
   `javascript:` links, uploads limited to raster images under 15 MB.
@@ -66,7 +66,7 @@ add `"triggers": { "crons": ["*/5 * * * *"] }` (scheduled publishing, form clean
 
 Requirements: a static site deployed as a Cloudflare Worker with static assets (`wrangler.jsonc` in the site
 folder), pages that use `<main>`, and a `sitemap.xml` (used for the page list). With the Claude Code plugin, ask
-Claude Code to "make this site editable" (skill `vibe-cms:vibe-cms`); by hand:
+Claude Code to "make this site editable" (skill `editlayer:editlayer`); by hand:
 
 ```powershell
 cd <site folder>
@@ -74,17 +74,17 @@ node <path to engine>\cliibecms.mjs init --name "Business Name" --accent "#hex"
 ```
 
 `init` creates the D1 database `<worker>-cms` and the R2 bucket `<worker>-cms-media`, copies the engine into
-`./_vibecms` (so the site deploys on its own), writes `cms.worker.js`, updates `wrangler.jsonc` (Worker entry,
+`./_editlayer` (so the site deploys on its own), writes `cms.worker.js`, updates `wrangler.jsonc` (Worker entry,
 bindings, `run_worker_first`, a zone route next to each custom domain so POSTs aren't caught by a wildcard Worker),
 adds CMS files to `.assetsignore`, applies the migrations, and marks the pages.
 
 Then:
 
-1. Run `node _vibecms/cli/vibecms.mjs annotate <build output dir>` at the end of the site's build.
+1. Run `node _editlayer/cli/editlayer.mjs annotate <build output dir>` at the end of the site's build.
 2. Mark anything JavaScript rewrites at runtime with `data-cms-lock`.
 3. Deploy as usual (`npx wrangler deploy`).
 4. Create the first admin and send them the link:
-   `node _vibecms/cli/vibecms.mjs user add name@example.com --name "Name" --admin`
+   `node _editlayer/cli/editlayer.mjs user add name@example.com --name "Name" --admin`
 
 ## Sign-in
 
@@ -97,7 +97,7 @@ Link secrets are stored hashed (`cms_login_links`, migration 0019), work once, a
 ## AI assistants (MCP)
 
 Every site serves a stateless Streamable HTTP MCP server at `/_cms/mcp` (`src/features/mcp.js`). Admins create a
-key per assistant in **Editors > AI assistants**, or `vibecms connect <name> [--publish]`. The key goes in the URL
+key per assistant in **Editors > AI assistants**, or `editlayer connect <name> [--publish]`. The key goes in the URL
 (`/_cms/mcp/vcms_…`, for ChatGPT and claude.ai, which take a URL only) or in `Authorization: Bearer`. Only a SHA-256
 hash of each key is stored (`cms_ai_tokens`, migration 0018).
 
@@ -117,13 +117,13 @@ Who can change what, and what keeps a hijacked account or a prompt-injected AI f
   `<style>` or `<link>`. What the region already had (the developer's own Formspree form, an existing embed) is
   kept. Save responses list what was removed (`removed`), and the MCP tools pass that on to the AI.
 - **AI connections**: keys are hashed, stop working when the admin who made them is removed or loses the admin role
-  (`vibecms connect` keys excepted), are rate limited (300 tool calls / 10 minutes, 120 of them changes; table
+  (`editlayer connect` keys excepted), are rate limited (300 tool calls / 10 minutes, 120 of them changes; table
   `cms_ai_usage`, migration 0020), and can't publish or touch site-wide parts without the editor role. The server
   tells the AI that page content is data, never instructions. Requests over 2 MB or batches over 20 are refused.
 - **The editor page** (`?edit`) is served with a Content-Security-Policy that only runs the editor and scripts the
   developer marked `data-cms-keep`, so injected markup couldn't run even if it got past the sanitizer.
 - **Sessions** use a `__Host-` cookie on https (a sibling subdomain can't set or overwrite it), HttpOnly,
-  SameSite=Lax. Every API write needs the `x-vibecms: 1` header and a same-origin `Origin`, which blocks CSRF.
+  SameSite=Lax. Every API write needs the `x-editlayer: 1` header and a same-origin `Origin`, which blocks CSRF.
   API bodies over 8 MB or with more than 300 regions are refused.
 - **Uploads**: images are checked by their first bytes (an HTML file renamed `.png` is refused) and served with
   `nosniff` and a sandbox CSP; documents have their own content checks (`src/features/media/files.js`).
@@ -137,26 +137,26 @@ Run from the site folder (or add `--site <dir>`). Add `--local` (and `--port N`)
 
 | Command | Does |
 |---|---|
-| `vibecms init [--name N] [--accent #hex]` | Add Vibe CMS to a site |
-| `vibecms update` | Copy this engine version into `./_vibecms` and apply new migrations |
-| `vibecms annotate [dir]` | Mark regions in built HTML and list site images for the picker |
-| `vibecms user add <email> [--name N] [--admin]` | Create an editor and print their invite link |
-| `vibecms user link <email>` | New invite link (also how a forgotten password is reset) |
-| `vibecms user list` / `user remove <email>` | Manage editors |
-| `vibecms connect <name> [--publish]` | AI connection: prints its MCP URL |
-| `vibecms connect list` / `connect remove <name>` | Manage AI connections |
-| `vibecms status` | Every edited region, draft or live, and which ones the developer has since changed |
+| `editlayer init [--name N] [--accent #hex]` | Add Editlayer to a site |
+| `editlayer update` | Copy this engine version into `./_editlayer` and apply new migrations |
+| `editlayer annotate [dir]` | Mark regions in built HTML and list site images for the picker |
+| `editlayer user add <email> [--name N] [--admin]` | Create an editor and print their invite link |
+| `editlayer user link <email>` | New invite link (also how a forgotten password is reset) |
+| `editlayer user list` / `user remove <email>` | Manage editors |
+| `editlayer connect <name> [--publish]` | AI connection: prints its MCP URL |
+| `editlayer connect list` / `connect remove <name>` | Manage AI connections |
+| `editlayer status` | Every edited region, draft or live, and which ones the developer has since changed |
 
-## Working on Vibe CMS itself
+## Working on Editlayer itself
 
 - Browser code is in `client/` (`editor.js`, `ui.css`, `editor.css`, `launcher.js`). After changing it run
   `npm run build`, which embeds it into `src/client-assets.js`. Then redeploy each site that uses it.
 - Worker code is in `src/`; schema in `migrations/` (add new numbered files, never edit applied ones).
 - After any change here, run `node scripts/sync-plugin.mjs` (repo root) so the Claude Code plugin ships it.
 - Local test: the marketing site in `../site` runs on this engine: `npx wrangler dev --port 8792` in `site/`,
-  then `vibecms user add editor@example.test --admin --local --port 8792` and open the printed link.
+  then `editlayer user add editor@example.test --admin --local --port 8792` and open the printed link.
 
 ## Not yet
 
 - Background images set in the site's stylesheet aren't clickable (inline ones, such as section photos, are).
-- Folding editors' changes back into the site's source files (`vibecms status` shows what changed).
+- Folding editors' changes back into the site's source files (`editlayer status` shows what changed).

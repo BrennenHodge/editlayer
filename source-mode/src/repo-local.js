@@ -1,7 +1,7 @@
 // A site repository on this computer, changed with the git command line. Used for Phase 0 testing.
 //
 // Safety rules (Phase 0): the working branch must not be main or master, the repository must have no remotes
-// (so nothing can be pushed anywhere), and only files Vibe CMS changed are committed.
+// (so nothing can be pushed anywhere), and only files Editlayer changed are committed.
 
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -18,7 +18,7 @@ export function localRepo(dir, { branch, allowRemotes = false } = {}) {
   function assertSafe() {
     const current = git('rev-parse', '--abbrev-ref', 'HEAD');
     if (current !== branch) throw new Error(`Expected branch ${branch}, the repository is on ${current}`);
-    if (/^(main|master)$/i.test(branch)) throw new Error('Vibe CMS Phase 0 never commits to main or master');
+    if (/^(main|master)$/i.test(branch)) throw new Error('Editlayer Phase 0 never commits to main or master');
     if (!allowRemotes && git('remote')) throw new Error('This test repository has a remote; Phase 0 only works on a repository with none');
   }
 
@@ -59,7 +59,7 @@ export function localRepo(dir, { branch, allowRemotes = false } = {}) {
       return git('rev-parse', 'HEAD');
     },
 
-    /** Undoes one Vibe CMS commit with a new commit. */
+    /** Undoes one Editlayer commit with a new commit. */
     revert(sha, author) {
       assertSafe();
       git('-c', `user.name=${author.name}`, '-c', `user.email=${author.email}`, 'revert', '--no-edit', sha);

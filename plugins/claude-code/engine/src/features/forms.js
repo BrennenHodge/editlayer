@@ -165,7 +165,7 @@ async function submit(ctx) {
     const row = await env.CMS_DB.prepare('SELECT COUNT(*) AS n FROM cms_form_submissions WHERE ip_hash = ? AND created_at > ?').bind(hash, since).first();
     if (row && row.n >= c.rateMax) return reply('rate', 429);
   } catch (err) {
-    console.error('vibecms forms: storage unavailable', err && err.message);
+    console.error('editlayer forms: storage unavailable', err && err.message);
     return reply('down', 503);
   }
 
@@ -185,7 +185,7 @@ async function submit(ctx) {
       'INSERT INTO cms_form_submissions (form, data, page, ip_hash, user_agent, created_at, spam, spam_reason) VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
     ).bind(form, JSON.stringify(pairs), page, hash, String(request.headers.get('user-agent') || '').slice(0, 300), Date.now(), spam ? 1 : 0, spam).run();
   } catch (err) {
-    console.error('vibecms forms: could not store submission', err && err.message);
+    console.error('editlayer forms: could not store submission', err && err.message);
     return reply('down', 503);
   }
 
@@ -193,7 +193,7 @@ async function submit(ctx) {
   // because a site without a "triggers.crons" entry in wrangler.jsonc never runs scheduled().
   if (Date.now() - lastSweep > 3600000) {
     lastSweep = Date.now();
-    ctx.waitUntil(sweep(env, c).catch((err) => console.error('vibecms forms: clean-up failed', err && err.message)));
+    ctx.waitUntil(sweep(env, c).catch((err) => console.error('editlayer forms: clean-up failed', err && err.message)));
   }
 
   if (!spam) {
@@ -203,7 +203,7 @@ async function submit(ctx) {
         await sendEmail({ env, notify: c.notify, to, form, pairs, page, origin: url.origin, siteName: opts.siteName, labels: c.labels });
       }
       if (c.salesforce) await sendToSalesforce({ sf: c.salesforce, form, pairs });
-    })().catch((err) => console.error('vibecms forms: notify failed', err && err.message)));
+    })().catch((err) => console.error('editlayer forms: notify failed', err && err.message)));
   }
   // Spam gets the same answer as a real message, so bots learn nothing.
   return reply('ok');
@@ -251,7 +251,7 @@ function render(ctx) {
       try {
         hidden = `<input type="hidden" name="${TS}" value="${escapeHtml(await timeField(env, name, Date.now()))}">`;
       } catch (err) {
-        console.error('vibecms forms: no signing key (run the forms migration)', err && err.message);
+        console.error('editlayer forms: no signing key (run the forms migration)', err && err.message);
       }
       const id = safeAnchor(el.getAttribute('id'));
       hidden += `<input type="hidden" name="${PAGE}" value="${escapeHtml(safePage(url.pathname) || '/')}">`

@@ -5,7 +5,7 @@
     const F = (S.features && S.features.sections) || {};
     const BGS = Array.isArray(F.backgrounds) ? F.backgrounds : [];
     const PHOTO_CLASS = String(F.photoClass || '').split(/\s+/).filter(Boolean);
-    const BLOCKS = F.blocks || '/vibecms-blocks.html';
+    const BLOCKS = F.blocks || '/editlayer-blocks.html';
     const shared = { ...(F.shared || {}) };   // id → { name, tag, attrs }
     const OVERLAY = 'rgba(10,12,16,.62)';
     const KEEP = ['class', 'data-cms-space', 'data-cms-align', 'data-cms-show', 'data-cms-bg', 'data-cms-focus', 'id', 'aria-labelledby', 'aria-label', 'role'];
@@ -101,8 +101,8 @@
     function norm(el) {
       const c = core.stripJunk(el.cloneNode(true));
       for (const n of [c, ...c.querySelectorAll('*')]) {
-        if (n.hasAttribute('data-vibecms-open')) n.removeAttribute('open');
-        for (const a of [...n.attributes]) if (/^(data-cms|data-vibecms|contenteditable$|spellcheck$)/.test(a.name)) n.removeAttribute(a.name);
+        if (n.hasAttribute('data-editlayer-open')) n.removeAttribute('open');
+        for (const a of [...n.attributes]) if (/^(data-cms|data-editlayer|contenteditable$|spellcheck$)/.test(a.name)) n.removeAttribute(a.name);
       }
       return c.outerHTML.replace(/\xa0/g, '&nbsp;').replace(/\s+/g, ' ').replace(/>\s+</g, '><').trim();
     }
@@ -492,7 +492,7 @@
       core.closePanel();
       core.togglePanel('sec-lib');
     }
-    const headLinks = () => [...d.head.querySelectorAll('link[rel="stylesheet"], link[rel="preconnect"], style[data-vibecms-sections], style#vibecms-theme')]
+    const headLinks = () => [...d.head.querySelectorAll('link[rel="stylesheet"], link[rel="preconnect"], style[data-editlayer-sections], style#editlayer-theme')]
       .filter((l) => !/\/_cms\//.test(l.getAttribute('href') || '')).map((l) => l.outerHTML).join('');
     /** Site styles (colours, corners, fonts…) set live on <html> while editing, so previews match the page. */
     function liveVars() {

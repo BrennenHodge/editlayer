@@ -1,4 +1,4 @@
-# Vibe CMS on any site: plan
+# Editlayer on any site: plan
 
 Status: Phase 0, local part done (2026-11-25): the full loop works on a local copy of Lexar. Code in
 [source-mode/](source-mode/README.md); results under "Phase 0 results" below. Nothing was pushed to GitHub and
@@ -25,7 +25,7 @@ supported with no host-specific code.
 Why this over a separate content store with keys (what I suggested earlier for React sites): keys mean refactoring
 every site to read from the store, and they create a second source of truth. Writing back to source needs no
 refactor, the developer's next `git pull` has the client's changes, Claude Code sees them, SEO is whatever the site
-already does, and the client's site never depends on Vibe CMS to load.
+already does, and the client's site never depends on Editlayer to load.
 
 The existing HTML-region mode stays as the option for sites with no repository (see "Sites without git").
 
@@ -67,11 +67,11 @@ Three steps for every edit: **find** where the text lives, **change** the source
 ### 1. Getting the editor onto any site
 
 - **One script tag**, added by the developer or by Claude Code:
-  `<script src="https://cdn.vibecms.app/v1.js" data-site="SITE_ID" async></script>`.
+  `<script src="https://cdn.editlayer.app/v1.js" data-site="SITE_ID" async></script>`.
   For visitors it does nothing but check for an edit hand-off and exit (a few hundred bytes, no requests).
-- **Sign-in without third-party cookies.** The editor signs in at the Vibe CMS app, which sends them to
+- **Sign-in without third-party cookies.** The editor signs in at the Editlayer app, which sends them to
   `client-site.com/#vibe=<one-time code>`. The script swaps the code for a short-lived token kept in the site's own
-  storage and calls the Vibe CMS API with it (CORS). This works on any host and doesn't need the site to allow
+  storage and calls the Editlayer API with it (CORS). This works on any host and doesn't need the site to allow
   framing (Lexar sends `X-Frame-Options: DENY`, so an iframe-based editor would fail).
 - **Freezing the page.** Today edit mode strips the site's scripts on the server. On an arbitrary host we can't, so
   the script lets the app render, then replaces the page with a copy of the rendered DOM. The copy has no event
@@ -89,7 +89,7 @@ In order, cheapest first:
 2. **Several matches: score by neighbours.** The right file is the one that also contains the section's other
    texts. That settles most duplicates without any setup. When the same string is really shared (a "Request a
    quote" button used on every page), ask: "This text appears in 6 places. Change it everywhere, or only here?"
-3. **Exact locations from a build plugin (optional, Phase 2).** `@vibecms/vite`, `@vibecms/next`, `@vibecms/astro`
+3. **Exact locations from a build plugin (optional, Phase 2).** `@editlayer/vite`, `@editlayer/next`, `@editlayer/astro`
    add a short `data-v` id to elements whose text comes from a literal, with a source map kept on the service (not
    shipped publicly). Removes all guessing. Developers who want zero setup skip it.
 4. **AI fallback.** When nothing deterministic works (text assembled from parts, odd patterns), a Claude agent in a
@@ -112,33 +112,33 @@ with a note for the developer.
 - **Cards, list items, sections (duplicate, move, delete):** an AST edit when the siblings are literal JSX in one
   parent or items in one array, which covers most marketing pages. Otherwise AI fallback. Phase 2.
 - **Images:** resized and converted to WebP in the browser as today, then committed into the repository's public
-  folder (`public/`, `static/` or next to the HTML, detected per framework), so the site never depends on Vibe CMS
+  folder (`public/`, `static/` or next to the HTML, detected per framework), so the site never depends on Editlayer
   for images. Very large media (video) can stay in R2 with a URL committed.
 - Every change is re-read after editing (parse the file again) and the batch is rejected if a file no longer parses.
 
 ### 4. Deliver: publish = commit, the host deploys
 
-- **Drafts** are change sets stored in the Vibe CMS database, not commits. In edit mode the editor shows them over
+- **Drafts** are change sets stored in the Editlayer database, not commits. In edit mode the editor shows them over
   the frozen page, so the editor sees their unpublished changes everywhere.
-- **Publish** writes one commit per publish to the default branch, authored by the Vibe CMS app, with the editor's
-  name in the message: `Content: home hero and 2 more (Vibe CMS, Jane Doe)`.
+- **Publish** writes one commit per publish to the default branch, authored by the Editlayer app, with the editor's
+  name in the message: `Content: home hero and 2 more (Editlayer, Jane Doe)`.
   With approval turned on (the existing review feature), publish opens a pull request instead and the approver
   merges it. Scheduled publishing merges at the set time.
 - **Deploy status:** Vercel, Netlify, Cloudflare and Railway report deployments back to the commit on GitHub, so one
   integration shows "Publishing... live in about 90 seconds" and then "Live" for every host. Hosts that don't report
   get a "Deploy hook URL" field (Netlify, Vercel, Cloudflare Pages, Render all have them) or simply a timer.
-- **History** is the commits Vibe CMS made. Restoring a version reverts the commit (as a new commit).
+- **History** is the commits Editlayer made. Restoring a version reverts the commit (as a new commit).
 - **Developer changes** no longer conflict: the developer pulls and keeps working. If the developer changed a file
   after a draft was started, the change set is re-applied by finding the text again; if the text is gone, the
   editor sees "the developer changed this part" (today's banner, same idea).
-- Setup adds a note to the site's `CLAUDE.md` / `AGENTS.md`: "Content is edited in Vibe CMS and committed to main.
+- Setup adds a note to the site's `CLAUDE.md` / `AGENTS.md`: "Content is edited in Editlayer and committed to main.
   Pull before changing page text."
 
 ### Sites without git (Phase 3)
 
 - **On Cloudflare:** today's engine, unchanged.
 - **On any host:** the same engine running as an edge proxy in front of the site (DNS through Cloudflare; Cloudflare
-  for SaaS custom hostnames on the Vibe CMS account), fetching pages from the real host instead of from static
+  for SaaS custom hostnames on the Editlayer account), fetching pages from the real host instead of from static
   assets. Only for plain HTML pages, since it has the same React problem as today.
 - **Shared hosting:** write the edited HTML files back over SFTP, the git-less version of "publish".
 
@@ -154,10 +154,10 @@ with a note for the developer.
 
 After this is built:
 
-1. Sign up at Vibe CMS, **Add a site**, enter the domain.
-2. **Connect the repository**: install the Vibe CMS GitHub App on the client's repo only.
+1. Sign up at Editlayer, **Add a site**, enter the domain.
+2. **Connect the repository**: install the Editlayer GitHub App on the client's repo only.
 3. **Add the script tag** to the site's main HTML template (`index.html`, the root layout in Next.js, the base
-   layout in Astro). In Claude Code: "add Vibe CMS to this site" runs a skill that does steps 2 to 4 and checks the
+   layout in Astro). In Claude Code: "add Editlayer to this site" runs a skill that does steps 2 to 4 and checks the
    result. Optional: add the build plugin for exact locations.
 4. **Deploy as usual.** Nothing about the hosting changes.
 5. **Invite the client** from the dashboard. They get an email, sign in, and land on their own site with **Edit
@@ -167,7 +167,7 @@ After this is built:
 Developers with several clients see all their sites in one dashboard (an agency account), which is also the natural
 billing unit.
 
-Today, before any of this: the engine's README path (Cloudflare Workers static sites only, `vibecms init`,
+Today, before any of this: the engine's README path (Cloudflare Workers static sites only, `editlayer init`,
 `annotate` in the build, `user add`).
 
 ## Platform notes to check in Phase 0
@@ -205,9 +205,9 @@ heading in the browser ends with Railway deploying it, without touching Railway,
 project. Answer the platform questions above.
 
 Phase 0 decisions (2026-11-25):
-- Starts after the current engine build (the "Vibe CMS product launch" session) is finished.
+- Starts after the current engine build (the "Editlayer product launch" session) is finished.
 - Lexar only; Lovable comes after Phase 0 works.
-- Commits go to a `vibecms-test` branch of `LexarInsulation/lexar-website`, never `main` (main deploys the live
+- Commits go to a `editlayer-test` branch of `LexarInsulation/lexar-website`, never `main` (main deploys the live
   lexarinsulation.com). A separate Railway environment deploys that branch to its own URL.
 - Repository access: a fine-grained GitHub token for that repo only (Contents read/write, Metadata read, Commit
   statuses and Deployments read), saved by Brennen as `GITHUB_TOKEN` in `C:\Users\brenn\VibeCMS\.env`. The GitHub
@@ -217,7 +217,7 @@ Phase 0 decisions (2026-11-25):
 ### Phase 0 results (local, 2026-11-25)
 
 Built in [source-mode/](source-mode/README.md), separate from `engine/`. Tested on a local clone of the Lexar repo in
-the session scratchpad: branch `vibecms-test`, git remote removed, pushes blocked by a hook, analytics IDs blanked so
+the session scratchpad: branch `editlayer-test`, git remote removed, pushes blocked by a hook, analytics IDs blanked so
 test visits never reach Lexar's Google Analytics. Served by Lexar's own `preview/server.mjs` (the server Railway runs)
 on localhost:3310.
 
@@ -267,7 +267,7 @@ new pages through the AI.
    deploy tracking all live on a server anyway, and it's a recurring business.
 2. **Publish to main, or always through a pull request?** Recommended: main by default, pull request when approval is
    on.
-3. **Images in the repo or on a Vibe CMS CDN?** Recommended: repo by default, so the client's site stands alone.
+3. **Images in the repo or on an Editlayer CDN?** Recommended: repo by default, so the client's site stands alone.
 4. **Is the AI fallback included or metered?** It's the one cost that grows with use.
 5. **Does today's Cloudflare region mode stay a product of its own** (instant publish, no git), or become the
    Phase 3 fallback only?
@@ -282,4 +282,4 @@ new pages through the AI.
 - **The client's commit breaks the build.** Mitigation: re-parse every edited file before committing, and with the
   build plugin or AI sandbox, run the build first. A failed deploy shows in the editor with one-click revert.
 - **Repository access is a big ask from a client.** Mitigation: the GitHub App is installed on one repository only,
-  by the developer, and can only write commits that Vibe CMS made (audit list in the dashboard).
+  by the developer, and can only write commits that Editlayer made (audit list in the dashboard).

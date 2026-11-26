@@ -1,14 +1,14 @@
 {
-  "name": "vibe-cms",
-  "owner": { "name": "dbVantage", "url": "https://cms.dbvantage.com" },
-  "metadata": { "description": "Vibe CMS: click-to-edit content management for sites built with AI." },
+  "name": "editlayer",
+  "owner": { "name": "dbVantage", "url": "https://editlayer.co" },
+  "metadata": { "description": "Editlayer: click-to-edit content management for sites built with AI." },
   "plugins": [
     {
-      "name": "vibe-cms",
+      "name": "editlayer",
       "source": "./plugins/claude-code",
-      "description": "Add a click-to-edit CMS to any static site: your client edits text, photos and sections right on the live page. Cloudflare hosted, AI-ready through MCP.",
+      "description": "Add a click-to-edit layer to any static site: your client edits text, photos and sections right on the live page. Cloudflare hosted, AI-ready through MCP.",
       "category": "development",
-      "homepage": "https://cms.dbvantage.com"
+      "homepage": "https://editlayer.co"
     }
   ]
 }

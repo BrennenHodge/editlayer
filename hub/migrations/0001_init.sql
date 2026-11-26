@@ -1,4 +1,4 @@
--- Vibe CMS connector (hub): OAuth 2.1 authorization server + MCP proxy in front of Vibe CMS sites.
+-- Editlayer connector (hub): OAuth 2.1 authorization server + MCP proxy in front of Editlayer sites.
 -- Secrets are never stored in the clear: codes and tokens as SHA-256 hashes, site keys AES-GCM encrypted.
 
 -- OAuth clients: registered with dynamic client registration ('dcr') or described by a client ID metadata

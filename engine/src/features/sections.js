@@ -7,7 +7,7 @@
 // - Shared sections: a section marked data-cms="@s-<id>" is a site-wide region (path "*"). The page
 //   keeps the element as a placeholder; render() swaps in the stored HTML on every page that uses it.
 //   Names and the section element's own settings live in the "@sections" data key (draft → publish).
-// - The section library reads ready-made blocks from /vibecms-blocks.html, which only editors can open.
+// - The section library reads ready-made blocks from /editlayer-blocks.html, which only editors can open.
 import { json } from '../util.js';
 
 const ID_RE = /^[a-z0-9]{4,16}$/;
@@ -22,7 +22,7 @@ const TOKEN_RE = /^[A-Za-z0-9_-]{1,60}$/;
 const CLASS_RE = /^[^\s"'<>&`=\\]{1,80}$/;
 const ATTR_RE = /data-cms-(space|align|show|bg)\b/;
 const SETTING_ATTRS = ['data-cms-space', 'data-cms-align', 'data-cms-show', 'data-cms-bg', 'data-cms-focus'];
-export const BLOCKS_PATHS = ['/vibecms-blocks.html', '/vibecms-blocks', '/vibecms-blocks/'];
+export const BLOCKS_PATHS = ['/editlayer-blocks.html', '/editlayer-blocks', '/editlayer-blocks/'];
 export const OVERLAY = 'rgba(10,12,16,.62)';
 
 function config(opts) {
@@ -171,8 +171,8 @@ export function sectionCss(cfg) {
     + ':root [data-cms-align="center"]{text-align:center}'
     + ':root [data-cms-align="center"] :is(h1,h2,h3,h4,h5,h6,p,blockquote,ul,ol,dl,form,figure){margin-left:auto;margin-right:auto}'
     + ':root [data-cms-align="center"] :is([class*="btn-row"],[class*="buttons"],[class*="actions"],[class*="eyebrow"],[class*="facts"],[class*="chips"],[class*="kicker"]){justify-content:center}'
-    + '@media (min-width:768px){html:not(.vibecms-on) [data-cms-show="phone"]{display:none!important}}'
-    + '@media (max-width:767.98px){html:not(.vibecms-on) [data-cms-show="large"]{display:none!important}}'
+    + '@media (min-width:768px){html:not(.editlayer-on) [data-cms-show="phone"]{display:none!important}}'
+    + '@media (max-width:767.98px){html:not(.editlayer-on) [data-cms-show="large"]{display:none!important}}'
     + photo;
 }
 
@@ -207,7 +207,7 @@ async function listShared(ctx) {
 /** Only signed-in editors can open the blocks page; visitors get the site's 404 page. */
 async function guardBlocks(ctx, res) {
   if (await ctx.getUser()) return res;
-  const missing = await ctx.env.ASSETS.fetch(new Request(new URL('/__vibecms-not-found__', ctx.url)));
+  const missing = await ctx.env.ASSETS.fetch(new Request(new URL('/__editlayer-not-found__', ctx.url)));
   const headers = new Headers(missing.headers);
   headers.set('cache-control', 'no-store');
   headers.set('x-robots-tag', 'noindex');
@@ -218,8 +218,8 @@ async function guardBlocks(ctx, res) {
 async function sitemap(ctx, res) {
   if (!res.ok) return res;
   const text = await res.clone().text();
-  if (!text.includes('vibecms-blocks')) return res;
-  const out = text.replace(/\s*<url>(?:(?!<\/url>)[\s\S])*vibecms-blocks(?:(?!<\/url>)[\s\S])*<\/url>/g, '');
+  if (!text.includes('editlayer-blocks')) return res;
+  const out = text.replace(/\s*<url>(?:(?!<\/url>)[\s\S])*editlayer-blocks(?:(?!<\/url>)[\s\S])*<\/url>/g, '');
   const headers = new Headers(res.headers);
   headers.delete('content-length');
   headers.delete('etag');
@@ -239,7 +239,7 @@ export default {
     const map = readMap(ctx.rows.get('@sections'));
     if (ctx.editing) ctx.share({ backgrounds: cfg.backgrounds, photoClass: cfg.photoClass, blocks: cfg.blocks, shared: map });
 
-    if (ctx.editing || needsStyles(ctx.rows, map)) ctx.head(`<style data-vibecms-sections>${sectionCss(cfg)}</style>`);
+    if (ctx.editing || needsStyles(ctx.rows, map)) ctx.head(`<style data-editlayer-sections>${sectionCss(cfg)}</style>`);
 
     const hasShared = [...ctx.rows.keys()].some((k) => k.startsWith('@s-')) || Object.keys(map).length > 0;
     if (hasShared) {

@@ -1,7 +1,7 @@
-"""Build the Vibe CMS marketing site: src/pages/*.html + shared head/foot -> directory URLs in this folder.
+"""Build the Editlayer marketing site: src/pages/*.html + shared head/foot -> directory URLs in this folder.
 
 Each page starts with comment metadata: title, desc, path, nav, optional og_title and noindex.
-Then: sitemap.xml, robots.txt, the PWA (pwa.py), and Vibe CMS marks the editable regions (annotate).
+Then: sitemap.xml, robots.txt, the PWA (pwa.py), and Editlayer marks the editable regions (annotate).
 Run:  python build.py
 """
 import hashlib, html, os, re, shutil, subprocess, sys
@@ -10,9 +10,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).parent
 SRC = ROOT / "src"
-BASE = os.environ.get("SITE_BASE", "https://cms.dbvantage.com")
+BASE = os.environ.get("SITE_BASE", "https://editlayer.co")
 NAV = ["home", "features", "ai", "developers", "pricing", "access"]
-HIDDEN = ("/404.html", "/offline/", "/vibecms-blocks.html")  # never in the sitemap
+HIDDEN = ("/404.html", "/offline/", "/editlayer-blocks.html")  # never in the sitemap
 
 head = (SRC / "_head.html").read_text(encoding="utf-8")
 foot = (SRC / "_foot.html").read_text(encoding="utf-8")
@@ -71,19 +71,19 @@ print(f"sitemap: {len(sitemap)} urls")
 # Installable PWA (modern-website skill).
 pwa = Path.home() / ".claude/skills/modern-website/scripts/pwa.py"
 if pwa.exists():
-    cmd = [sys.executable, str(pwa), str(ROOT), "--name", "Vibe CMS", "--short", "Vibe CMS", "--theme", "#121316",
-           "--bg", "#121316", "--desc", "The click-to-edit CMS for websites built with AI.",
+    cmd = [sys.executable, str(pwa), str(ROOT), "--name", "Editlayer", "--short", "Editlayer", "--theme", "#121316",
+           "--bg", "#121316", "--desc", "The click-to-edit layer for websites built with AI.",
            "--shortcut", "Features=/features/", "--shortcut", "Developers=/developers/"]
     icon = ROOT / "assets" / "img" / "mark-1024.png"
     if icon.exists():
         cmd += ["--icon", str(icon)]
     subprocess.run(cmd, check=True)
 
-# Vibe CMS: mark the editable regions. This site dogfoods the engine in ../engine (or VIBECMS_HOME).
-cli = Path(os.environ.get("VIBECMS_HOME", ROOT.parent / "engine")) / "cli" / "vibecms.mjs"
+# Editlayer: mark the editable regions. This site dogfoods the engine in ../engine (or EDITLAYER_HOME).
+cli = Path(os.environ.get("EDITLAYER_HOME", ROOT.parent / "engine")) / "cli" / "editlayer.mjs"
 if not cli.exists():
-    cli = ROOT / "_vibecms" / "cli" / "vibecms.mjs"
+    cli = ROOT / "_editlayer" / "cli" / "editlayer.mjs"
 if cli.exists() and shutil.which("node"):
     subprocess.run(["node", str(cli), "annotate", str(ROOT)], check=True)
 else:
-    print("warning: Vibe CMS CLI not found; pages are not marked for the editor")
+    print("warning: Editlayer CLI not found; pages are not marked for the editor")

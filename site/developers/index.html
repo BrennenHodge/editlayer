@@ -3,36 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>For developers: add Vibe CMS to a site with Claude Code</title>
-<meta name="description" content="Install the Vibe CMS plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates.">
-<link rel="canonical" href="https://cms.dbvantage.com/developers/">
+<title>For developers: add Editlayer to a site with Claude Code</title>
+<meta name="description" content="Install the Editlayer plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates.">
+<link rel="canonical" href="https://editlayer.co/developers/">
 <meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d0e10" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Vibe CMS">
-<meta property="og:title" content="For developers: add Vibe CMS to a site with Claude Code">
-<meta property="og:description" content="Install the Vibe CMS plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates.">
-<meta property="og:url" content="https://cms.dbvantage.com/developers/">
-<meta property="og:image" content="https://cms.dbvantage.com/assets/img/og.png">
+<meta property="og:site_name" content="Editlayer">
+<meta property="og:title" content="For developers: add Editlayer to a site with Claude Code">
+<meta property="og:description" content="Install the Editlayer plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates.">
+<meta property="og:url" content="https://editlayer.co/developers/">
+<meta property="og:image" content="https://editlayer.co/assets/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Vibe CMS: click the page and type">
+<meta property="og:image:alt" content="Editlayer: click the page and type">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="For developers: add Vibe CMS to a site with Claude Code">
-<meta name="twitter:description" content="Install the Vibe CMS plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates.">
-<meta name="twitter:image" content="https://cms.dbvantage.com/assets/img/og.png">
+<meta name="twitter:title" content="For developers: add Editlayer to a site with Claude Code">
+<meta name="twitter:description" content="Install the Editlayer plugin for Claude Code and make any static Cloudflare site editable in one step. How it works, requirements, commands and updates.">
+<meta name="twitter:image" content="https://editlayer.co/assets/img/og.png">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
-<link rel="stylesheet" href="/styles.css?v=b95353ff">
+<link rel="stylesheet" href="/styles.css?v=3822b7dc">
 <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 
 <!-- pwa:head -->
 <link rel="manifest" href="/manifest.webmanifest">
-<meta name="apple-mobile-web-app-title" content="Vibe CMS">
+<meta name="apple-mobile-web-app-title" content="Editlayer">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <!-- /pwa:head -->
@@ -67,11 +67,11 @@
   </defs>
 </svg>
 <a class="skip" href="#main">Skip to content</a>
-<header class="site-head" data-cms="@header" data-cms-v="8de2e6223f52" data-cms-current="/developers/">
+<header class="site-head" data-cms="@header" data-cms-v="ecccf21e184e" data-cms-current="/developers/">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="Vibe CMS home">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M8.2 9.6 13.7 22.4h1.5L20.6 9.6" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
-      Vibe CMS
+    <a class="brand" href="/" aria-label="Editlayer home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M7.6 10.4h11M7.6 16h7.6M7.6 21.6h11" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
+      Editlayer
     </a>
     <nav class="nav" aria-label="Main">
       <a href="/features/">Features</a>
@@ -101,12 +101,12 @@
     <button type="button" class="btn" data-pwa-install hidden>Install the app</button>
   </div>
 </div>
-<main id="main" data-cms="main" data-cms-v="083b7c09e727">
+<main id="main" data-cms="main" data-cms-v="3304122ed73d">
 <section class="page-hero">
   <div class="wrap">
     <p class="eyebrow">For developers</p>
     <h1 class="h1">Make any static site editable in one&nbsp;step.</h1>
-    <p class="lede">Vibe CMS is a Claude Code plugin and a small Cloudflare Worker. You keep building the way you do; your client gets a visual editor on the live site.</p>
+    <p class="lede">Editlayer is a Claude Code plugin and a small Cloudflare Worker. You keep building the way you do; your client gets a visual editor on the live site.</p>
     <ul class="chips"><li>Claude Code plugin</li><li>Cloudflare Workers, D1, R2</li><li>No framework, no build lock-in</li></ul>
   </div>
 </section>
@@ -116,20 +116,20 @@
     <div>
       <p class="eyebrow">Install</p>
       <h2 class="h2">From Claude&nbsp;Code</h2>
-      <p class="lede">Add the marketplace, install the plugin, then ask in&nbsp;plain words. The <code class="inline">vibe-cms</code> skill checks the site, sets everything up and hands you the owner’s invite link.</p>
+      <p class="lede">Add the marketplace, install the plugin, then ask in&nbsp;plain words. The <code class="inline">editlayer</code> skill checks the site, sets everything up and hands you the owner’s invite link.</p>
       <ul class="ticks">
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Needs Node 20+, a Cloudflare account and <code class="inline">npx wrangler login</code></li>
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Skills: <code class="inline">vibe-cms</code>, <code class="inline">invite-editor</code>, <code class="inline">connect-ai</code>, <code class="inline">cms-status</code></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Skills: <code class="inline">editlayer</code>, <code class="inline">invite-editor</code>, <code class="inline">connect-ai</code>, <code class="inline">cms-status</code></li>
       </ul>
     </div>
     <div>
       <p class="code-label">Claude Code</p>
-<pre class="code"><span class="p">&gt; </span>/plugin marketplace add BrennenHodge/vibe-cms
-<span class="p">&gt; </span>/plugin install vibe-cms@vibe-cms
-<span class="p">&gt; </span>/vibe-cms:vibe-cms</pre>
+<pre class="code"><span class="p">&gt; </span>/plugin marketplace add BrennenHodge/editlayer
+<span class="p">&gt; </span>/plugin install editlayer@editlayer
+<span class="p">&gt; </span>/editlayer:editlayer</pre>
       <p class="code-label">Or from a terminal</p>
-<pre class="code"><span class="p">$ </span>claude plugin marketplace add BrennenHodge/vibe-cms
-<span class="p">$ </span>claude plugin install vibe-cms@vibe-cms</pre>
+<pre class="code"><span class="p">$ </span>claude plugin marketplace add BrennenHodge/editlayer
+<span class="p">$ </span>claude plugin install editlayer@editlayer</pre>
     </div>
   </div>
 </section>
@@ -138,11 +138,11 @@
   <div class="wrap">
     <div class="head"><p class="eyebrow">How it works</p><h2 class="h2">A Worker in front of your static&nbsp;files</h2></div>
     <div class="grid grid--2">
-      <article class="card"><h3 class="h3">Regions</h3><p>After each build, <code class="inline">vibecms annotate</code> marks every page’s <code class="inline">&lt;main&gt;</code> as editable, plus the header and footer when they’re the same on every page. Each region carries a hash of your version.</p></article>
+      <article class="card"><h3 class="h3">Regions</h3><p>After each build, <code class="inline">editlayer annotate</code> marks every page’s <code class="inline">&lt;main&gt;</code> as editable, plus the header and footer when they’re the same on every page. Each region carries a hash of your version.</p></article>
       <article class="card"><h3 class="h3">Storage</h3><p>Edited regions are stored whole, as sanitized HTML, in D1, with draft and live copies and a full publish history. Images go to R2 and are served from <code class="inline">/_cms/media/</code>.</p></article>
-      <article class="card"><h3 class="h3">Serving</h3><p>The Worker fetches the static page and swaps in edited regions with HTMLRewriter as it streams. Untouched pages pass through. If the CMS errors, the static page is served.</p></article>
+      <article class="card"><h3 class="h3">Serving</h3><p>The Worker fetches the static page and swaps in edited regions with HTMLRewriter as it streams. Untouched pages pass through. If Editlayer errors, the static page is served.</p></article>
       <article class="card"><h3 class="h3">Edit mode</h3><p>Signed-in editors add <code class="inline">?edit</code>. Drafts are applied, your scripts are paused so menus don’t fight the editor, and the editor loads in a shadow root so your CSS and its CSS never mix.</p></article>
-      <article class="card"><h3 class="h3">Your rebuilds</h3><p>If you rebuild a region an editor also changed, their version keeps showing and they get a banner: keep theirs, or use yours. <code class="inline">vibecms status</code> lists every edited region.</p></article>
+      <article class="card"><h3 class="h3">Your rebuilds</h3><p>If you rebuild a region an editor also changed, their version keeps showing and they get a banner: keep theirs, or use yours. <code class="inline">editlayer status</code> lists every edited region.</p></article>
       <article class="card"><h3 class="h3">Security</h3><p>PBKDF2 passwords, HttpOnly 30-day sessions, lockout after 8 failed sign-ins, a custom header plus same-origin check on every write, and sanitized HTML.</p></article>
     </div>
   </div>
@@ -162,12 +162,12 @@
     <table class="cmds">
       <thead><tr><th>Command</th><th>Does</th></tr></thead>
       <tbody>
-        <tr><td><code>vibecms init</code></td><td>Creates the D1 database and R2 bucket, copies the engine into <code>_vibecms/</code>, writes <code>cms.worker.js</code>, updates <code>wrangler.jsonc</code>, applies migrations and marks the pages.</td></tr>
-        <tr><td><code>vibecms annotate [dir]</code></td><td>Marks editable regions in built HTML. Add it to the end of your build.</td></tr>
-        <tr><td><code>vibecms user add &lt;email&gt;</code></td><td>Creates an editor (<code>--admin</code> for admins) and prints a one-time invite link, valid 7 days.</td></tr>
-        <tr><td><code>vibecms connect &lt;name&gt;</code></td><td>Creates an AI connection and prints its MCP address. <code>--publish</code> lets it publish.</td></tr>
-        <tr><td><code>vibecms status</code></td><td>Every edited region, draft or live, and which ones you have since rebuilt.</td></tr>
-        <tr><td><code>vibecms update</code></td><td>Copies the plugin’s newer engine into the site and applies new migrations.</td></tr>
+        <tr><td><code>editlayer init</code></td><td>Creates the D1 database and R2 bucket, copies the engine into <code>_editlayer/</code>, writes <code>cms.worker.js</code>, updates <code>wrangler.jsonc</code>, applies migrations and marks the pages.</td></tr>
+        <tr><td><code>editlayer annotate [dir]</code></td><td>Marks editable regions in built HTML. Add it to the end of your build.</td></tr>
+        <tr><td><code>editlayer user add &lt;email&gt;</code></td><td>Creates an editor (<code>--admin</code> for admins) and prints a one-time invite link, valid 7 days.</td></tr>
+        <tr><td><code>editlayer connect &lt;name&gt;</code></td><td>Creates an AI connection and prints its MCP address. <code>--publish</code> lets it publish.</td></tr>
+        <tr><td><code>editlayer status</code></td><td>Every edited region, draft or live, and which ones you have since rebuilt.</td></tr>
+        <tr><td><code>editlayer update</code></td><td>Copies the plugin’s newer engine into the site and applies new migrations.</td></tr>
       </tbody>
     </table>
     </div>
@@ -189,7 +189,7 @@
     <div class="cta-band">
       <div>
         <h2 class="h2">Give your next client a site they can&nbsp;edit.</h2>
-        <p>Vibe CMS is in early access for developers and agencies building with AI. Join now to lock in founding pricing.</p>
+        <p>Editlayer is in early access for developers and agencies building with AI. Join now to lock in founding pricing.</p>
       </div>
       <div class="btns">
         <a class="btn btn--primary" href="/early-access/">Get early access</a>
@@ -201,15 +201,15 @@
 </section>
 </main>
 
-<footer class="site-foot" data-cms="@footer" data-cms-v="90e38793e36c">
+<footer class="site-foot" data-cms="@footer" data-cms-v="3bb5f1affa53">
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <a class="brand" href="/" aria-label="Vibe CMS home">
-          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M8.2 9.6 13.7 22.4h1.5L20.6 9.6" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
-          Vibe CMS
+        <a class="brand" href="/" aria-label="Editlayer home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M7.6 10.4h11M7.6 16h7.6M7.6 21.6h11" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
+          Editlayer
         </a>
-        <p>The click-to-edit CMS for websites built with AI. This site runs on it.</p>
+        <p>The click-to-edit layer for websites built with AI. This site runs on it.</p>
       </div>
       <div>
         <h2>Product</h2>
@@ -238,12 +238,12 @@
       </div>
     </div>
     <div class="foot-base">
-      <span>© 2026 Vibe CMS, a dbVantage product</span>
+      <span>© 2026 Editlayer, a dbVantage product</span>
       <span>Edit this page: add <code class="inline">?edit</code> to the address</span>
     </div>
   </div>
 </footer>
-<script src="/script.js?v=b95353ff" defer></script>
+<script src="/script.js?v=3822b7dc" defer></script>
 <!-- pwa:body -->
 <script>
 (() => {

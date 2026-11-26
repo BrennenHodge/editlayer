@@ -4,7 +4,7 @@ import editor_js_1 from './client-assets/editor-js.1.js';
 import editor_js_2 from './client-assets/editor-js.2.js';
 import editor_css_0 from './client-assets/editor-css.0.js';
 import launcher_js_0 from './client-assets/launcher-js.0.js';
-export const CLIENT_VERSION = "662fc669e5";
+export const CLIENT_VERSION = "432c9520d7";
 export const CLIENT = {
   "editor.js": editor_js_0 + editor_js_1 + editor_js_2,
   "editor.css": editor_css_0,

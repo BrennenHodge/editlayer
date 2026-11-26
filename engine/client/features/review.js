@@ -32,7 +32,7 @@
     const pill = (status) => { const [t, c] = STATUS[status] || [status, 'rv-off']; return `<span class="pill rv-pill ${c}">${esc(t)}</span>`; };
 
     /* ---------- bar button with a count: editors see requests waiting, authors see new decisions */
-    const seenKey = `vibecms-review-seen:${S.user.email}`;
+    const seenKey = `editlayer-review-seen:${S.user.email}`;
     const seen = () => { try { return Number(localStorage.getItem(seenKey)) || 0; } catch { return 0; } };
     const markSeen = () => { try { localStorage.setItem(seenKey, String(Date.now())); } catch { /* private mode */ } };
     let pending = F.pending || 0;
@@ -374,7 +374,7 @@
       }
       if (isEditor && F.scheduled && !msg) msg = `This page is scheduled to go live ${fmt(F.scheduled)}.`;
       let hinted = false;
-      try { hinted = Boolean(sessionStorage.getItem('vibecms-hint')); } catch { /* private mode */ }
+      try { hinted = Boolean(sessionStorage.getItem('editlayer-hint')); } catch { /* private mode */ }
       if (msg) setTimeout(() => toast(msg), hinted ? 400 : 3600);
     });
   });

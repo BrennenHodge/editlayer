@@ -1,6 +1,6 @@
 // Phase 0 service: serves the editor script, takes text changes from the page, publishes them as a commit.
 //
-//   node server.mjs --repo <local test repo> --branch vibecms-test --site http://localhost:3310 \
+//   node server.mjs --repo <local test repo> --branch editlayer-test --site http://localhost:3310 \
 //     [--build "pnpm --filter @workspace/lexar-website run build"] [--build-env PORT=3000,BASE_PATH=/]
 //
 // It prints a one-time sign-in link for the site. "Deploying" here is the test stand-in for a host: after each
@@ -25,7 +25,7 @@ const args = Object.fromEntries(process.argv.slice(2).reduce((acc, a, i, all) =>
 const PORT = Number(args.port || 8790);
 const SITE = String(args.site || 'http://localhost:3310').replace(/\/$/, '');
 const REPO_DIR = path.resolve(String(args.repo || ''));
-const BRANCH = String(args.branch || 'vibecms-test');
+const BRANCH = String(args.branch || 'editlayer-test');
 const BUILD = args.build ? String(args.build) : null;
 const BUILD_ENV = Object.fromEntries(String(args['build-env'] || '').split(',').filter(Boolean).map((kv) => kv.split('=')));
 const EDITOR = { email: String(args.email || 'editor@example.test'), name: String(args.name || 'Test Editor') };
@@ -135,7 +135,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Vibe CMS source mode on http://localhost:${PORT}  (repo ${REPO_DIR}, branch ${BRANCH})`);
+  console.log(`Editlayer source mode on http://localhost:${PORT}  (repo ${REPO_DIR}, branch ${BRANCH})`);
   console.log(`Sign-in link (15 minutes, once): ${newLink()}`);
   console.log(`More links: http://localhost:${PORT}/link`);
 });

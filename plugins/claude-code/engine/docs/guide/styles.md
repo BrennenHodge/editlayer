@@ -22,7 +22,7 @@ Every change shows on the page straight away and saves on its own as a draft, li
 
 - The editor sends the whole style set as the site-wide draft key `@theme`, for example `{"props": {"--gold": "#d4a72c", "--radius": "8px"}, "fonts": {"--font-body": "Inter"}}`.
 - The Worker checks it strictly and stores it as JSON. It accepts only settings this site offers. Colours must be `#hex`, `rgb()` or `hsl()`. Lengths are a number plus the setting's unit, within its min and max. Weights are 100–900 in hundreds. Choices and on/off values must be ones the panel offers. Fonts must come from the allowed list, which never includes Fraunces. Saving needs the editor role or higher. Anything else is refused with a plain message.
-- On every page with a saved style set (published for visitors; draft in `?edit` and `?preview`), the Worker adds `<style id="vibecms-theme">:root{…}</style>` at the end of `<head>`, after the site's stylesheet. It also adds a Google Fonts `<link>`, with preconnect when the page has none, for chosen fonts the page doesn't already load. Every value is checked again before it's written. If nothing was ever saved, pages pass through untouched.
+- On every page with a saved style set (published for visitors; draft in `?edit` and `?preview`), the Worker adds `<style id="editlayer-theme">:root{…}</style>` at the end of `<head>`, after the site's stylesheet. It also adds a Google Fonts `<link>`, with preconnect when the page has none, for chosen fonts the page doesn't already load. Every value is checked again before it's written. If nothing was ever saved, pages pass through untouched.
 
 ### Site setup: standard properties
 

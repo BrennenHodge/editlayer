@@ -1,10 +1,10 @@
 // Shown to signed-in editors while they browse the live site: one button to start editing this page.
 (() => {
-  if (Object.hasOwn(window, '__vibecmsLauncher') || Document.prototype.getElementById.call(document, 'vibecms-state')) return;
-  window.__vibecmsLauncher = true;
+  if (Object.hasOwn(window, '__editlayerLauncher') || Document.prototype.getElementById.call(document, 'editlayer-state')) return;
+  window.__editlayerLauncher = true;
   const me = document.currentScript;
   const accent = (me && me.dataset.accent) || '#2563eb';
-  const host = document.createElement('vibecms-launcher');
+  const host = document.createElement('editlayer-launcher');
   host.style.cssText = 'all:initial;position:fixed;right:16px;bottom:16px;z-index:2147483646';
   const root = host.attachShadow({ mode: 'closed' });
   root.innerHTML = `<style>
