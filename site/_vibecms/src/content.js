@@ -1,7 +1,48 @@
-import { KEY_RE, randomToken } from './util.js';
+import { KEY_RE, randomToken, hasRole } from './util.js';
 import { sanitize } from './sanitize.js';
 
 const MAX_HTML = 1_000_000;
+const MAX_REGIONS = 300;
+
+/** Authors and AI connections get the strict sanitizer (see sanitize.js). */
+export const isStrict = (user) => Boolean(user && (user.ai || !hasRole(user, 'editor')));
+
+/** Every element with data-cms in an HTML string: [{key, tag, base, html (inner)}]. */
+export function regionsIn(html) {
+  const out = [];
+  const re = /<([a-z][a-z0-9-]*)\b[^>]*\bdata-cms="([^"]+)"[^>]*>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    const tag = m[1].toLowerCase();
+    const start = m.index + m[0].length;
+    const base = /\bdata-cms-v="([0-9a-f]+)"/.exec(m[0])?.[1] || null;
+    const tre = new RegExp(`<(/?)${tag}(?=[\\s>/])[^>]*>`, 'gi');
+    tre.lastIndex = start;
+    let depth = 1; let end = -1; let t;
+    while ((t = tre.exec(html))) {
+      if (t[1]) { if (--depth === 0) { end = t.index; break; } } else if (!t[0].endsWith('/>')) depth++;
+    }
+    if (end > -1) out.push({ key: m[2], tag, base, html: html.slice(start, end) });
+  }
+  return out;
+}
+
+/**
+ * What a region holds before a change: its draft, else its live edit, else the developer's HTML from the
+ * static page (staticHtml: async () => html | null). The strict sanitizer keeps embeds and form targets
+ * that were already there.
+ */
+export function previousLoader(env, path, staticHtml) {
+  let rows = null;
+  let regions = null;
+  return async (key) => {
+    if (!rows) rows = await loadForPage(env, path, true);
+    const row = rows.get(key);
+    if (row) return row.html;
+    if (!regions) regions = staticHtml ? regionsIn((await staticHtml().catch(() => null)) || '') : [];
+    return regions.find((r) => r.key === key)?.html ?? null;
+  };
+}
 
 /** Site-wide regions ("@footer") live under path "*". */
 export const storagePath = (path, key) => (key.startsWith('@') ? '*' : path);
@@ -25,11 +66,16 @@ export async function loadForPage(env, path, withDrafts) {
 /**
  * Saves draft regions. `keys` maps feature data keys ("@theme" …) to serializers that validate the
  * value sent by the editor and return the string to store; everything else is sanitized HTML.
+ * policy: { previous: async (key) => html | null, embedHosts: [], removed: [] } — `removed` collects what the
+ * sanitizer took out, for the caller to report.
  */
-export async function saveDrafts(env, path, regions, user, keys = {}) {
+export async function saveDrafts(env, path, regions, user, keys = {}, policy = {}) {
   const stmts = [];
   const now = Date.now();
-  for (const [key, value] of Object.entries(regions || {})) {
+  const entries = Object.entries(regions || {});
+  if (entries.length > MAX_REGIONS) throw Object.assign(new Error('Too many parts in one save.'), { status: 413 });
+  const strict = isStrict(user);
+  for (const [key, value] of entries) {
     if (!KEY_RE.test(key)) throw new Error(`Bad region key: ${key}`);
     let html;
     if (key === '#meta') {
@@ -45,7 +91,8 @@ export async function saveDrafts(env, path, regions, user, keys = {}) {
     } else {
       html = String(value?.html ?? '');
       if (html.length > MAX_HTML) throw new Error('This section is too large to save.');
-      html = await sanitize(html);
+      const previous = strict && policy.previous ? await policy.previous(key) : null;
+      html = await sanitize(html, { strict, previous, embedHosts: policy.embedHosts, removed: policy.removed });
     }
     stmts.push(env.CMS_DB.prepare(
       `INSERT INTO cms_regions (path, key, state, html, base, updated_at, updated_by) VALUES (?, ?, 'draft', ?, ?, ?, ?)
@@ -107,9 +154,14 @@ function partLabel(r) {
   return `site ${r.key.slice(1).replace(/^#/, '')}`;
 }
 
-/** Copies a published version back into drafts, so it can be checked and then published. */
+/**
+ * Copies a published version back into drafts, so it can be checked and then published. Authors only get the
+ * page's own parts back: site-wide parts (header, footer, styles) are for editors, as when saving.
+ */
 export async function restore(env, batch, path, user) {
-  const { results } = await env.CMS_DB.prepare(`SELECT path, key, html, base FROM cms_revisions WHERE batch = ? AND path IN (?, '*')`).bind(batch, path).all();
+  const shared = hasRole(user, 'editor');
+  const { results } = await env.CMS_DB.prepare(`SELECT path, key, html, base FROM cms_revisions WHERE batch = ? AND path IN (?, ?)`)
+    .bind(batch, path, shared ? '*' : path).all();
   const now = Date.now();
   if (!results.length) return 0;
   await env.CMS_DB.batch(results.map((r) => env.CMS_DB.prepare(

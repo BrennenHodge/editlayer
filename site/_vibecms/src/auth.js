@@ -30,13 +30,27 @@ export function readCookie(request, name) {
   return null;
 }
 
+// On https the cookie is "__Host-" prefixed: the browser then only accepts it from this exact host, Secure,
+// with Path=/ and no Domain, so a sibling subdomain (every site on *.example.com) can't plant or overwrite
+// it. Plain http (local development) can't use the prefix and keeps the old name.
+export const HOST_COOKIE = `__Host-${COOKIE}`;
+const cookieName = (secure) => (secure ? HOST_COOKIE : COOKIE);
+
 export function sessionCookie(token, secure, maxAgeSec = SESSION_MS / 1000) {
-  return `${COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAgeSec}${secure ? '; Secure' : ''}`;
+  return `${cookieName(secure)}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAgeSec}${secure ? '; Secure' : ''}`;
+}
+
+/** The session token sent with this request (only the prefixed cookie counts on https). */
+function sessionToken(request) {
+  let secure = false;
+  try { secure = new URL(request.url).protocol === 'https:'; } catch { /* keep false */ }
+  const token = readCookie(request, cookieName(secure));
+  return token && /^[A-Za-z0-9_-]{20,100}$/.test(token) ? token : null;
 }
 
 /** The signed-in user for this request, or null. Costs one D1 read, only when the cookie exists. */
 export async function getUser(request, env) {
-  const token = readCookie(request, COOKIE);
+  const token = sessionToken(request);
   if (!token) return null;
   const row = await env.CMS_DB.prepare(
     `SELECT u.id, u.email, u.name, u.role FROM cms_sessions s JOIN cms_users u ON u.id = s.user_id
@@ -57,7 +71,7 @@ export async function startSession(env, userId) {
 }
 
 export async function endSession(request, env) {
-  const token = readCookie(request, COOKIE);
+  const token = sessionToken(request);
   if (token) await env.CMS_DB.prepare('DELETE FROM cms_sessions WHERE token_hash = ?').bind(await sha256Hex(token)).run();
 }
 

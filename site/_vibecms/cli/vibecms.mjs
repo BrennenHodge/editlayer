@@ -215,6 +215,9 @@ switch (cmd) {
   }
   case 'user': {
     const email = String(rest[0] || '').trim().toLowerCase();
+    // Letters, digits and . _ + ' - only: the address ends up in a shell command line (wrangler --command).
+    const EMAIL_OK = /^[a-z0-9._+'-]{1,64}@[a-z0-9.-]{1,190}\.[a-z]{2,24}$/;
+    if (sub !== 'list' && !EMAIL_OK.test(email)) die('That doesn’t look like an email address. Usage: vibecms user add <email> [--name "Name"] [--admin]');
     if (sub === 'list') {
       for (const u of d1('SELECT email, name, role, (pass_hash IS NOT NULL OR last_login IS NOT NULL) AS active, last_login FROM cms_users ORDER BY email;', { json: true })) {
         console.log(`${u.email.padEnd(36)} ${String(u.name || '').padEnd(24)} ${u.role.padEnd(7)} ${u.active ? 'active' : 'invited'}`);
@@ -232,7 +235,7 @@ switch (cmd) {
       const link = invite(email, typeof name === 'string' ? name : null, role);
       console.log(`\nInvite link for ${email} (${role}). Works once, for 7 days:\n\n  ${link}\n`);
     } else if (sub === 'remove') {
-      d1(`DELETE FROM cms_sessions WHERE user_id IN (SELECT id FROM cms_users WHERE email = ${sqlValue(email)}); DELETE FROM cms_users WHERE email = ${sqlValue(email)};`);
+      d1(`DELETE FROM cms_ai_tokens WHERE created_by = ${sqlValue(email)}; DELETE FROM cms_sessions WHERE user_id IN (SELECT id FROM cms_users WHERE email = ${sqlValue(email)}); DELETE FROM cms_users WHERE email = ${sqlValue(email)};`);
       console.log(`Removed ${email}.`);
     } else die('Usage: vibecms user add|link|list|remove');
     break;

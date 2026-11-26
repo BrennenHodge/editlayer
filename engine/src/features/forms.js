@@ -128,14 +128,15 @@ async function submit(ctx) {
     return new Response(null, { status: 303, headers: { location: `${page}?${q}${anchor ? `#${anchor}` : ''}`, 'cache-control': 'no-store' } });
   };
 
-  const type = (request.headers.get('content-type') || '').toLowerCase();
+  const rawType = request.headers.get('content-type') || '';   // keep the case: multipart boundaries are case-sensitive
+  const type = rawType.toLowerCase();
   if (!type.startsWith('application/x-www-form-urlencoded') && !type.startsWith('multipart/form-data')) return reply('invalid', 415);
   if (Number(request.headers.get('content-length') || 0) > MAX_BODY) return reply('big', 413);
   let fd;
   try {
     const buf = await request.arrayBuffer();
     if (buf.byteLength > MAX_BODY) return reply('big', 413);
-    fd = await new Response(buf, { headers: { 'content-type': type } }).formData();
+    fd = await new Response(buf, { headers: { 'content-type': rawType } }).formData();
   } catch {
     return reply('invalid', 400);
   }

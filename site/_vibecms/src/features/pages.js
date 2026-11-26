@@ -11,7 +11,7 @@
 //   textSection: HTML for the text section of a simple page (default: built from the layout's markup)
 //   reserved:    extra first-level web addresses editors may not use (["blog", "news"])
 import { json, normalizePath, escapeHtml } from '../util.js';
-import { saveDrafts } from '../content.js';
+import { saveDrafts, regionsIn } from '../content.js';
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const PATH_RE = /^\/([a-z0-9]+(?:-[a-z0-9]+)*)\/$/;
@@ -64,7 +64,7 @@ async function templateInfo(env, origin, path) {
   const keys = [...new Set([...html.matchAll(/\sdata-cms="([^"]+)"/g)].map((m) => m[1]).filter(PAGE_KEY))];
   if (!keys.length) return null;
   const title = decode((html.match(/<title[^>]*>([^<]*)<\/title>/i) || [])[1] || '').trim();
-  return { path, keys, title };
+  return { path, keys, title, html };
 }
 
 /** "/Summer workshops/" or "summer-workshops" → "summer-workshops" (or null if not allowed). */
@@ -179,7 +179,12 @@ export default {
           // Clear anything left at this address by an earlier page with the same address.
           await env.CMS_DB.prepare('DELETE FROM cms_regions WHERE path = ?').bind(path).run();
           regions['#meta'] = { meta: { title: fullTitle(title, tpl.title), description: '', shareTitle: '' } };
-          await saveDrafts(env, path, regions, user, {});
+          // An author's copy keeps the template's own embeds and form targets (strict sanitizer, see sanitize.js).
+          const fromTemplate = regionsIn(tpl.html);
+          await saveDrafts(env, path, regions, user, {}, {
+            embedHosts: opts.embeds,
+            previous: async (key) => fromTemplate.find((r) => r.key === key)?.html ?? null,
+          });
         } catch (e) {
           await env.CMS_DB.batch([
             env.CMS_DB.prepare('DELETE FROM cms_regions WHERE path = ?').bind(path),

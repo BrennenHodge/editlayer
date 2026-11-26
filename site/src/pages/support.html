@@ -1,0 +1,56 @@
+<!-- title: Support | Vibe CMS -->
+<!-- desc: Get help with Vibe CMS, the Claude Code plugin, or connecting ChatGPT and Claude to your site. Answers to common questions and a form to reach the team. -->
+<!-- path: /support/ -->
+<!-- nav: none -->
+<main id="main">
+<section class="page-hero">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">Support</p>
+      <h1 class="h1">How can we&nbsp;help?</h1>
+      <p class="lede">Questions about installing Vibe CMS, editing a site, or connecting ChatGPT or Claude. Send us a message and we’ll reply by email, usually within one business day.</p>
+      <ul class="ticks">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><a href="/developers/">Developer guide and install steps</a></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><a href="/ai/#connect">Connecting an AI assistant</a></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><a href="/privacy/">Privacy</a> and <a href="/terms/">terms</a></li>
+      </ul>
+    </div>
+    <div id="contact">
+      <form class="form" id="support-form" data-cms-form="support" action="/_cms/form/support" method="post" data-cms-success="Thanks, we’ve got your message and will reply by email.">
+        <div class="row2">
+          <div><label for="s-name">Your name</label><input id="s-name" name="Name" type="text" autocomplete="name" required maxlength="120"></div>
+          <div><label for="s-email">Email</label><input id="s-email" name="Email" type="email" autocomplete="email" required maxlength="200"></div>
+        </div>
+        <div><label for="s-topic">Topic</label>
+          <select id="s-topic" name="Topic">
+            <option>Installing or updating Vibe CMS</option>
+            <option>Editing my site</option>
+            <option>ChatGPT, Claude or another assistant</option>
+            <option>My data or privacy</option>
+            <option>Billing</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div><label for="s-site">Site address (optional)</label><input id="s-site" name="Site" type="url" inputmode="url" maxlength="300" placeholder="https://"></div>
+        <div><label for="s-msg">Message</label><textarea id="s-msg" name="Message" required maxlength="5000"></textarea></div>
+        <button class="btn btn--primary" type="submit">Send message</button>
+        <p role="status" aria-live="polite"></p>
+        <p class="hint">Never include passwords or connection keys. We’ll never ask for them.</p>
+      </form>
+    </div>
+  </div>
+</section>
+<section class="sec sec--white">
+  <div class="wrap prose">
+    <h2>Common questions</h2>
+    <h3>An editor lost their invite link or password</h3>
+    <p>A site admin can send a new link from <strong>Editors</strong> in the editor. Developers can run the <code class="inline">invite-editor</code> skill in Claude Code.</p>
+    <h3>ChatGPT or Claude says it can’t publish</h3>
+    <p>The connection was approved for drafts only. Publish from the editor, or disconnect and connect again choosing <strong>Drafts and publishing</strong>.</p>
+    <h3>How do I disconnect an assistant?</h3>
+    <p>Remove the connector in the assistant’s settings, or have a site admin revoke it under <strong>Editors &gt; AI assistants</strong>. Revoking stops it immediately.</p>
+    <h3>How do I undo a change?</h3>
+    <p>Open the page in the editor and use <strong>History</strong>. Every change, including ones made by an assistant, can be restored from there.</p>
+  </div>
+</section>
+</main>

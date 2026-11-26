@@ -48,6 +48,7 @@ export default createCms({
       { name: 'JetBrains Mono', category: 'mono', min: 100, max: 800 },
     ],
   },
-  // The early-access form sends to the Vibe CMS inbox.
-  forms: {},
+  // The early-access and support forms send to the Vibe CMS inbox. Messages are deleted after 12 months,
+  // as the privacy policy (/privacy/) promises.
+  forms: { keepDays: 365 },
 });
