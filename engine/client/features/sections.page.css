@@ -1,0 +1,2 @@
+/* Sections shown to only some devices stay visible while editing, marked with a dashed outline. */
+html.vibecms-on [data-cms] > [data-cms-show] { outline: 2px dashed rgba(245, 158, 11, .75); outline-offset: -2px; }

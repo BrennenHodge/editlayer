@@ -1,0 +1,22 @@
+{
+  "name": "vibe-cms",
+  "displayName": "Vibe CMS",
+  "version": "0.2.0",
+  "description": "Turn any website you built with Claude Code into one your client can edit: click any text on the live page and type, swap photos, add sections, publish. Hosted on Cloudflare, no seat fees. Also lets ChatGPT, Claude and Grok edit the site through MCP.",
+  "author": {
+    "name": "dbVantage",
+    "url": "https://cms.dbvantage.com"
+  },
+  "homepage": "https://cms.dbvantage.com",
+  "license": "UNLICENSED",
+  "keywords": [
+    "cms",
+    "wysiwyg",
+    "visual-editor",
+    "static-site",
+    "cloudflare",
+    "website",
+    "mcp",
+    "client-editing"
+  ]
+}

@@ -1,0 +1,57 @@
+/* Bar button count */
+.ib.rv-has { position: relative; }
+.rv-badge { position: absolute; top: 1px; right: 1px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 99px;
+  background: var(--a); color: var(--on-a); font: 700 10px/16px system-ui, sans-serif; font-style: normal; text-align: center;
+  box-shadow: 0 0 0 2px var(--ui); pointer-events: none; }
+
+/* "Submit for review" stays on one line in the bar */
+.bar .btn.primary .wide { white-space: nowrap; }
+
+/* Panel */
+.rv-tabs { position: sticky; top: -16px; z-index: 1; margin: -16px -18px 14px; padding: 10px 14px; background: var(--ui); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.rv-tabs button { font-size: 13px; }
+.rv-list .rv-item { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px 4px; }
+.rv-top { display: flex; align-items: flex-start; gap: 10px; }
+.rv-top .grow { flex: 1; min-width: 0; }
+.rv-top .grow b { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rv-top .grow span { color: var(--mute); font-size: 13px; }
+.pb p.rv-quote { margin: 0; padding: 8px 10px; border-radius: 8px; background: var(--ui2); color: var(--ink); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+.pb p.rv-quote.rv-mute { color: var(--mute); }
+.pb .rv-item p.muted { margin: 0; }
+.rv-acts { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.rv-acts:empty { display: none; }
+.rv-acts .btn { height: 34px; padding: 0 12px; white-space: nowrap; flex: none; }
+a.btn { color: var(--ink); text-decoration: none; }
+a.btn:hover { color: var(--ink); }
+.rv-decline { margin-top: 4px; padding: 12px; border-radius: 10px; background: var(--ui2); }
+.rv-decline[hidden] { display: none; }
+.rv-decline textarea { background: var(--ui); min-height: 72px; }
+.rv-decline .field { margin-bottom: 0; }
+.rv-pill { white-space: nowrap; flex: none; }
+.rv-pill.rv-wait { background: rgba(245,158,11,.18); color: #fcd34d; }
+.rv-pill.rv-ok { background: rgba(34,197,94,.16); color: #86efac; }
+.rv-pill.rv-no { background: rgba(239,68,68,.16); color: #fca5a5; }
+.rv-pill.rv-off { background: var(--ui3); color: var(--mute); }
+.pb .rv-empty { color: var(--mute); }
+.pb .rv-tz { display: flex; align-items: center; gap: 6px; margin: -8px 0 12px; }
+.pb .rv-tz svg { width: 15px; height: 15px; }
+.rv-fresh .copy input { min-width: 0; }
+.rv-mkrow { margin: 0 0 22px; }
+input[type=datetime-local] { width: 100%; font: inherit; color: var(--ink); background: var(--ui2); border: 1px solid var(--line); border-radius: 8px;
+  padding: 8px 10px; color-scheme: dark; min-height: 40px; }
+.rv-roles { list-style: none; margin: 10px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--ui2); color: var(--mute); font-size: 13px; display: grid; gap: 4px; }
+.rv-roles b { color: var(--ink); font-weight: 600; }
+
+/* Small dialog (Send for review) */
+.modal.rv-modal { width: min(480px, 100%); }
+.modal.rv-modal .mb { display: block; overflow-y: auto; }
+.rv-mbody { padding: 16px 18px 4px; }
+.rv-mbody p { margin: 0 0 12px; color: var(--mute); }
+.rv-mbody .note { color: var(--ink); }
+.modal.rv-modal .mf { flex-wrap: wrap; }
+
+@media (max-width: 760px) {
+  .rv-acts { justify-content: stretch; }
+  .rv-acts .btn { flex: 1 1 auto; justify-content: center; }
+  .rv-badge { top: -2px; right: -2px; }
+}

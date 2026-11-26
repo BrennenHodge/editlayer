@@ -1,0 +1,38 @@
+/* Menu panel */
+.nv-menu { margin: 6px 0 22px; }
+.nv-menu > .h3 { margin-top: 10px; }
+.pb p.nv-sub { margin: -4px 0 8px; }
+.nv-tree { list-style: none; margin: 0; padding: 0; }
+.nv-subtree { margin: 0 0 2px 14px; padding-left: 10px; border-left: 2px solid var(--ui3); }
+.nv-row { display: flex; align-items: center; gap: 2px; min-height: 48px; border-bottom: 1px solid var(--line); }
+.nv-main { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; text-align: left; padding: 6px 8px; border-radius: 8px; }
+.nv-main:hover { background: var(--ui2); }
+.nv-main b { max-width: 100%; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nv-main b .pill { margin-left: 6px; vertical-align: 1px; }
+.nv-main > span { max-width: 100%; color: var(--mute); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.nv-label .nv-main b { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+.nv-label .nv-main > span { font-style: italic; }
+.nv-open > .nv-row { border-bottom-color: transparent; }
+.nv-open > .nv-row .nv-main { background: var(--ui2); }
+.nv-acts { display: flex; flex: none; }
+.nv-acts .ib { min-width: 34px; height: 34px; padding: 0 6px; }
+.nv-form { margin: 4px 0 12px; padding: 12px; border-radius: 10px; background: var(--ui2); box-shadow: 0 0 0 1px var(--line) inset; }
+.nv-form input[type=text], .nv-form select { background: var(--ui); }
+.nv-form .field { margin-bottom: 12px; }
+.nv-form .row { margin-top: 4px; flex-wrap: wrap; }
+.pb .nv-form p.nv-ft { margin: 0 0 10px; color: var(--ink); font-weight: 600; }
+.pb .nv-form p.nv-hint { margin: 6px 0 0; }
+.pb .nv-del p { color: var(--ink); }
+.pb p.nv-err { margin: 0 0 8px; color: #fca5a5; }
+.nv-check { display: flex; align-items: flex-start; gap: 10px; margin: 0 0 12px; cursor: pointer; font-weight: 500; }
+.nv-check input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--a); }
+.nv-check small { display: block; color: var(--mute); font-size: 12px; font-weight: 400; margin-top: 2px; overflow-wrap: anywhere; }
+.pop .nv-check { display: flex; font-size: 13px; color: var(--ink); margin: 10px 0 0; }
+.nv-add { margin-top: 10px; }
+.nv-add svg { width: 16px; height: 16px; }
+.nv-add-sub { height: 32px; margin: 6px 0 8px 24px; font-size: 13px; padding: 0 12px; background: transparent; box-shadow: 0 0 0 1px var(--ui3) inset; }
+.nv-add-sub:hover { background: var(--ui2); }
+.btn.nv-danger { background: var(--danger); color: #fff; box-shadow: none; }
+.nv-note { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; justify-content: space-between; }
+.nv-empty { padding: 10px 4px; }
+.pb p.nv-warn { color: #fde68a; background: #3a2d0e; margin: 0 0 8px; }

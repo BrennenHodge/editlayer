@@ -1,0 +1,3 @@
+/* Menus while editing: a dropdown that opens on hover stays open while you type in one of its links
+   or change its address (focus moves to the editor's own popover then). */
+html.vibecms-on [data-cms] nav *:has([contenteditable]) { opacity: 1 !important; visibility: visible !important; }

@@ -1,0 +1,80 @@
+/* Site styles panel */
+.pb.sty { padding-top: 14px; }
+.sty-g { padding: 14px 0 16px; border-top: 1px solid var(--line); }
+.sty-g:first-of-type { border-top: 0; padding-top: 4px; }
+.sty-gh { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 12px; }
+.sty-gh h3 { margin: 0; font-size: 12px; font-weight: 650; color: var(--mute); text-transform: uppercase; letter-spacing: .06em; }
+.sty-reset { font-size: 13px; font-weight: 600; color: var(--ink); min-height: 34px; padding: 0 12px; border-radius: 8px; background: var(--ui2); }
+.sty-reset:hover { background: var(--ui3); }
+.sty-reset[disabled] { opacity: .35; pointer-events: none; }
+.sty-gb { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.sty-gb > * { min-width: 0; }
+.sty-font select { max-width: 100%; }
+.sty-gb small { display: block; font-weight: 400; color: var(--mute); font-size: 12px; margin-top: 1px; }
+
+/* colour rows */
+.sty-color { display: grid; grid-template-columns: 38px minmax(0, 1fr) 118px; align-items: center; gap: 10px; position: relative; }
+.sty-sw { position: relative; width: 38px; height: 38px; border-radius: 9px; overflow: hidden;
+  background: linear-gradient(var(--c), var(--c)), repeating-conic-gradient(#9aa0a8 0 25%, #d4d7db 0 50%) 0 0 / 10px 10px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.2) inset; }
+.sty-sw input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; cursor: pointer; }
+.sty-sw:has(input:focus-visible) { outline: 2px solid var(--a); outline-offset: 2px; }
+.sty-name { font-weight: 600; min-width: 0; overflow-wrap: anywhere; line-height: 1.3; cursor: text; }
+.sty-hex { font: 13px/1.2 ui-monospace, "SFMono-Regular", Consolas, monospace !important; padding: 8px 9px !important; }
+.sty-hex.invalid { border-color: var(--danger) !important; }
+.sty-flag { display: none; position: absolute; left: 25px; top: -5px; width: 19px; height: 19px; border-radius: 50%; background: var(--warn); color: #1d1300;
+  place-items: center; box-shadow: 0 0 0 2px var(--ui); }
+.sty-flag svg { width: 12px; height: 12px; stroke-width: 2.6; }
+.sty-color.bad .sty-flag { display: grid; }
+.sty-warn { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 14px; padding: 10px 12px; border-radius: 10px;
+  background: rgba(245,158,11,.14); box-shadow: 0 0 0 1px rgba(245,158,11,.35) inset; color: #fde68a; }
+.sty-warn[hidden] { display: none; }
+.sty-warn > svg { color: var(--warn); margin-top: 1px; }
+.pb .sty-warn p { margin: 0 0 4px; color: #fde68a; font-size: 13px; }
+.pb .sty-warn p:last-child { margin: 0; }
+.sty-warn b { color: #fff3c4; }
+
+/* shrink the panel to look at the page */
+.panel.sty-peek .pb.sty { display: none; }
+.panel.sty-peek:has(.pb.sty) { bottom: auto; }
+@media (max-width: 760px) { .panel.sty-peek:has(.pb.sty) { top: auto; bottom: 72px; } }
+.sty-peekbtn { margin-left: auto; }
+
+/* fonts */
+.sty-font { margin: 0; }
+.sty-font label { display: block; }
+.sty-sample { margin-top: 8px; padding: 9px 11px; border-radius: 8px; background: var(--ui2); color: var(--ink); font-size: 16px; line-height: 1.35;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* sliders */
+.sty-range label { display: flex; justify-content: space-between; gap: 10px; font-weight: 600; margin: 0 0 4px; }
+.sty-range output { color: var(--mute); font-weight: 500; }
+.sty-range input[type=range] { width: 100%; height: 30px; margin: 0; accent-color: var(--a); cursor: pointer; background: transparent; }
+.sty-ends { display: flex; justify-content: space-between; color: var(--mute); font-size: 12px; margin-top: -2px; }
+
+/* choices */
+.sty-seg { border: 0; margin: 0; padding: 0; min-width: 0; }
+.sty-seg legend { font-weight: 600; padding: 0; margin: 0 0 7px; }
+.sty-seg > div { display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 10px; background: var(--ui2); }
+.sty-seg label { flex: 1 1 0; min-width: 64px; position: relative; display: flex; }
+.sty-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.sty-seg span { flex: 1; display: grid; place-items: center; text-align: center; min-height: 36px; padding: 6px; border-radius: 7px; font-weight: 600; font-size: 13px; line-height: 1.2; color: var(--mute); }
+.sty-seg label:hover span { color: var(--ink); }
+.sty-seg input:checked + span { background: var(--a); color: var(--on-a); }
+.sty-seg input:focus-visible + span { outline: 2px solid var(--a); outline-offset: 2px; }
+
+/* switch */
+.sty-switch { display: flex; align-items: center; gap: 12px; min-height: 36px; font-weight: 600; cursor: pointer; position: relative; }
+.sty-switch input { position: absolute; opacity: 0; width: 42px; height: 24px; margin: 0; cursor: pointer; }
+.sty-knob { width: 42px; height: 24px; border-radius: 99px; background: var(--ui3); position: relative; flex: none; transition: background .15s; }
+.sty-knob::after { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .15s; }
+.sty-switch input:checked + .sty-knob { background: var(--a); }
+.sty-switch input:checked + .sty-knob::after { transform: translateX(18px); background: var(--on-a); }
+.sty-switch input:focus-visible + .sty-knob { outline: 2px solid var(--a); outline-offset: 2px; }
+
+.sty-foot { padding-top: 16px; border-top: 1px solid var(--line); }
+.sty-foot .btn { width: 100%; justify-content: center; }
+
+@media (max-width: 760px) {
+  .sty-color { grid-template-columns: 38px minmax(0, 1fr) 108px; }
+}

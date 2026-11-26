@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  // Vibe CMS marketing site at https://cms.dbvantage.com. It runs on Vibe CMS itself (cms.worker.js,
+  // engine in ./_vibecms). Redeploy: python build.py, then npx wrangler deploy.
+  "name": "vibecms",
+  "account_id": "d06c70a0b6279642a6243926161f574b",
+  "compatibility_date": "2026-11-01",
+  "main": "cms.worker.js",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/*", "!/assets/*", "!/icons/*", "!/styles.css", "!/script.js", "!/favicon.ico", "!/favicon.svg", "!/apple-touch-icon.png", "!/robots.txt", "!/sw.js", "!/manifest.webmanifest"]
+  },
+  "routes": [
+    { "pattern": "cms.dbvantage.com", "custom_domain": true },
+    { "pattern": "cms.dbvantage.com/*", "zone_name": "dbvantage.com" }
+  ],
+  "triggers": { "crons": ["*/5 * * * *"] },
+  "ai": { "binding": "CMS_AI" },
+  "d1_databases": [
+    { "binding": "CMS_DB", "database_name": "vibecms-cms", "database_id": "473027e9-66db-4448-8936-3daab4411bd6", "migrations_dir": "_vibecms/migrations" }
+  ],
+  "r2_buckets": [{ "binding": "CMS_MEDIA", "bucket_name": "vibecms-cms-media" }],
+  "observability": { "enabled": true }
+}

@@ -1,0 +1,53 @@
+/* New page form and Pages panel additions */
+.np-acts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+.np-acts .btn svg { width: 16px; height: 16px; }
+.pill.np-off { background: rgba(161,167,176,.16); color: var(--ink); white-space: nowrap; }
+.np fieldset { border: 0; margin: 0 0 16px; padding: 0; min-width: 0; }
+.np legend { font-weight: 600; padding: 0; margin: 0 0 8px; }
+.np-url { display: flex; align-items: center; background: var(--ui2); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.np-url:focus-within { outline: 2px solid var(--a); outline-offset: 1px; }
+.np-url span { color: var(--mute); padding: 0 2px 0 10px; white-space: nowrap; flex: none; }
+.np-url span:last-child { padding: 0 10px 0 0; }
+.np-url .np-host { max-width: 45%; overflow: hidden; text-overflow: ellipsis; }
+.np-url input[type=text] { border: 0; background: transparent; padding-left: 0; padding-right: 2px; min-width: 0; flex: 1; outline: 0; }
+.pb .np-msg { margin: 6px 0 0; font-size: 13px; color: var(--mute); }
+.pb .np-msg.ok { color: #86efac; }
+.pb .np-msg.bad { color: #fca5a5; }
+.np-opt { display: flex; gap: 10px; align-items: flex-start; padding: 10px 2px 6px; cursor: pointer; }
+.np-opt input { margin: 3px 0 0; accent-color: var(--a); width: 16px; height: 16px; flex: none; }
+.np-opt b { display: block; font-weight: 600; }
+.np-opt .muted { display: block; }
+.np-from select { margin: 0 0 6px 28px; width: calc(100% - 28px); }
+.np-check { display: flex; gap: 10px; align-items: center; margin: 0 0 14px; cursor: pointer; font-weight: 600; }
+.np-check input { accent-color: var(--a); width: 16px; height: 16px; margin: 0; }
+.modal.np-modal { width: min(480px, 100%); }
+.modal.np-modal .mb { display: block; padding: 16px 18px 6px; overflow-y: auto; }
+.np-del p { margin: 0 0 12px; color: var(--ink); line-height: 1.5; }
+
+/* Device preview */
+.pv { position: fixed; inset: 0; z-index: 11; display: flex; flex-direction: column; background: #0c0e11; color: var(--ink); }
+.pv-top { display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 18px; border-bottom: 1px solid var(--line); background: var(--ui); }
+.pv-title { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.pv-title b { font-size: 15px; font-weight: 650; }
+.pv-title span { color: var(--mute); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pv-seg { display: flex; gap: 2px; padding: 3px; border-radius: 10px; background: var(--ui2); box-shadow: 0 0 0 1px var(--line) inset; }
+.pv-seg button { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 12px; border-radius: 8px; font-weight: 600; color: var(--mute); }
+.pv-seg button:hover { color: var(--ink); }
+.pv-seg button[aria-checked="true"] { background: var(--ui3); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.4); }
+.pv-acts { display: flex; gap: 2px; flex: 1; justify-content: flex-end; }
+.pv-stage { flex: 1; min-height: 0; display: grid; place-items: start center; padding: 12px; overflow: hidden; }
+.pv-dev { position: relative; overflow: hidden; border-radius: 6px; background: #fff; box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 18px 50px rgba(0,0,0,.5); }
+.pv-dev[data-size="phone"], .pv-dev[data-size="tablet"] { border-radius: 18px; box-shadow: 0 0 0 6px #24272d, 0 0 0 7px rgba(255,255,255,.14), 0 18px 50px rgba(0,0,0,.5); margin-top: 7px; }
+.pv-dev iframe { position: absolute; left: 0; top: 0; border: 0; display: block; transform-origin: 0 0; background: #fff; }
+.pv-foot { margin: 0; padding: 8px 16px 12px; text-align: center; color: var(--mute); font-size: 12px; }
+@media (max-width: 760px) {
+  .pv-top { flex-wrap: wrap; padding: 8px 8px 8px 14px; gap: 8px; }
+  .pv-title { order: 1; }
+  .pv-acts { order: 2; flex: none; }
+  .pv-seg { order: 3; width: 100%; }
+  .pv-seg button { flex: 1; justify-content: center; padding: 0 6px; }
+  .pv-stage { padding: 10px 8px; }
+  .pv-dev[data-size="phone"], .pv-dev[data-size="tablet"] { border-radius: 12px; box-shadow: 0 0 0 4px #24272d, 0 0 0 5px rgba(255,255,255,.14); margin-top: 5px; }
+  .pv-foot { padding: 6px 12px 10px; }
+  .np-from select { margin-left: 0; width: 100%; }
+}

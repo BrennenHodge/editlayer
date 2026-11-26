@@ -1,0 +1,21 @@
+{
+  "name": "vibecms-source-mode",
+  "version": "0.0.1",
+  "description": "Phase 0 of Vibe CMS on any site: click-to-edit changes are written back into the site's source code and committed, and the site's own deploy publishes them.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "serve": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "typescript": "5.9.3"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "linkedom": "^0.18.12"
+  }
+}

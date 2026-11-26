@@ -1,0 +1,13 @@
+src
+build.py
+cms.worker.js
+/_vibecms
+node_modules
+package.json
+package-lock.json
+.dev.vars
+.wrangler
+wrangler.jsonc
+.assetsignore
+*.py
+phone-shots

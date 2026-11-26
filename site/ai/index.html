@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Edit your website from ChatGPT, Claude or Grok | Vibe CMS</title>
+<meta name="description" content="Every Vibe CMS site is an MCP server. Connect ChatGPT, Claude or Grok (through the xAI API) and change pages by asking. Changes stay drafts unless you allow publishing.">
+<link rel="canonical" href="https://cms.dbvantage.com/ai/">
+<meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0e10" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vibe CMS">
+<meta property="og:title" content="Edit your website from ChatGPT, Claude or Grok | Vibe CMS">
+<meta property="og:description" content="Every Vibe CMS site is an MCP server. Connect ChatGPT, Claude or Grok (through the xAI API) and change pages by asking. Changes stay drafts unless you allow publishing.">
+<meta property="og:url" content="https://cms.dbvantage.com/ai/">
+<meta property="og:image" content="https://cms.dbvantage.com/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vibe CMS: click the page and type">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Edit your website from ChatGPT, Claude or Grok | Vibe CMS">
+<meta name="twitter:description" content="Every Vibe CMS site is an MCP server. Connect ChatGPT, Claude or Grok (through the xAI API) and change pages by asking. Changes stay drafts unless you allow publishing.">
+<meta name="twitter:image" content="https://cms.dbvantage.com/assets/img/og.png">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="/styles.css?v=b95353ff">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+
+<!-- pwa:head -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Vibe CMS">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<!-- /pwa:head -->
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-type" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></symbol>
+    <symbol id="i-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M7 14h10M7 18h6"/></symbol>
+    <symbol id="i-page" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 13v5M9.5 15.5h5"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 1 10-10c0 2.8-2.2 4-4 4h-2a2 2 0 0 0-1.5 3.3A2 2 0 0 1 12 22z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16.5" cy="10.5" r="1"/></symbol>
+    <symbol id="i-review" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+    <symbol id="i-bold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 0 8H6zM6 12h9a4 4 0 0 1 0 8H6z"/></symbol>
+    <symbol id="i-italic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 4h-9M14 20H5M15 4 9 20"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head" data-cms="@header" data-cms-v="8de2e6223f52" data-cms-current="/ai/">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Vibe CMS home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M8.2 9.6 13.7 22.4h1.5L20.6 9.6" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
+      Vibe CMS
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="/features/">Features</a>
+      <a href="/ai/" aria-current="page">AI assistants</a>
+      <a href="/developers/">For developers</a>
+      <a href="/pricing/">Pricing</a>
+    </nav>
+    <div class="head-actions">
+      <button type="button" class="icon-btn theme-toggle lg-only" aria-label="Switch light or dark theme"><svg class="i-moon"><use href="#i-moon"/></svg><svg class="i-sun"><use href="#i-sun"/></svg></button>
+      <button type="button" class="btn btn--sm lg-only" data-pwa-install hidden>Install app</button>
+      <a class="btn btn--primary" href="/early-access/"><span class="lg-only">Get early access</span><span class="sm-only">Early access</span></a>
+      <button type="button" class="icon-btn menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><svg class="i-open"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="menu" id="menu" hidden>
+  <nav aria-label="Menu">
+    <a href="/">Home</a>
+    <a href="/features/">Features</a>
+    <a href="/ai/" aria-current="page">AI assistants</a>
+    <a href="/developers/">For developers</a>
+    <a href="/pricing/">Pricing</a>
+    <a href="/early-access/">Early access</a>
+  </nav>
+  <div class="menu-row">
+    <button type="button" class="btn theme-toggle"><svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg><svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>Light or dark</button>
+    <button type="button" class="btn" data-pwa-install hidden>Install the app</button>
+  </div>
+</div>
+<main id="main" data-cms="main" data-cms-v="059f1c1539b5">
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">AI assistants</p>
+    <h1 class="h1">Change your website by asking for&nbsp;it.</h1>
+    <p class="lede">Every Vibe CMS site comes with its own MCP server, the standard way AI assistants use tools. Connect your assistant once and say what you want changed.</p>
+    <ul class="chips"><li>ChatGPT</li><li>Claude and Claude Code</li><li>Grok through the xAI API</li><li>Any MCP client</li></ul>
+  </div>
+</section>
+
+<section class="sec sec--white">
+  <div class="wrap split split--wide">
+    <div>
+      <p class="eyebrow">Safe by design</p>
+      <h2 class="h2">The assistant drafts. A person&nbsp;decides.</h2>
+      <ul class="ticks">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>Drafts by default.</b> A connection saves changes as drafts. People review them in the editor and press Publish.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>Publishing is opt-in.</b> Give a connection the publish permission only if you want it, and the assistant is told to ask you first.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>Same rules as people.</b> Saved HTML is cleaned of scripts, shared parts need the editor role, and every publish lands in History.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>One key per assistant.</b> Each shows when it was last used and can be turned off in a click.</span></li>
+      </ul>
+    </div>
+    <div class="chat" aria-label="Example conversation">
+      <div class="msg msg--me"><p>Rewrite the About page intro so it sounds warmer, and fix the title for Google.</p></div>
+      <div class="tool-call">get_page /about/</div>
+      <div class="tool-call">update_region /about/ main</div>
+      <div class="tool-call">set_page_settings /about/</div>
+      <div class="msg msg--ai"><p>I rewrote the first two paragraphs and set the title to “About Juniper Café: a neighbourhood bakery on Main Street” (57 characters). Both are drafts. Have a look at <span class="nw">/about/?edit</span>, then tell me if you want it published.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Tools</p><h2 class="h2">What the assistant can&nbsp;do</h2></div>
+    <div class="grid grid--3">
+      <article class="card"><h3 class="h3"><code>list_pages</code></h3><p>Every page on the site and which ones have unpublished changes.</p></article>
+      <article class="card"><h3 class="h3"><code>get_page</code></h3><p>A page’s title, description and editable regions as they stand, drafts included.</p></article>
+      <article class="card"><h3 class="h3"><code>replace_text</code></h3><p>Find exact text on a page and replace it. The safest edit: it can’t touch anything else.</p></article>
+      <article class="card"><h3 class="h3"><code>update_region</code></h3><p>Rewrite a whole region, for new sections or a fresh page, keeping the site’s own classes.</p></article>
+      <article class="card"><h3 class="h3"><code>set_page_settings</code></h3><p>Page title and search description, with length guidance for Google.</p></article>
+      <article class="card"><h3 class="h3"><code>publish</code></h3><p>Make drafts live, for one page or all of them, when the connection is allowed to.</p></article>
+    </div>
+    <p class="muted small" style="margin-top:16px">Also: <code class="inline">list_drafts</code>, <code class="inline">discard_drafts</code> and <code class="inline">get_history</code>.</p>
+  </div>
+</section>
+
+<section class="sec sec--white" id="connect">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Connect</p><h2 class="h2">Set up in two&nbsp;minutes</h2><p class="lede">An admin opens the editor, goes to <b>Editors › AI assistants</b>, names the assistant and copies its private address. Developers can run <code class="inline">vibecms connect ChatGPT</code> instead.</p></div>
+    <div class="assistants">
+      <article class="card"><h3 class="h3">ChatGPT</h3><p>Settings › Apps › Advanced settings: turn on developer mode, then create an app with the address as its MCP server URL and no authentication. Pick it from the + menu in a chat.</p></article>
+      <article class="card"><h3 class="h3">Claude</h3><p>On claude.ai or the desktop app: Settings › Connectors › Add custom connector, and paste the address. In Claude Code: <code class="inline">claude mcp add --transport http mysite &lt;address&gt;</code>.</p></article>
+      <article class="card"><h3 class="h3">Grok</h3><p>Through the xAI API, add the address as a remote MCP tool. Grok’s app doesn’t take custom connectors yet; we’ll list Vibe CMS there when it does.</p></article>
+    </div>
+    <p class="muted small" style="margin-top:16px">Listings in the ChatGPT and Claude app directories, with one sign-in for all your sites, are on the way for early-access members.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="cta-band">
+      <div>
+        <h2 class="h2">Give your next client a site they can&nbsp;edit.</h2>
+        <p>Vibe CMS is in early access for developers and agencies building with AI. Join now to lock in founding pricing.</p>
+      </div>
+      <div class="btns">
+        <a class="btn btn--primary" href="/early-access/">Get early access</a>
+        <a class="btn" href="/developers/">Developer guide</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<footer class="site-foot" data-cms="@footer" data-cms-v="2f34e5af612d">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" aria-label="Vibe CMS home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M8.2 9.6 13.7 22.4h1.5L20.6 9.6" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
+          Vibe CMS
+        </a>
+        <p>The click-to-edit CMS for websites built with AI. This site runs on it.</p>
+      </div>
+      <div>
+        <h2>Product</h2>
+        <ul>
+          <li><a href="/features/">Features</a></li>
+          <li><a href="/ai/">AI assistants</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Build</h2>
+        <ul>
+          <li><a href="/developers/">For developers</a></li>
+          <li><a href="/developers/#install">Claude Code plugin</a></li>
+          <li><a href="/ai/#connect">MCP setup</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/early-access/">Early access</a></li>
+          <li><a href="/early-access/#talk">Talk to us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Vibe CMS, a dbVantage product</span>
+      <span>Edit this page: add <code class="inline">?edit</code> to the address</span>
+    </div>
+  </div>
+</footer>
+<script src="/script.js?v=b95353ff" defer></script>
+<!-- pwa:body -->
+<script>
+(() => {
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1'))
+    addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  const btns = () => document.querySelectorAll('[data-pwa-install]');
+  const web = typeof Navigator.prototype.install === 'function'; let deferred;
+  const show = (on) => btns().forEach((b) => { b.hidden = !on; });
+  if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) document.documentElement.classList.add('is-app');
+  else if (web) show(true);
+  // No install button on the page: leave the browser's own install prompt alone.
+  addEventListener('beforeinstallprompt', (e) => { if (!btns().length) return; e.preventDefault(); deferred = e; if (!web) show(true); });
+  addEventListener('appinstalled', () => { deferred = undefined; show(false); });
+  document.addEventListener('click', async (e) => {
+    const b = e.target.closest && e.target.closest('[data-pwa-install]'); if (!b || b.getAttribute('aria-disabled') === 'true') return;
+    b.setAttribute('aria-disabled', 'true');
+    try {
+      if (web) { await navigator.install(); show(false); }
+      else if (deferred) { const p = deferred; deferred = undefined; await p.prompt(); const { outcome } = await p.userChoice; if (outcome === 'accepted' || !deferred) show(false); }
+    } catch (err) { if (err.name !== 'AbortError') console.error(err); } finally { b.removeAttribute('aria-disabled'); }
+  });
+})();
+</script>
+<!-- /pwa:body -->
+</body>
+</html>

@@ -1,0 +1,63 @@
+/* Writing help popover */
+.wr-pop .wr-h { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-weight: 650; color: var(--ink); }
+.wr-pop .wr-h svg { color: var(--a); }
+.wr-pop .wr-h .muted { font-weight: 500; }
+.wr-pop .wr-h span:not(.muted) { flex: 1; }
+.wr-link { color: var(--mute); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; padding: 4px 2px; }
+.wr-link:hover { color: var(--ink); }
+.wr-msg { margin: 0; color: var(--ink); line-height: 1.5; }
+.wr-modes { display: grid; gap: 2px; margin: 0 -4px; }
+.wr-mode { display: flex; align-items: center; width: 100%; min-height: 40px; padding: 8px 10px; border-radius: 8px; text-align: left; font-weight: 550; }
+.wr-mode:hover, .wr-mode:focus-visible { background: var(--ui3); }
+.wr-fine { margin: 10px 0 0; font-size: 12px; line-height: 1.45; }
+.wr-sugg { max-height: min(40vh, 280px); overflow-y: auto; padding: 10px 12px; border-radius: 8px; background: var(--ui2); border: 1px solid var(--line);
+  line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.wr-warn { margin: 10px 0 0; color: #fcd34d; font-size: 13px; line-height: 1.45; }
+.wr-load { display: flex; align-items: center; gap: 10px; min-height: 44px; color: var(--mute); }
+.wr-spin { display: inline-block; flex: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--ui3); border-top-color: var(--a); animation: wr-spin .8s linear infinite; }
+@keyframes wr-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .wr-spin { animation-duration: 2.4s; } }
+
+/* Find and replace panel */
+.wr-find .field { margin-bottom: 12px; }
+.wr-opts { display: grid; gap: 2px; margin: 0 0 2px; }
+.wr-check { display: flex; align-items: center; gap: 10px; min-height: 32px; cursor: pointer; color: var(--ink); }
+.wr-check input { flex: none; width: 18px; height: 18px; margin: 0; accent-color: var(--a); cursor: pointer; }
+.wr-out { margin-top: 16px; }
+.pb .wr-hint { font-size: 13px; }
+.wr-progress p { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.wr-bar { height: 4px; border-radius: 99px; background: var(--ui3); overflow: hidden; }
+.wr-bar i { display: block; height: 100%; width: 0; background: var(--a); transition: width .2s; }
+.pb .wr-sum { color: var(--ink); }
+.wr-all { padding-bottom: 6px; border-bottom: 1px solid var(--line); font-weight: 600; }
+.wr-groups { list-style: none; margin: 0; padding: 0; }
+.wr-g { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.wr-g.off .wr-snips, .wr-g.off .grow { opacity: .5; }
+.wr-gh { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+.wr-gh input { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--a); cursor: pointer; }
+.wr-gh .grow { flex: 1; min-width: 0; }
+.wr-gh .grow b { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wr-gh .grow span { display: block; color: var(--mute); font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wr-n { flex: none; min-width: 26px; padding: 2px 8px; border-radius: 99px; background: var(--ui3); font-size: 12px; font-weight: 650; text-align: center; }
+.wr-snips { list-style: none; display: grid; gap: 6px; margin: 8px 0 0 28px; padding: 0; color: var(--mute); font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; }
+.wr-snips mark { padding: 0 2px; border-radius: 3px; background: color-mix(in srgb, var(--a) 38%, transparent); color: var(--ink); }
+.wr-snips .wr-mk { color: var(--ink); font-weight: 600; }
+.wr-more { font-style: italic; }
+.wr-foot { position: sticky; bottom: -20px; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px;
+  margin: 12px -18px -20px; padding: 12px 18px; background: var(--ui); border-top: 1px solid var(--line); }
+.wr-case { flex: 1 1 160px; font-size: 12px; line-height: 1.4; }
+.wr-done { line-height: 1.5; }
+.wr-rows li .grow span { display: block; }
+.wr-rows li.wr-err .grow span { color: #fca5a5; }
+.wr-rows .btn { height: 32px; padding: 0 12px; text-decoration: none; color: var(--ink); }
+
+@media (max-width: 420px) {
+  /* Icon only on small phones, so the toolbar keeps fitting. */
+  .tb .wr-tb { font-size: 0; gap: 0; }
+  .tb .sep:has(+ .wr-tb) { display: none; }
+}
+@media (max-width: 760px) {
+  .tb .wr-tb { padding: 0 8px; }
+  .wr-mode { min-height: 44px; }
+}
+.list.wr-rows a.btn { flex: none; display: inline-flex; }

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /_cms/
+
+Sitemap: https://cms.dbvantage.com/sitemap.xml

@@ -1,0 +1,7 @@
+/* Embedded players swallow clicks. While editing they ignore the pointer, so a click on a video
+   selects it (the editor works out which video was under the pointer). */
+html.vibecms-on [data-cms] iframe[src*="youtube.com/"],
+html.vibecms-on [data-cms] iframe[src*="youtube-nocookie.com/"],
+html.vibecms-on [data-cms] iframe[src*="player.vimeo.com/"],
+html.vibecms-on [data-cms] video { pointer-events: none; }
+html.vibecms-on [data-cms] .cms-video { cursor: pointer; }

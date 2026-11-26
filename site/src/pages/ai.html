@@ -1,0 +1,69 @@
+<!-- title: Edit your website from ChatGPT, Claude or Grok | Vibe CMS -->
+<!-- desc: Every Vibe CMS site is an MCP server. Connect ChatGPT, Claude or Grok (through the xAI API) and change pages by asking. Changes stay drafts unless you allow publishing. -->
+<!-- path: /ai/ -->
+<!-- nav: ai -->
+<main id="main">
+<section class="page-hero">
+  <div class="wrap">
+    <p class="eyebrow">AI assistants</p>
+    <h1 class="h1">Change your website by asking for&nbsp;it.</h1>
+    <p class="lede">Every Vibe CMS site comes with its own MCP server, the standard way AI assistants use tools. Connect your assistant once and say what you want changed.</p>
+    <ul class="chips"><li>ChatGPT</li><li>Claude and Claude Code</li><li>Grok through the xAI API</li><li>Any MCP client</li></ul>
+  </div>
+</section>
+
+<section class="sec sec--white">
+  <div class="wrap split split--wide">
+    <div>
+      <p class="eyebrow">Safe by design</p>
+      <h2 class="h2">The assistant drafts. A person&nbsp;decides.</h2>
+      <ul class="ticks">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>Drafts by default.</b> A connection saves changes as drafts. People review them in the editor and press Publish.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>Publishing is opt-in.</b> Give a connection the publish permission only if you want it, and the assistant is told to ask you first.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>Same rules as people.</b> Saved HTML is cleaned of scripts, shared parts need the editor role, and every publish lands in History.</span></li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg><span><b>One key per assistant.</b> Each shows when it was last used and can be turned off in a click.</span></li>
+      </ul>
+    </div>
+    <div class="chat" aria-label="Example conversation">
+      <div class="msg msg--me"><p>Rewrite the About page intro so it sounds warmer, and fix the title for Google.</p></div>
+      <div class="tool-call">get_page /about/</div>
+      <div class="tool-call">update_region /about/ main</div>
+      <div class="tool-call">set_page_settings /about/</div>
+      <div class="msg msg--ai"><p>I rewrote the first two paragraphs and set the title to “About Juniper Café: a neighbourhood bakery on Main Street” (57 characters). Both are drafts. Have a look at <span class="nw">/about/?edit</span>, then tell me if you want it published.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Tools</p><h2 class="h2">What the assistant can&nbsp;do</h2></div>
+    <div class="grid grid--3">
+      <article class="card"><h3 class="h3"><code>list_pages</code></h3><p>Every page on the site and which ones have unpublished changes.</p></article>
+      <article class="card"><h3 class="h3"><code>get_page</code></h3><p>A page’s title, description and editable regions as they stand, drafts included.</p></article>
+      <article class="card"><h3 class="h3"><code>replace_text</code></h3><p>Find exact text on a page and replace it. The safest edit: it can’t touch anything else.</p></article>
+      <article class="card"><h3 class="h3"><code>update_region</code></h3><p>Rewrite a whole region, for new sections or a fresh page, keeping the site’s own classes.</p></article>
+      <article class="card"><h3 class="h3"><code>set_page_settings</code></h3><p>Page title and search description, with length guidance for Google.</p></article>
+      <article class="card"><h3 class="h3"><code>publish</code></h3><p>Make drafts live, for one page or all of them, when the connection is allowed to.</p></article>
+    </div>
+    <p class="muted small" style="margin-top:16px">Also: <code class="inline">list_drafts</code>, <code class="inline">discard_drafts</code> and <code class="inline">get_history</code>.</p>
+  </div>
+</section>
+
+<section class="sec sec--white" id="connect">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Connect</p><h2 class="h2">Set up in two&nbsp;minutes</h2><p class="lede">An admin opens the editor, goes to <b>Editors › AI assistants</b>, names the assistant and copies its private address. Developers can run <code class="inline">vibecms connect ChatGPT</code> instead.</p></div>
+    <div class="assistants">
+      <article class="card"><h3 class="h3">ChatGPT</h3><p>Settings › Apps › Advanced settings: turn on developer mode, then create an app with the address as its MCP server URL and no authentication. Pick it from the + menu in a chat.</p></article>
+      <article class="card"><h3 class="h3">Claude</h3><p>On claude.ai or the desktop app: Settings › Connectors › Add custom connector, and paste the address. In Claude Code: <code class="inline">claude mcp add --transport http mysite &lt;address&gt;</code>.</p></article>
+      <article class="card"><h3 class="h3">Grok</h3><p>Through the xAI API, add the address as a remote MCP tool. Grok’s app doesn’t take custom connectors yet; we’ll list Vibe CMS there when it does.</p></article>
+    </div>
+    <p class="muted small" style="margin-top:16px">Listings in the ChatGPT and Claude app directories, with one sign-in for all your sites, are on the way for early-access members.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    {{cta}}
+  </div>
+</section>
+</main>

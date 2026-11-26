@@ -1,0 +1,55 @@
+<!-- title: Get early access to Vibe CMS for your client sites -->
+<!-- desc: Join the Vibe CMS early access list for developers and agencies building websites with AI. Founding prices, help setting up, and a direct line to the team. -->
+<!-- path: /early-access/ -->
+<!-- nav: access -->
+<main id="main">
+<section class="page-hero">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">Early access</p>
+      <h1 class="h1">Be one of the&nbsp;first to hand over an editable&nbsp;site.</h1>
+      <p class="lede">We’re opening Vibe CMS to a small group of developers and agencies first. Tell us what you build and we’ll get you set up.</p>
+      <ul class="ticks">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Founding prices, kept for as long as you stay</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Help installing it on your first client site</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>A say in what we build next</li>
+      </ul>
+    </div>
+    <div id="talk">
+      <form class="form" id="access-form" data-cms-form="early-access" action="/_cms/form/early-access" method="post" data-cms-success="Thanks, you’re on the list. We’ll email you soon.">
+        <div class="row2">
+          <div><label for="f-name">Your name</label><input id="f-name" name="Name" type="text" autocomplete="name" required maxlength="120"></div>
+          <div><label for="f-email">Email</label><input id="f-email" name="Email" type="email" autocomplete="email" required maxlength="200"></div>
+        </div>
+        <div><label for="f-what">What do you build?</label>
+          <select id="f-what" name="Builds">
+            <option>Sites for clients (freelance)</option>
+            <option>Sites for clients (agency)</option>
+            <option>My own business site</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div><label for="f-plan">Plan you’re interested in</label>
+          <select id="f-plan" name="Plan">
+            <option value="site">Site</option>
+            <option value="studio">Studio</option>
+            <option value="agency">Agency</option>
+            <option value="unsure">Not sure yet</option>
+          </select>
+        </div>
+        <div><label for="f-note">Anything we should know?</label><textarea id="f-note" name="Message" maxlength="5000" placeholder="How many sites, what you build them with, what your clients ask you to change"></textarea></div>
+        <button class="btn btn--primary" type="submit">Join early access</button>
+        <p role="status" aria-live="polite"></p>
+        <p class="hint">We use your email only to contact you about Vibe CMS.</p>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+<script>
+  (function () {
+    var p = new URLSearchParams(location.search).get('plan');
+    var s = document.getElementById('f-plan');
+    if (p && s && s.querySelector('option[value="' + p.replace(/[^a-z]/g, '') + '"]')) s.value = p;
+  })();
+</script>

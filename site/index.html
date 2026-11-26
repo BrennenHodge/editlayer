@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vibe CMS: the click-to-edit CMS for sites built with AI</title>
+<meta name="description" content="You built the site with Claude Code. Vibe CMS lets your client edit it on the live page: click text, type, swap photos, publish. Or ask ChatGPT to do it.">
+<link rel="canonical" href="https://cms.dbvantage.com/">
+<meta name="theme-color" content="#f5f4ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0d0e10" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Vibe CMS">
+<meta property="og:title" content="Vibe CMS: the click-to-edit CMS for sites built with AI">
+<meta property="og:description" content="You built the site with Claude Code. Vibe CMS lets your client edit it on the live page: click text, type, swap photos, publish. Or ask ChatGPT to do it.">
+<meta property="og:url" content="https://cms.dbvantage.com/">
+<meta property="og:image" content="https://cms.dbvantage.com/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vibe CMS: click the page and type">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vibe CMS: the click-to-edit CMS for sites built with AI">
+<meta name="twitter:description" content="You built the site with Claude Code. Vibe CMS lets your client edit it on the live page: click text, type, swap photos, publish. Or ask ChatGPT to do it.">
+<meta name="twitter:image" content="https://cms.dbvantage.com/assets/img/og.png">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="/styles.css?v=b95353ff">
+<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Organization","@id":"https://cms.dbvantage.com/#org","name":"Vibe CMS","url":"https://cms.dbvantage.com/","logo":"https://cms.dbvantage.com/icons/icon-512.png"},
+{"@type":"SoftwareApplication","name":"Vibe CMS","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://cms.dbvantage.com/","description":"A click-to-edit CMS for static websites on Cloudflare: editors change text, photos and sections on the live page, or ask ChatGPT or Claude to do it through MCP.","publisher":{"@id":"https://cms.dbvantage.com/#org"}}
+]}
+</script>
+
+<!-- pwa:head -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="Vibe CMS">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<!-- /pwa:head -->
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-type" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/></symbol>
+    <symbol id="i-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M7 14h10M7 18h6"/></symbol>
+    <symbol id="i-page" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 13v5M9.5 15.5h5"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a10 10 0 1 1 10-10c0 2.8-2.2 4-4 4h-2a2 2 0 0 0-1.5 3.3A2 2 0 0 1 12 22z"/><circle cx="7.5" cy="10.5" r="1"/><circle cx="12" cy="7" r="1"/><circle cx="16.5" cy="10.5" r="1"/></symbol>
+    <symbol id="i-review" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.1z"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.5 2.5M15.2 15.2l2.5 2.5M6.3 17.7l2.5-2.5M15.2 8.8l2.5-2.5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></symbol>
+    <symbol id="i-bold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 0 8H6zM6 12h9a4 4 0 0 1 0 8H6z"/></symbol>
+    <symbol id="i-italic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 4h-9M14 20H5M15 4 9 20"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></symbol>
+  </defs>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-head" data-cms="@header" data-cms-v="8de2e6223f52" data-cms-current="">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="Vibe CMS home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M8.2 9.6 13.7 22.4h1.5L20.6 9.6" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
+      Vibe CMS
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="/features/">Features</a>
+      <a href="/ai/">AI assistants</a>
+      <a href="/developers/">For developers</a>
+      <a href="/pricing/">Pricing</a>
+    </nav>
+    <div class="head-actions">
+      <button type="button" class="icon-btn theme-toggle lg-only" aria-label="Switch light or dark theme"><svg class="i-moon"><use href="#i-moon"/></svg><svg class="i-sun"><use href="#i-sun"/></svg></button>
+      <button type="button" class="btn btn--sm lg-only" data-pwa-install hidden>Install app</button>
+      <a class="btn btn--primary" href="/early-access/"><span class="lg-only">Get early access</span><span class="sm-only">Early access</span></a>
+      <button type="button" class="icon-btn menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><svg class="i-open"><use href="#i-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+<div class="menu" id="menu" hidden>
+  <nav aria-label="Menu">
+    <a href="/" aria-current="page">Home</a>
+    <a href="/features/">Features</a>
+    <a href="/ai/">AI assistants</a>
+    <a href="/developers/">For developers</a>
+    <a href="/pricing/">Pricing</a>
+    <a href="/early-access/">Early access</a>
+  </nav>
+  <div class="menu-row">
+    <button type="button" class="btn theme-toggle"><svg class="i-moon" aria-hidden="true"><use href="#i-moon"/></svg><svg class="i-sun" aria-hidden="true"><use href="#i-sun"/></svg>Light or dark</button>
+    <button type="button" class="btn" data-pwa-install hidden>Install the app</button>
+  </div>
+</div>
+<main id="main" data-cms="main" data-cms-v="c0e0cf31ef86">
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">The CMS for websites built with AI</p>
+    <h1 class="h-display">Click the page. Type. <span class="mark">Publish</span><span class="caret" aria-hidden="true"></span></h1>
+    <p class="lede">You built a beautiful site with Claude Code. Now the owner wants to change a price, a photo, the opening hours. With&nbsp;Vibe CMS they open their own site, click the words and type over them. No admin screens, no theme, no calling you.</p>
+    <div class="btns">
+      <a class="btn btn--primary" href="/early-access/">Get early access <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+      <a class="btn" href="#demo">Try the editor</a>
+    </div>
+    <ul class="proof">
+      <li><svg aria-hidden="true"><use href="#i-check"/></svg>One command in Claude Code</li>
+      <li><svg aria-hidden="true"><use href="#i-check"/></svg>Your HTML stays the design</li>
+      <li><svg aria-hidden="true"><use href="#i-check"/></svg>Works with ChatGPT and Claude</li>
+    </ul>
+
+    <div class="demo" id="demo" data-demo data-cms-lock>
+      <div class="browser">
+        <div class="browser__bar">
+          <span class="browser__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="browser__url">junipercafe.example/?edit</span>
+          <button type="button" class="btn btn--sm btn--lime demo-toggle" data-demo-toggle aria-pressed="false">Edit page</button>
+        </div>
+        <div class="demo-site">
+          <div class="ds-tool" role="toolbar" aria-label="Text formatting">
+            <button type="button" data-cmd="bold" aria-label="Bold"><svg><use href="#i-bold"/></svg></button>
+            <button type="button" data-cmd="italic" aria-label="Italic"><svg><use href="#i-italic"/></svg></button>
+            <button type="button" data-cmd="link" aria-label="Link"><svg><use href="#i-link"/></svg></button>
+          </div>
+          <div class="ds-nav"><span>Juniper Café</span><span>Menu · Visit · Order</span></div>
+          <div class="ds-hero">
+            <div>
+              <p class="ds-title" data-edit>Fresh bread, every morning by&nbsp;seven.</p>
+              <p data-edit>Sourdough, cardamom buns and the best flat white on Main Street. Come early, the croissants go fast.</p>
+              <span class="ds-btn" data-edit data-single>See today’s menu</span>
+            </div>
+            <div class="ds-photo" role="img" aria-label="Illustration of loaves of bread">
+              <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <rect class="p-bg" width="400" height="300"/>
+                <circle class="p-sun" cx="320" cy="70" r="46"/>
+                <ellipse class="p-a" cx="150" cy="210" rx="120" ry="58"/>
+                <ellipse class="p-b" cx="270" cy="230" rx="100" ry="48"/>
+                <path class="p-line" d="M80 200q30-26 60 0M120 190q30-26 60 0M210 225q26-22 52 0M250 220q26-22 52 0" fill="none" stroke-width="6" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="ds-hours">
+            <div><b data-edit data-single>Mon–Fri</b><span data-edit data-single>7am – 3pm</span></div>
+            <div><b data-edit data-single>Saturday</b><span data-edit data-single>8am – 2pm</span></div>
+            <div><b data-edit data-single>Sunday</b><span data-edit data-single>Closed</span></div>
+          </div>
+          <div class="ds-bar"><span class="ds-status" aria-live="polite"></span><button type="button" class="btn btn--lime" data-demo-publish>Publish</button></div>
+        </div>
+      </div>
+      <p class="demo-note">A pretend café site. Press <b>Edit page</b>, then click any text and type. Nothing you change is saved.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">How it works</p>
+      <h2 class="h2">Build it with AI. Hand it&nbsp;over.</h2>
+      <p class="lede">Vibe CMS adds editing to the site you already have. Nothing is rebuilt, and the design can’t be broken by an edit.</p>
+    </div>
+    <ol class="steps">
+      <li class="step">
+        <p class="step__n">01</p>
+        <h3 class="h3">Build the site your way</h3>
+        <p>Claude Code, Cursor, a static generator or plain HTML. Any static site with a <code class="inline">&lt;main&gt;</code> works.</p>
+      </li>
+      <li class="step">
+        <p class="step__n">02</p>
+        <h3 class="h3">Add Vibe CMS in one&nbsp;step</h3>
+        <p>Install the plugin and ask Claude Code to make the site editable. It sets up the database, storage and the editor on Cloudflare.</p>
+        <code>/vibe-cms:vibe-cms</code>
+      </li>
+      <li class="step">
+        <p class="step__n">03</p>
+        <h3 class="h3">Send the owner a link</h3>
+        <p>They choose a password, press <b>Edit page</b> on their own site and start typing. Drafts autosave; <b>Publish</b> makes them live.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">What editors can do</p>
+      <h2 class="h2">Everything they ask you for, without&nbsp;you.</h2>
+      <p class="lede">Built for the person who runs the business, not for developers. Plain words, big buttons, and an undo for everything.</p>
+    </div>
+    <div class="grid grid--3">
+      <article class="card"><div class="ico"><svg aria-hidden="true"><use href="#i-type"/></svg></div><h3 class="h3">Click and type</h3><p>Every headline, paragraph, button and list on the page. Bold, italic and links from a small toolbar. Paste is always clean.</p></article>
+      <article class="card"><div class="ico"><svg aria-hidden="true"><use href="#i-image"/></svg></div><h3 class="h3">Photos, video and PDFs</h3><p>Replace a picture with an upload or the library. Resized and converted in the browser, with alt text and a focal point.</p></article>
+      <article class="card"><div class="ico"><svg aria-hidden="true"><use href="#i-layers"/></svg></div><h3 class="h3">Sections and blocks</h3><p>Move, duplicate, hide or delete sections. Add ready-made blocks designed for the site, or reuse one shared across pages.</p></article>
+      <article class="card"><div class="ico"><svg aria-hidden="true"><use href="#i-page"/></svg></div><h3 class="h3">New pages and menus</h3><p>Make a page from the site’s own layouts, edit the menu and footer once for every page, and preview on a phone.</p></article>
+      <article class="card"><div class="ico"><svg aria-hidden="true"><use href="#i-review"/></svg></div><h3 class="h3">Drafts, review and scheduling</h3><p>Changes are drafts until published. Authors send pages for approval, editors schedule publishing, anyone can share a preview link.</p></article>
+      <article class="card"><div class="ico"><svg aria-hidden="true"><use href="#i-clock"/></svg></div><h3 class="h3">History you can restore</h3><p>Every publish is kept. Restore any version as a draft, check it, publish it again. Reset a page to the developer’s original.</p></article>
+    </div>
+    <p style="margin-top:22px"><a class="btn" href="/features/">See every feature <svg aria-hidden="true"><use href="#i-arrow"/></svg></a></p>
+  </div>
+</section>
+
+<section class="sec sec--ink">
+  <div class="wrap split split--wide">
+    <div>
+      <p class="eyebrow">AI assistants</p>
+      <h2 class="h2">Or just ask&nbsp;ChatGPT.</h2>
+      <p class="lede">Every Vibe CMS site is also an MCP server. Connect ChatGPT or Claude once, and the&nbsp;owner can change their site from a conversation.</p>
+      <ul class="ticks">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>The assistant reads the real pages before it edits them</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Its changes stay drafts unless you let it publish</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Each connection has its own key you can turn off any time</li>
+      </ul>
+      <a class="btn btn--lime" href="/ai/">How AI editing works <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="chat" aria-label="Example conversation">
+      <div class="msg msg--me"><p>Our Saturday hours are changing to 9 to 1. Update the site.</p></div>
+      <div class="tool-call">list_pages · get_page /visit/</div>
+      <div class="tool-call">replace_text “8am – 2pm” → “9am – 1pm”</div>
+      <div class="msg msg--ai"><p>Done. Saturday now reads <b>9am – 1pm</b> on the Visit page and in the footer. It’s saved as a draft: review it at <span class="nw">junipercafe.example/visit/?edit</span>. Want me to publish it?</p></div>
+      <div class="msg msg--me"><p>Yes, publish.</p></div>
+      <div class="tool-call">publish /visit/</div>
+      <div class="msg msg--ai"><p>Live now. You can roll it back from History in the editor.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">For developers</p>
+      <h2 class="h2">Your code stays the source of&nbsp;truth.</h2>
+      <p class="lede">No framework to adopt, no content model to&nbsp;design, no rewrite. Vibe CMS runs in front of your&nbsp;static site as a Cloudflare Worker and&nbsp;swaps edited regions into the HTML as it streams.</p>
+      <ul class="ticks">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Edits are stored in D1, images in R2, on your own Cloudflare account</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Untouched pages are served byte for byte; if the CMS errors, the static page is served</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rebuild any time: <code class="inline">vibecms status</code> shows what editors changed</li>
+      </ul>
+      <a class="btn" href="/developers/">Read the developer guide <svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div>
+      <p class="code-label">In Claude Code</p>
+<pre class="code"><span class="p">&gt; </span>/plugin marketplace add dbvantage/vibe-cms
+<span class="p">&gt; </span>/plugin install vibe-cms@vibe-cms
+<span class="p">&gt; </span>Make this site editable for my client
+<span class="c">  ✓ D1 database and R2 bucket created
+  ✓ 14 pages marked editable
+  ✓ Invite link for owner@junipercafe.example</span></pre>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--white">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">Why not a regular CMS</p>
+      <h2 class="h2">Built for the sites AI builds&nbsp;now.</h2>
+    </div>
+    <p class="swipe-hint">Swipe for more columns →</p>
+    <div class="scroller">
+      <table class="compare">
+        <thead><tr><th scope="col"></th><th scope="col">Vibe CMS</th><th scope="col">Move it to a CMS platform</th><th scope="col">Headless CMS</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Keep the site you built</th><td class="yes">Yes, as it is</td><td>Rebuilt as a theme</td><td>Rewired to fetch content</td></tr>
+          <tr><th scope="row">Editors work on</th><td class="yes">The live page</td><td>An admin dashboard</td><td>Forms and fields</td></tr>
+          <tr><th scope="row">Can an edit break the layout?</th><td class="yes">No, styles never change</td><td>Often</td><td>Rarely</td></tr>
+          <tr><th scope="row">Setup</th><td class="yes">One command</td><td>Days</td><td>Content model, then code</td></tr>
+          <tr><th scope="row">Edit from ChatGPT or Claude</th><td class="yes">Built in (MCP)</td><td>Varies</td><td>Varies</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Questions</p><h2 class="h2">Good to&nbsp;know</h2></div>
+    <div class="faq">
+      <details><summary>What kind of sites does it work with?</summary><div><p>Static sites: plain HTML, or the output of a static build (Astro, Eleventy, Hugo, Vite and similar), hosted as a Cloudflare Worker. Each page needs a <code class="inline">&lt;main&gt;</code> element and the site needs a sitemap. Server-rendered apps aren’t supported.</p></div></details>
+      <details><summary>Do I need a Cloudflare account?</summary><div><p>Yes. The site, its edits (D1) and its images (R2) live in your Cloudflare account, so you own the data. Small sites usually fit Cloudflare’s free tier.</p></div></details>
+      <details><summary>What happens when I rebuild the site?</summary><div><p>Rebuild and deploy as usual. Pages nobody edited update straight away. If you change a region an editor also changed, their version keeps showing and the editor offers “keep mine” or “use the developer’s version”.</p></div></details>
+      <details><summary>Can ChatGPT really change my website?</summary><div><p>Only if an admin connects it, and only as drafts unless you allow publishing. It works through the site’s MCP endpoint with its own key, which you can turn off any time. Every change shows up in the editor and in History.</p></div></details>
+      <details><summary>Is it secure?</summary><div><p>Passwords are hashed with PBKDF2, sessions are HttpOnly cookies, accounts lock after repeated failed sign-ins, every change needs a same-origin request, and saved HTML is stripped of scripts and event handlers.</p></div></details>
+      <details><summary>Is this site built with it?</summary><div><p>Yes. Everything you’re reading is edited in Vibe CMS. Even the early-access form sends to the Vibe CMS inbox.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-band">
+      <div>
+        <h2 class="h2">Give your next client a site they can&nbsp;edit.</h2>
+        <p>Vibe CMS is in early access for developers and agencies building with AI. Join now to lock in founding pricing.</p>
+      </div>
+      <div class="btns">
+        <a class="btn btn--primary" href="/early-access/">Get early access</a>
+        <a class="btn" href="/developers/">Developer guide</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<footer class="site-foot" data-cms="@footer" data-cms-v="2f34e5af612d">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="/" aria-label="Vibe CMS home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#121316"/><path d="M8.2 9.6 13.7 22.4h1.5L20.6 9.6" fill="none" stroke="#c6f135" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/><rect x="23" y="8" width="2.8" height="16" rx="1.4" fill="#9d8bff"/></svg>
+          Vibe CMS
+        </a>
+        <p>The click-to-edit CMS for websites built with AI. This site runs on it.</p>
+      </div>
+      <div>
+        <h2>Product</h2>
+        <ul>
+          <li><a href="/features/">Features</a></li>
+          <li><a href="/ai/">AI assistants</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Build</h2>
+        <ul>
+          <li><a href="/developers/">For developers</a></li>
+          <li><a href="/developers/#install">Claude Code plugin</a></li>
+          <li><a href="/ai/#connect">MCP setup</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Company</h2>
+        <ul>
+          <li><a href="/early-access/">Early access</a></li>
+          <li><a href="/early-access/#talk">Talk to us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Vibe CMS, a dbVantage product</span>
+      <span>Edit this page: add <code class="inline">?edit</code> to the address</span>
+    </div>
+  </div>
+</footer>
+<script src="/script.js?v=b95353ff" defer></script>
+<!-- pwa:body -->
+<script>
+(() => {
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1'))
+    addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+  const btns = () => document.querySelectorAll('[data-pwa-install]');
+  const web = typeof Navigator.prototype.install === 'function'; let deferred;
+  const show = (on) => btns().forEach((b) => { b.hidden = !on; });
+  if (matchMedia('(display-mode: standalone)').matches || navigator.standalone) document.documentElement.classList.add('is-app');
+  else if (web) show(true);
+  // No install button on the page: leave the browser's own install prompt alone.
+  addEventListener('beforeinstallprompt', (e) => { if (!btns().length) return; e.preventDefault(); deferred = e; if (!web) show(true); });
+  addEventListener('appinstalled', () => { deferred = undefined; show(false); });
+  document.addEventListener('click', async (e) => {
+    const b = e.target.closest && e.target.closest('[data-pwa-install]'); if (!b || b.getAttribute('aria-disabled') === 'true') return;
+    b.setAttribute('aria-disabled', 'true');
+    try {
+      if (web) { await navigator.install(); show(false); }
+      else if (deferred) { const p = deferred; deferred = undefined; await p.prompt(); const { outcome } = await p.userChoice; if (outcome === 'accepted' || !deferred) show(false); }
+    } catch (err) { if (err.name !== 'AbortError') console.error(err); } finally { b.removeAttribute('aria-disabled'); }
+  });
+})();
+</script>
+<!-- /pwa:body -->
+</body>
+</html>
