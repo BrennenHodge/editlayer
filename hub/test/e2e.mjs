@@ -157,7 +157,7 @@ const access = t1.body.access_token;
 const init = await mcp(access, 'initialize', { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'e2e', version: '1' } });
 ok(init.res.status === 200 && init.body.result.instructions.includes(SITE_NAME), 'initialize names the connected site');
 const list = (await mcp(access, 'tools/list')).body.result.tools;
-ok(list.length === 11 && list.every((t) => t.title && typeof t.annotations.readOnlyHint === 'boolean' && typeof t.annotations.destructiveHint === 'boolean' && typeof t.annotations.openWorldHint === 'boolean'), 'every tool has a title and all three annotations', `${list.length} tools`);
+ok(list.length === 11 && list.every((t) => t.title && t.annotations.title === t.title && typeof t.annotations.readOnlyHint === 'boolean' && typeof t.annotations.destructiveHint === 'boolean' && typeof t.annotations.openWorldHint === 'boolean'), 'every tool has a title and all three annotations', `${list.length} tools`);
 const sites = data(await call(access, 'list_sites'));
 ok(sites.sites.length === 1 && sites.sites[0].canPublish === false, 'list_sites');
 const pages = data(await call(access, 'list_pages'));

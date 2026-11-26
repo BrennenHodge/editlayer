@@ -457,20 +457,20 @@ async function revokeToken(request, env) {
 
 const SITE_ARG = {
   type: 'string',
-  description: 'Which connected website to use: its address (e.g. "example.com") or name from list_sites. Only needed when more than one website is connected.',
+  description: 'Which connected website to use: its address (e.g. "example.com") or its name. Only needed when more than one website is connected.',
 };
 
 const HUB_TOOLS = [
   {
     name: 'list_sites', title: 'List connected websites',
-    description: 'Lists the websites this connection can reach, with what it may do on each (drafts only, or drafts and publishing). Call it first when the person has more than one website.',
+    description: 'Lists the websites this connection can reach, with what it may do on each (drafts only, or drafts and publishing).',
     inputSchema: { type: 'object', properties: {} },
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false },
   },
   ...SITE_TOOLS.map((t) => ({ ...t, inputSchema: { ...t.inputSchema, properties: { ...t.inputSchema.properties, site: SITE_ARG } } })),
   {
     name: 'disconnect_site', title: 'Disconnect a website',
-    description: 'Turns off this assistant’s access to one website: its connection key is deleted on the website and here. Only when the person asks to disconnect. To use the website again they connect it again.',
+    description: 'Turns off this connection’s access to one website: its connection key is deleted on the website and here. Using the website again needs its admin to approve a new connection.',
     inputSchema: { type: 'object', properties: { site: SITE_ARG }, required: ['site'] },
     annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false },
   },
@@ -565,7 +565,7 @@ async function rpc(env, grant, msg) {
       };
     }
     case 'ping': return { jsonrpc: '2.0', id, result: {} };
-    case 'tools/list': return { jsonrpc: '2.0', id, result: { tools: HUB_TOOLS } };
+    case 'tools/list': return { jsonrpc: '2.0', id, result: { tools: HUB_TOOLS.map((t) => ({ ...t, annotations: { title: t.title, ...t.annotations } })) } };
     case 'resources/list': return { jsonrpc: '2.0', id, result: { resources: [] } };
     case 'resources/templates/list': return { jsonrpc: '2.0', id, result: { resourceTemplates: [] } };
     case 'prompts/list': return { jsonrpc: '2.0', id, result: { prompts: [] } };
