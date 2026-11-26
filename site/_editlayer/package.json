@@ -1,7 +1,7 @@
 {
   "name": "editlayer",
   "version": "0.2.0",
-  "description": "Click-to-edit visual CMS for static sites on Cloudflare Workers: edit text and images right on the live page.",
+  "description": "Click-to-edit layer for static sites on Cloudflare Workers: edit text and images right on the live page.",
   "type": "module",
   "private": true,
   "main": "src/worker.js",

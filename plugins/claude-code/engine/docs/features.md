@@ -11,7 +11,7 @@ src/features/<name>.js           optional: Worker code
 migrations/<NNNN>_<name>.sql     optional: new tables (never edit an applied migration)
 ```
 
-`npm run build` concatenates the client files into `editor.js`/`editor.css` (embedded in
+`node scripts/build-client.mjs` concatenates the client files into `editor.js`/`editor.css` (embedded in
 `src/client-assets.js`) and regenerates `src/features/index.js`, which imports every Worker feature.
 A feature that throws while starting is logged and skipped; the rest of the editor keeps working.
 

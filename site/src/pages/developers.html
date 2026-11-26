@@ -44,7 +44,7 @@
       <article class="card"><h3 class="h3">Serving</h3><p>The Worker fetches the static page and swaps in edited regions with HTMLRewriter as it streams. Untouched pages pass through. If Editlayer errors, the static page is served.</p></article>
       <article class="card"><h3 class="h3">Edit mode</h3><p>Signed-in editors add <code class="inline">?edit</code>. Drafts are applied, your scripts are paused so menus don’t fight the editor, and the editor loads in a shadow root so your CSS and its CSS never mix.</p></article>
       <article class="card"><h3 class="h3">Your rebuilds</h3><p>If you rebuild a region an editor also changed, their version keeps showing and they get a banner: keep theirs, or use yours. <code class="inline">editlayer status</code> lists every edited region.</p></article>
-      <article class="card"><h3 class="h3">Security</h3><p>PBKDF2 passwords, HttpOnly 30-day sessions, lockout after 8 failed sign-ins, a custom header plus same-origin check on every write, and sanitized HTML.</p></article>
+      <article class="card"><h3 class="h3">Security</h3><p>Saved HTML is sanitized on the server. AI connections and authors get a stricter level: no outside iframes, forms or styles. AI keys are hashed and rate limited, the editor page runs under a script policy, and every write needs a same-origin check.</p></article>
     </div>
   </div>
 </section>

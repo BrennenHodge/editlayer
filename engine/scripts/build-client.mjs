@@ -1,6 +1,6 @@
 // Embeds the browser files (client/) into src/client-assets.js so the Worker can serve them
 // without a separate upload, and lists the Worker-side features in src/features/index.js.
-// Run after changing anything in client/ or adding a feature: npm run build
+// Run after changing anything in client/ or adding a feature: node scripts/build-client.mjs
 //
 // Features:
 //   client/features/<name>.js       editor code: feature('<name>', (core) => { ... });

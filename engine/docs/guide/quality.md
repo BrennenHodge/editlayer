@@ -29,7 +29,7 @@ Select anything inside a repeated item (a team member, a test in the catalog, a 
 **Save** applies the changes as one step (Ctrl+Z undoes it), and Ctrl+S also saves. **Previous / Next** move through the matching items (for example "8 of 92" in the test catalog). **Add another like this** puts a copy below and opens it with the first field selected, ready to type over. The bin button deletes the item. Closing the panel never throws away what was typed: it's saved, and Ctrl+Z still works.
 
 ### Site setup
-Nothing is required: the feature turns on when `client/features/quality.*` and `src/features/quality.js` are built in (`npm run build`). It needs no new bindings, tables or migrations. It stores ignored warnings in the per-page draft key `#checks` (`{ "ignored": ["links:…", …] }`), which the Worker validates (known categories only, up to 300 entries of 190 characters). Visitors never receive it, and pages nobody edited stay untouched (no `alwaysRender`).
+Nothing is required: the feature turns on when `client/features/quality.*` and `src/features/quality.js` are built in (`node scripts/build-client.mjs`). It needs no new bindings, tables or migrations. It stores ignored warnings in the per-page draft key `#checks` (`{ "ignored": ["links:…", …] }`), which the Worker validates (known categories only, up to 300 entries of 190 characters). Visitors never receive it, and pages nobody edited stay untouched (no `alwaysRender`).
 
 Site cooperation, if the site has a search or filter: build it from the visible text rather than a word list baked in at build time, so names changed in the editor are found.
 

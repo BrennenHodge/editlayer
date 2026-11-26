@@ -58,9 +58,8 @@ add `"triggers": { "crons": ["*/5 * * * *"] }` (scheduled publishing, form clean
 - **Developer changes.** If a page is rebuilt with different content in a region editors have also edited, the
   editor's version keeps showing and the editor shows a banner: keep the edited version, or use the
   developer's. `editlayer status` lists these.
-- **Security.** PBKDF2 passwords, HttpOnly session cookie (30 days), lockout after 8 failed sign-ins, every
-  write needs a custom header plus a same-origin check, saved HTML is stripped of scripts, event handlers and
-  `javascript:` links, uploads limited to raster images under 15 MB.
+- **Security.** PBKDF2 passwords, a `__Host-` HttpOnly session cookie (30 days), lockout after 8 failed sign-ins,
+  a custom header plus a same-origin check on every write, and sanitized HTML. See "Security" below.
 
 ## Add it to a site
 
@@ -70,7 +69,7 @@ Claude Code to "make this site editable" (skill `editlayer:editlayer`); by hand:
 
 ```powershell
 cd <site folder>
-node <path to engine>\cliibecms.mjs init --name "Business Name" --accent "#hex"
+node <path to engine>\cli\editlayer.mjs init --name "Business Name" --accent "#hex"
 ```
 
 `init` creates the D1 database `<worker>-cms` and the R2 bucket `<worker>-cms-media`, copies the engine into
@@ -150,7 +149,7 @@ Run from the site folder (or add `--site <dir>`). Add `--local` (and `--port N`)
 ## Working on Editlayer itself
 
 - Browser code is in `client/` (`editor.js`, `ui.css`, `editor.css`, `launcher.js`). After changing it run
-  `npm run build`, which embeds it into `src/client-assets.js`. Then redeploy each site that uses it.
+  `node scripts/build-client.mjs`, which embeds it into `src/client-assets.js`. Then redeploy each site that uses it.
 - Worker code is in `src/`; schema in `migrations/` (add new numbered files, never edit applied ones).
 - After any change here, run `node scripts/sync-plugin.mjs` (repo root) so the Claude Code plugin ships it.
 - Local test: the marketing site in `../site` runs on this engine: `npx wrangler dev --port 8792` in `site/`,
