@@ -58,6 +58,14 @@ const prm = await (await fetch(`${HUB}/.well-known/oauth-protected-resource`)).j
 ok(prm.resource === `${HUB}/mcp` && prm.authorization_servers[0] === HUB, 'protected resource metadata');
 const asm = await (await fetch(`${HUB}/.well-known/oauth-authorization-server`)).json();
 ok(asm.code_challenge_methods_supported.includes('S256') && asm.registration_endpoint && asm.client_id_metadata_document_supported && asm.authorization_response_iss_parameter_supported, 'authorization server metadata');
+// A real client ID metadata document (Claude's): the hub must fetch it and show the sign-in page, not "Unknown app".
+{
+  const cimd = new URL(`${HUB}/authorize`);
+  for (const [k, v] of Object.entries({ response_type: 'code', client_id: 'https://claude.ai/oauth/mcp-oauth-client-metadata', redirect_uri: 'https://claude.ai/api/mcp/auth_callback', code_challenge: s256('cimd-check'), code_challenge_method: 'S256', state: 's', resource: `${HUB}/mcp` })) cimd.searchParams.set(k, v);
+  const r = await fetch(cimd, { redirect: 'manual' });
+  const body = await r.text();
+  ok(r.status === 200 && /Let Claude edit/.test(body), 'client ID metadata document (Claude) accepted', `status ${r.status}`);
+}
 
 // Registration.
 const bad = await fetch(`${HUB}/register`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ redirect_uris: ['http://evil.example/cb'] }) });

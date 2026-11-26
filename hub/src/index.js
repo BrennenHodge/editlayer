@@ -187,8 +187,9 @@ async function metadataClient(env, id) {
   if (cached && cached.fetched_at > now() - CIMD_MS) return { id, name: cached.name, redirect_uris: JSON.parse(cached.redirect_uris) };
   let doc;
   try {
-    const res = await fetch(id, { headers: { accept: 'application/json' }, redirect: 'error', signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    // Workers don't support redirect: 'error'; 'manual' plus the status check below refuses redirects the same way.
+    const res = await fetch(id, { headers: { accept: 'application/json' }, redirect: 'manual', signal: AbortSignal.timeout(5000) });
+    if (res.status !== 200) throw new Error(`HTTP ${res.status}`);
     const text = await res.text();
     if (text.length > 20000) throw new Error('too large');
     doc = JSON.parse(text);
