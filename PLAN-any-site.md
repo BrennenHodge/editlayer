@@ -1,7 +1,8 @@
 # Vibe CMS on any site: plan
 
-Status: plan only, nothing built. Written 2026-11-25 while the engine in `engine/` is being worked on; start
-after that work lands.
+Status: Phase 0, local part done (2026-11-25): the full loop works on a local copy of Lexar. Code in
+[source-mode/](source-mode/README.md); results under "Phase 0 results" below. Nothing was pushed to GitHub and
+nothing touched Railway or lexarinsulation.com.
 
 ## Goal
 
@@ -211,6 +212,43 @@ Phase 0 decisions (2026-11-25):
 - Repository access: a fine-grained GitHub token for that repo only (Contents read/write, Metadata read, Commit
   statuses and Deployments read), saved by Brennen as `GITHUB_TOKEN` in `C:\Users\brenn\VibeCMS\.env`. The GitHub
   App comes in Phase 1.
+- Brennen, 2026-11-25: make no changes to lexarinsulation.com. Phase 0 so far ran entirely on a local copy.
+
+### Phase 0 results (local, 2026-11-25)
+
+Built in [source-mode/](source-mode/README.md), separate from `engine/`. Tested on a local clone of the Lexar repo in
+the session scratchpad: branch `vibecms-test`, git remote removed, pushes blocked by a hook, analytics IDs blanked so
+test visits never reach Lexar's Google Analytics. Served by Lexar's own `preview/server.mjs` (the server Railway runs)
+on localhost:3310.
+
+What worked, in the browser:
+- Sign-in hand-off through the URL, the page frozen after React rendered it, the editor bar on desktop and phone.
+- Hero paragraph: found automatically (`home.tsx:35`). Hero button "Request a Quote": in 17 places, the editor was
+  asked, and the right one (`home.tsx:45`) was ranked first. Card text: found automatically (`home.tsx:85`).
+- Publish made one commit per publish with a two-line diff (indentation, line endings and everything else
+  untouched), the stand-in deploy rebuilt the site, the editor showed "Live", and the served prerendered HTML had the
+  new text (so search engines see it too).
+- A failed build showed in the editor as "Build failed", with the change still committed.
+
+Finder accuracy on every text of every built Lexar page (`node source-mode/test/eval-site.mjs`):
+
+| Texts | Found automatically | Editor asked | Not in the source |
+|---|---|---|---|
+| Marketing pages, page content (1,054) | 91% | 8% | 1% |
+| Marketing pages, menus and footer (884) | 82% (37% as copies changed together) | 18% | 0% |
+| Dealer state pages, page content (785) | 78% | 5% | 17% (built from dealer data) |
+
+Lessons:
+- Match whole strings first: a text node on the page is nearly always one whole JSX text or string literal.
+- Read JS escapes (`\u00a0`) in code; Lexar uses them for non-breaking spaces.
+- A menu label repeated in one file (desktop menu, phone menu, footer) should change together; the editor says so.
+- Git Bash rewrites `/` in command arguments into a Windows path; run the service from PowerShell.
+- Selecting everything and typing makes the browser replace the text node; the editor handles it.
+
+Still to do for Phase 0: the GitHub part (`source-mode/src/repo-github.js` is written but has not run), which needs
+the token and your go-ahead for the test Railway environment; deploy status from GitHub; neighbours should use the
+original text of drafts already made on the page (an edited paragraph currently stops helping its neighbours);
+mixed text (a paragraph with bold or a link inside) edits one piece at a time.
 
 **Phase 1: the product for text and images.** Hosted service, dashboard, sites, editors and invites, drafts,
 publish, history, images committed to the repo, page settings, the setup skill for Claude Code. GitHub only.

@@ -102,7 +102,13 @@
     .list { margin: 0; padding: 0; list-style: none; }
     .list li { border-top: 1px solid var(--line); padding: 10px 0; display: flex; gap: 10px; align-items: start; justify-content: space-between; }
     .list .t { min-width: 0; } .list .t s { color: var(--muted); } .list .t div { overflow-wrap: anywhere; }
-    @media (max-width: 560px) { .brand { display: none; } .status { max-width: 28vw; } }
+    @media (max-width: 560px) {
+      .brand, .status { display: none; }
+      .bar { gap: 4px; padding: 5px; }
+      button, select { padding: 7px 9px; }
+      select { max-width: 32vw; }
+      .bar.building [data-a=publish]::after { content: "…"; }
+    }
   `;
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

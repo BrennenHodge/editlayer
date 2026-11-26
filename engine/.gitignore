@@ -1,3 +1,5 @@
 node_modules
 .wrangler
 test/.invite-url
+test/security/*.json
+test/security/seed.sql

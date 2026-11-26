@@ -3,8 +3,10 @@
 (() => {
   'use strict';
   // The real state is the last JSON script with this id (page content can't plant one: the sanitizer strips it).
-  const stateEl = [...document.querySelectorAll('script#vibecms-state[type="application/json"]')].pop();
-  if (!stateEl || window.__vibecms) return;
+  // Called through the prototype and checked as an own property, so an element in the page named
+  // "querySelectorAll" or with id "__vibecms" can't stop the editor from loading (DOM clobbering).
+  const stateEl = [...Document.prototype.querySelectorAll.call(document, 'script#vibecms-state[type="application/json"]')].pop();
+  if (!stateEl || Object.hasOwn(window, '__vibecms')) return;
   window.__vibecms = true;
 
   const S = JSON.parse(stateEl.textContent);
@@ -727,7 +729,8 @@
       const apply = () => {
         if (how === 'remove' && a) { a.replaceWith(...a.childNodes); return; }
         if (!href) return;
-        if (/^\s*(javascript|data|vbscript):/i.test(href)) { toast('That kind of link isn’t allowed.', true); return; }
+        // Browsers ignore tabs, newlines and control characters in a URL ("java\tscript:"): strip them before checking.
+        if (/^(javascript|data|vbscript):/i.test(href.replace(/[\u0000- ]/g, ''))) { toast('That kind of link isn’t allowed.', true); return; }
         if (a) { a.setAttribute('href', href); return; }
         if (savedRange) {
           const s2 = getSelection();

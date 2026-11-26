@@ -6,6 +6,35 @@ import { accentOf } from './pages.js';
 import { normalizePath, scriptJson } from './util.js';
 import { FEATURES } from './features/index.js';
 
+/**
+ * Content-Security-Policy for edit mode. Scripts: this site ('self', the editor), plus the origins and inline
+ * hashes of the page's own data-cms-keep scripts. No inline event handlers, javascript: links, plugins, <base>
+ * changes or form posts to other sites.
+ */
+export async function editCsp(html) {
+  const sources = new Set(["'self'"]);
+  let kept = false;
+  for (const m of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)) {
+    const attrs = m[1];
+    if (!/\sdata-cms-keep\b/i.test(attrs)) continue;
+    kept = true;
+    const src = /\ssrc\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(attrs);
+    if (src) {
+      const value = (src[1] ?? src[2] ?? src[3] ?? '').trim();
+      try {
+        const u = new URL(value, 'https://self.invalid');
+        if (u.origin !== 'https://self.invalid' && /^https:$/.test(u.protocol)) sources.add(u.origin);
+      } catch { /* unparseable: blocked */ }
+    } else if (m[2].trim()) {
+      const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(m[2]));
+      sources.add(`'sha256-${btoa(String.fromCharCode(...new Uint8Array(digest)))}'`);
+    }
+  }
+  // Kept scripts are the developer's own and may need eval (Alpine.js and similar).
+  if (kept) sources.add("'unsafe-eval'");
+  return [`script-src ${[...sources].join(' ')}`, "object-src 'none'", "base-uri 'self'", "form-action 'self'", "frame-ancestors 'self'"].join('; ');
+}
+
 /** Draft keys that hold data (JSON), not HTML regions: page settings plus any a feature registers. */
 export function specialKeys() {
   const keys = { '#meta': true };
@@ -123,12 +152,22 @@ export async function renderPage(request, env, res, url, opts, mode = {}) {
   const headers = new Headers(res.headers);
   headers.delete('etag');
   headers.delete('content-length');
+  let body = res.body;
   if (user || preview) {
     headers.set('cache-control', 'private, no-store');
     headers.set('x-frame-options', 'SAMEORIGIN');
     headers.set('content-security-policy', "frame-ancestors 'self'");
+    headers.set('x-content-type-options', 'nosniff');
   }
-  let out = rw.transform(new Response(res.body, { status: res.status, statusText: res.statusText, headers }));
+  if (editing) {
+    // The editor runs with a signed-in editor's rights, so the page gets a script policy: only the editor's own
+    // script and scripts the developer marked data-cms-keep may run. Saved content can't contain scripts (the
+    // sanitizer removes them); this makes sure that even if something got past it, it couldn't run.
+    const html = await res.text();
+    body = html;
+    headers.set('content-security-policy', await editCsp(html));
+  }
+  let out = rw.transform(new Response(body, { status: res.status, statusText: res.statusText, headers }));
   if (after.length) {
     let rw2 = new HTMLRewriter();
     for (const [selector, handlers] of after) rw2 = rw2.on(selector, handlers);

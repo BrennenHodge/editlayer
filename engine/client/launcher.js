@@ -1,6 +1,6 @@
 // Shown to signed-in editors while they browse the live site: one button to start editing this page.
 (() => {
-  if (window.__vibecmsLauncher || document.getElementById('vibecms-state')) return;
+  if (Object.hasOwn(window, '__vibecmsLauncher') || Document.prototype.getElementById.call(document, 'vibecms-state')) return;
   window.__vibecmsLauncher = true;
   const me = document.currentScript;
   const accent = (me && me.dataset.accent) || '#2563eb';
@@ -13,6 +13,7 @@
       box-shadow:0 6px 24px rgba(0,0,0,.28),0 0 0 1px rgba(255,255,255,.08) inset}
     a:hover{background:#23262c}a:focus-visible{outline:2px solid ${accent};outline-offset:2px}
     svg{width:16px;height:16px;stroke:${accent};fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-  </style><a href="${location.pathname}?edit" title="Edit this page"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Edit page</a>`;
+  </style><a title="Edit this page"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Edit page</a>`;
+  root.querySelector('a').setAttribute('href', `${location.pathname}?edit`);
   document.documentElement.append(host);
 })();

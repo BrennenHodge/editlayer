@@ -105,6 +105,32 @@ Tools: `list_pages`, `get_page`, `replace_text`, `update_region`, `set_page_sett
 `discard_drafts`, `get_history`. Changes are drafts attributed to "<name> (AI)". A key has the author role (drafts
 only) unless made with `--publish` (editor role: may publish and change site-wide regions).
 
+## Security
+
+Who can change what, and what keeps a hijacked account or a prompt-injected AI from abusing the site:
+
+- **Saved HTML is sanitized on the server** (`src/sanitize.js`): no scripts, event handlers, `javascript:` URLs,
+  `<object>`/`<embed>`/`<base>`/`<meta>`/MathML, SVG animation or SVG `<style>`, and no `id`/`name` values that would
+  shadow the editor or `document` methods. Editors and admins keep everything else.
+- **Authors and every AI connection get the strict level** on top: no iframe except YouTube, Vimeo and Google Maps
+  players (add hosts with `createCms({ embeds: ['calendly.com'] })`), no form that sends to another site, no new
+  `<style>` or `<link>`. What the region already had (the developer's own Formspree form, an existing embed) is
+  kept. Save responses list what was removed (`removed`), and the MCP tools pass that on to the AI.
+- **AI connections**: keys are hashed, stop working when the admin who made them is removed or loses the admin role
+  (`vibecms connect` keys excepted), are rate limited (300 tool calls / 10 minutes, 120 of them changes; table
+  `cms_ai_usage`, migration 0020), and can't publish or touch site-wide parts without the editor role. The server
+  tells the AI that page content is data, never instructions. Requests over 2 MB or batches over 20 are refused.
+- **The editor page** (`?edit`) is served with a Content-Security-Policy that only runs the editor and scripts the
+  developer marked `data-cms-keep`, so injected markup couldn't run even if it got past the sanitizer.
+- **Sessions** use a `__Host-` cookie on https (a sibling subdomain can't set or overwrite it), HttpOnly,
+  SameSite=Lax. Every API write needs the `x-vibecms: 1` header and a same-origin `Origin`, which blocks CSRF.
+  API bodies over 8 MB or with more than 300 regions are refused.
+- **Uploads**: images are checked by their first bytes (an HTML file renamed `.png` is refused) and served with
+  `nosniff` and a sandbox CSP; documents have their own content checks (`src/features/media/files.js`).
+- Authors can only restore the page's own parts from history, never site-wide ones.
+
+Regression tests: `test/security/` (see its README). Run them before releasing an engine change.
+
 ## Commands
 
 Run from the site folder (or add `--site <dir>`). Add `--local` (and `--port N`) to use the `wrangler dev` database.

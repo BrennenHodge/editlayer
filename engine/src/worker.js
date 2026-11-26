@@ -9,7 +9,7 @@
 
 import { renderPage, specialKeys } from './render.js';
 import { getUser, checkLogin, startSession, endSession, sessionCookie, findInvite, acceptInvite, issueInvite } from './auth.js';
-import { saveDrafts, publish, discard, history, restore, resetPage, draftPaths, storagePath } from './content.js';
+import { saveDrafts, publish, discard, history, restore, resetPage, draftPaths, storagePath, previousLoader } from './content.js';
 import * as media from './media.js';
 import { loginScreen, inviteScreen, linkSentScreen, linkConfirmScreen } from './pages.js';
 import { createLoginLink, findLoginLink, useLoginLink } from './auth.js';
@@ -203,8 +203,33 @@ export function noFraming(res) {
   if (!res || !(res.headers.get('content-type') || '').includes('text/html')) return res;
   const out = new Response(res.body, res);
   out.headers.set('x-frame-options', 'SAMEORIGIN');
-  out.headers.set('content-security-policy', "frame-ancestors 'self'");
+  if (!out.headers.has('content-security-policy')) out.headers.set('content-security-policy', "frame-ancestors 'self'");
+  out.headers.set('x-content-type-options', 'nosniff');
+  // Sign-in, invite and preview links carry secrets in the URL: never send them on to other sites.
+  // ("same-origin", not "no-referrer": with no-referrer browsers send "Origin: null" on the sign-in form,
+  // which the same-origin check would refuse.)
+  if (!out.headers.has('referrer-policy')) out.headers.set('referrer-policy', 'same-origin');
   return out;
+}
+
+const MAX_JSON = 8 * 1024 * 1024;
+const TOO_BIG = Symbol('too big');
+/** The request's JSON object (or {}), refusing bodies over 8 MB before reading them into memory twice. */
+async function readJson(request) {
+  if (Number(request.headers.get('content-length') || 0) > MAX_JSON) return TOO_BIG;
+  const text = await request.text().catch(() => '');
+  if (text.length > MAX_JSON) return TOO_BIG;
+  try {
+    const v = JSON.parse(text);
+    return v && typeof v === 'object' && !Array.isArray(v) ? v : {};
+  } catch { return {}; }
+}
+
+/** The developer's static HTML for a page, or null. */
+async function staticPage(env, origin, path) {
+  const res = await env.ASSETS.fetch(new Request(new URL(path, origin)));
+  if (!res.ok || !(res.headers.get('content-type') || '').includes('text/html')) return null;
+  return res.text();
 }
 
 async function featureRoute(request, env, url, opts, ectx) {
@@ -244,7 +269,11 @@ async function api(request, env, url, route, opts) {
       const m = typeof r.route === 'string' ? (r.route === route ? [route] : null) : route.match(r.route);
       if (!m) continue;
       if (!hasRole(user, r.role || 'editor')) return json({ error: 'You don’t have permission to do that.' }, 403);
-      const body = method !== 'GET' && !r.raw ? await request.json().catch(() => ({})) : {};
+      let body = {};
+      if (method !== 'GET' && !r.raw) {
+        body = await readJson(request);
+        if (body === TOO_BIG) return json({ error: 'That is too large to save.' }, 413);
+      }
       try {
         return await r.handler({
           request, env, url, opts, user, body, params: m.slice(1),
@@ -258,7 +287,8 @@ async function api(request, env, url, route, opts) {
     }
   }
 
-  const body = method !== 'GET' && route !== 'media' ? await request.json().catch(() => ({})) : {};
+  const body = method !== 'GET' && route !== 'media' ? await readJson(request) : {};
+  if (body === TOO_BIG) return json({ error: 'That is too large to save.' }, 413);
   const pagePath = (v) => normalizePath(String(v || '/'));
   const can = (role) => hasRole(user, role);
   const denied = () => json({ error: 'You don’t have permission to do that.' }, 403);
@@ -273,8 +303,15 @@ async function api(request, env, url, route, opts) {
         return json({ error: 'Only editors can change parts shared by every page.' }, 403);
       }
       try {
-        const n = await saveDrafts(env, pagePath(body.path), body.regions, user, featureKeys(opts));
-        return json({ saved: n });
+        const path = pagePath(body.path);
+        const removed = [];
+        const policy = {
+          embedHosts: opts.embeds,
+          removed,
+          previous: previousLoader(env, path, () => staticPage(env, url.origin, path)),
+        };
+        const n = await saveDrafts(env, path, body.regions, user, featureKeys(opts), policy);
+        return json(removed.length ? { saved: n, removed } : { saved: n });
       } catch (e) {
         return json({ error: e.message }, e && e.status >= 400 && e.status < 500 ? e.status : 400);
       }
@@ -321,6 +358,8 @@ async function api(request, env, url, route, opts) {
       const id = Number(body.id);
       if (id === user.id) return json({ error: 'You can’t remove yourself.' }, 400);
       await env.CMS_DB.batch([
+        // Their AI connection keys stop working with them (mcp.js checks this too, for removed admin roles).
+        env.CMS_DB.prepare('DELETE FROM cms_ai_tokens WHERE created_by = (SELECT email FROM cms_users WHERE id = ?)').bind(id),
         env.CMS_DB.prepare('DELETE FROM cms_sessions WHERE user_id = ?').bind(id),
         env.CMS_DB.prepare('DELETE FROM cms_users WHERE id = ?').bind(id),
       ]);
