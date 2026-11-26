@@ -4,3 +4,4 @@ node_modules
 .dev-test-user.json
 phone-shots
 test/.invite-url
+*.local.md

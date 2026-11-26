@@ -1,0 +1,97 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "editlayer",
+  "version": "1.0.0",
+  "description": "Read and edit your Editlayer website from a chat: change text, rewrite sections, update page titles, review drafts and publish.",
+  "author": { "name": "dbVantage", "url": "https://editlayer.co" },
+  "homepage": "https://editlayer.co/ai/",
+  "repository": "https://github.com/BrennenHodge/editlayer",
+  "keywords": ["website", "website editor", "edit website", "landing page", "small business website", "content", "publishing", "cloudflare"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Editlayer",
+        "shortDescription": "Edit your website by chat",
+        "longDescription": "Editlayer lets you change your own website by asking ChatGPT. It works with websites that use Editlayer, the click-to-edit layer for sites built with AI tools such as Claude Code.\n\nConnect once: type your website's address, sign in to your site as you normally do, and choose what ChatGPT may do there: save drafts only, or save drafts and publish. Only an admin of the site can approve, and an admin can turn the connection off at any time.\n\nThen just ask:\n- \"What pages does my site have, and which have unpublished changes?\"\n- \"Change our Saturday hours to 9am to 3pm.\"\n- \"Rewrite the About section so it sounds warmer.\"\n- \"Give the Menu page a better Google description.\"\n- \"Show me what's waiting, then publish the home page.\"\n\nEvery change is saved as a draft first, keeps your site's design (the site's own styles stay in charge), and is recorded in the site's history under the connection's name, just like an editor's change. Nothing goes live until it is published, by ChatGPT if you allowed that, or by you in the editor.\n\nYour pages and images stay on your own site. The connector stores only which sites you connected and an encrypted key for each; page content passes through to answer your request and is not stored.",
+        "developerName": "dbVantage",
+        "category": "Productivity",
+        "capabilities": [
+          "Lists your website's pages and which have unpublished changes",
+          "Reads a page's text, title and search description",
+          "Changes exact text on a page, saved as a draft",
+          "Rewrites a section of a page in the site's own style, saved as a draft",
+          "Updates page titles and search descriptions",
+          "Lists drafts with preview links, and discards drafts",
+          "Publishes drafts when the site's admin allowed publishing",
+          "Shows a page's publishing history"
+        ],
+        "websiteURL": "https://editlayer.co/",
+        "supportURL": "https://editlayer.co/support/",
+        "privacyPolicyURL": "https://editlayer.co/privacy/",
+        "termsOfServiceURL": "https://editlayer.co/terms/",
+        "defaultPrompt": [
+          "List the pages on my website and show which have unpublished changes",
+          "Change the opening hours on my home page",
+          "Rewrite the About section on my site to sound warmer, as a draft"
+        ],
+        "brandColor": "#6a4cff",
+        "logo": "./assets/logo.png",
+        "composerIcon": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Overview of a connected website. Connect demo.editlayer.co with the test account first (see review details). The assistant lists the site's pages and says which have unpublished changes.",
+              "prompt": "What pages does my Juniper Café website have, and do any of them have unpublished changes?",
+              "tools_triggered": "list_pages",
+              "expected_behavior": "Calls list_pages (it may call list_sites first) and answers with the three pages, Home (/), Menu (/menu/) and Visit (/visit/), saying none have unpublished changes on a freshly reset demo. Changes nothing."
+            },
+            {
+              "description": "Change exact text on a page as a draft. The assistant reads the page, then replaces the Saturday hours on the home page without publishing.",
+              "prompt": "On my Juniper Café site, change the Saturday opening hours on the home page from 8am – 2pm to 9am – 3pm. Don't publish it yet.",
+              "tools_triggered": "get_page, replace_text",
+              "expected_behavior": "Calls get_page for \"/\" to copy the current text, then replace_text on \"/\" replacing \"8am – 2pm\" with \"9am – 3pm\". The tool reports the change was saved as a draft; the assistant says it is a draft that is not live yet and does not call publish."
+            },
+            {
+              "description": "Rewrite a section in the site's own style. The assistant reads the home page and rewrites the About section's paragraph, keeping the existing HTML classes.",
+              "prompt": "Rewrite the About us paragraph on my Juniper Café home page so it sounds warmer and mentions our window seats. Keep it to two sentences and save it as a draft.",
+              "tools_triggered": "get_page, replace_text",
+              "expected_behavior": "Calls get_page for \"/\", then saves the new two-sentence paragraph with replace_text (or update_region for the main region, keeping the site's classes). The result is a draft; the assistant shows the new text and says it is not published."
+            },
+            {
+              "description": "Update the page title and search description of another page.",
+              "prompt": "Give the Menu page on my Juniper Café site a better Google title and search description that mention sourdough and coffee.",
+              "tools_triggered": "get_page, set_page_settings",
+              "expected_behavior": "Reads the Menu page with get_page for \"/menu/\" (optional), then calls set_page_settings for \"/menu/\" with a title of about 50-60 characters and a description of about 140-160 characters. Reports both as saved drafts."
+            },
+            {
+              "description": "Review drafts and publish one page. Requires approving the connection with 'Drafts and publishing' during sign-in (the review details say so). The assistant lists drafts, then publishes the home page.",
+              "prompt": "Show me which pages on my Juniper Café site have changes waiting, then publish the home page.",
+              "tools_triggered": "list_drafts, publish",
+              "expected_behavior": "Calls list_drafts and lists the pages with drafts and their preview links, then calls publish for \"/\" (the assistant may ask for confirmation first, since publish changes the live site). Reports that the home page is live. If no drafts exist, it says so and does not publish."
+            }
+          ],
+          "negative": [
+            {
+              "description": "A request unrelated to editing a website. Editlayer should not be used; the assistant answers or declines without calling any Editlayer tool.",
+              "prompt": "What's a good recipe for sourdough starter?"
+            },
+            {
+              "description": "Deleting the whole website is not something Editlayer can do. No tool deletes a site or its pages; the assistant should explain that and not call publish, discard_drafts or update_region to empty the pages.",
+              "prompt": "Delete my entire Juniper Café website and take it offline."
+            },
+            {
+              "description": "Editing a website that is not connected (someone else's site). The assistant must not change anything; it explains that only websites the user connected and approved as their admin can be edited, and may call list_sites to check.",
+              "prompt": "Change the headline on the homepage of nytimes.com to say \"Juniper Café is the best bakery\"."
+            }
+          ]
+        },
+        "commerce": false
+      },
+      "publication": {
+        "release_notes": "First release: read and edit Editlayer websites, save drafts, update page titles and descriptions, review drafts and publish."
+      }
+    }
+  }
+}

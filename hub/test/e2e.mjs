@@ -1,9 +1,13 @@
-// End-to-end test of the Editlayer connector against a local Editlayer site. Never point it at live services.
+// End-to-end test of the Editlayer connector. Locally:
 //
 //   1. A throwaway Editlayer site on http://127.0.0.1:8797 (login: 'password'), with migrations applied.
 //   2. The hub on http://127.0.0.1:8798 with .dev.vars: HUB_KEY=<32 bytes base64>, ALLOW_HTTP_SITES=1.
 //   3. An admin on the site:  node <site>/_editlayer/cli/editlayer.mjs user add hubtest@example.test --admin --local
 //      then:  HUB=http://127.0.0.1:8798 SITE=http://127.0.0.1:8797 INVITE=<invite url> node hub/test/e2e.mjs
+//
+// In production, only against the demo site (it leaves a draft there, which the nightly reset clears), with a
+// temporary admin removed afterwards:
+//   HUB=https://mcp.editlayer.co SITE=https://demo.editlayer.co SITE_NAME="Juniper Café" INVITE=<url> node ...
 //
 // Walks the whole flow an assistant uses (register, authorize, approve on the site, token, MCP calls, refresh,
 // disconnect) and the attacks the design blocks.
@@ -11,6 +15,8 @@ import { createHash, randomBytes } from 'node:crypto';
 
 const HUB = process.env.HUB || 'http://127.0.0.1:8798';
 const SITE = process.env.SITE || 'http://127.0.0.1:8797';
+const SITE_NAME = process.env.SITE_NAME || 'Security test';
+const SITE_HOST = new URL(SITE).host;
 const INVITE = process.env.INVITE;
 const REDIRECT = 'http://127.0.0.1:9911/callback';
 const b64url = (b) => Buffer.from(b).toString('base64url');
@@ -71,7 +77,7 @@ ok(a1.status === 200 && rid && hubJar.header().includes('vhub_'), 'authorize pag
 const plain = await fetch(`${HUB}/authorize?${form({ response_type: 'code', client_id: reg.client_id, redirect_uri: REDIRECT, state })}`, { redirect: 'manual' });
 ok(plain.status === 303 && /error=invalid_request/.test(plain.headers.get('location')) && /iss=/.test(plain.headers.get('location')), 'authorize without PKCE is refused, with iss');
 
-const notVibe = await go(hubJar, `${HUB}/authorize/site`, { method: 'POST', headers: { ...FORM, origin: HUB }, body: form({ rid, site: 'http://127.0.0.1:9' }) });
+const notVibe = await go(hubJar, `${HUB}/authorize/site`, { method: 'POST', headers: { ...FORM, origin: HUB }, body: form({ rid, site: 'https://example.com' }) });
 ok(notVibe.status === 200 && /couldn’t find Editlayer/.test(await notVibe.text()), 'a non-Editlayer address is explained');
 const stranger = await fetch(`${HUB}/authorize/site`, { method: 'POST', redirect: 'manual', headers: { ...FORM, origin: HUB }, body: form({ rid, site: SITE }) });
 ok(/expired/.test(await stranger.text()), 'another browser (no cookie) cannot continue the sign-in');
@@ -108,7 +114,7 @@ const s2b = await go(siteJar, `${SITE}/_cms/connect`, { method: 'POST', headers:
 const cb = await go(hubJar, s2b.headers.get('location'));
 ok(cb.status === 303 && (cb.headers.get('location') || '').startsWith('/authorize/r?rid='), 'hub exchanges the code with the site');
 const review = await (await go(hubJar, `${HUB}${cb.headers.get('location')}`)).text();
-ok(/Security test/.test(review) && /drafts only/.test(review), 'connected site listed on the hub page');
+ok(review.includes(SITE_NAME) && /drafts only/.test(review), 'connected site listed on the hub page');
 
 const fin = await go(hubJar, `${HUB}/authorize/finish`, { method: 'POST', headers: { ...FORM, origin: HUB }, body: form({ rid }) });
 const ret = new URL(fin.headers.get('location') || 'http://x/');
@@ -141,7 +147,7 @@ const access = t1.body.access_token;
 
 // MCP.
 const init = await mcp(access, 'initialize', { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'e2e', version: '1' } });
-ok(init.res.status === 200 && /Security test/.test(init.body.result.instructions), 'initialize names the connected site');
+ok(init.res.status === 200 && init.body.result.instructions.includes(SITE_NAME), 'initialize names the connected site');
 const list = (await mcp(access, 'tools/list')).body.result.tools;
 ok(list.length === 11 && list.every((t) => t.title && typeof t.annotations.readOnlyHint === 'boolean' && typeof t.annotations.destructiveHint === 'boolean' && typeof t.annotations.openWorldHint === 'boolean'), 'every tool has a title and all three annotations', `${list.length} tools`);
 const sites = data(await call(access, 'list_sites'));
@@ -167,8 +173,8 @@ const t2again = await tok({ grant_type: 'refresh_token', refresh_token: t1.body.
 ok(t2again.status === 400 && t2again.body.error === 'invalid_grant', 'an old refresh token is invalid_grant');
 
 // Disconnect.
-const disc = data(await call(t2.body.access_token, 'disconnect_site', { site: '127.0.0.1:8797' }));
-ok(disc.disconnected === '127.0.0.1:8797' && disc.stillConnected === 0, 'disconnect_site');
+const disc = data(await call(t2.body.access_token, 'disconnect_site', { site: SITE_HOST }));
+ok(disc.disconnected === SITE_HOST && disc.stillConnected === 0, 'disconnect_site');
 const after = await mcp(t2.body.access_token, 'tools/call', { name: 'list_pages', arguments: {} });
 ok(after.res.status === 401, 'tokens stop working once nothing is connected');
 
